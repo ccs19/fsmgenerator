@@ -1,5 +1,3 @@
-import com.sun.corba.se.spi.orbutil.fsm.FSM;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -27,7 +25,7 @@ public class FsmPanel extends JPanel
     final private String[] transitionsString = {"State Transistions (Seperate by commas)" , "Format: (current:dest:input)"};
     final private String saveString = "Save";
     final private String exitString = "Exit";
-    final private String exitConfirmMessage = "Are you sure you want to exit?\nUnsaved changes will be lost.";
+    final private String exitConfirmMessage = "Are you sure you want to exit?\nUnsaved automaton will be lost.";
 
 
     //GridBagConstraints padding
@@ -48,7 +46,6 @@ public class FsmPanel extends JPanel
         super(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
-
 
         /**Top row**/
         gbc.gridx = 0;
