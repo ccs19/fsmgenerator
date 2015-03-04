@@ -2,6 +2,8 @@ import com.sun.corba.se.spi.orbutil.fsm.FSM;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by Chris on 3/1/2015.
@@ -23,6 +25,7 @@ public class FsmPanel extends JPanel
     final private String transitionsString = "State Transistions";
     final private String saveString = "Save";
     final private String exitString = "Exit";
+    final private String exitConfirmMessage = "Are you sure you want to exit?\nUnsaved changes will be lost.";
 
     private JTextField numStates,
             startState,
@@ -120,17 +123,27 @@ public class FsmPanel extends JPanel
 
         /**Save Button**/
         JButton saveButton = new JButton(saveString);
+        saveButton.addActionListener(new SaveButtonListener(this));
         gbc.gridx=1;
         gbc.gridy=6;
         gbc.gridwidth = 1;
         gbc.insets = new Insets(20,10,10,10);
         this.add(saveButton, gbc);
-
         /**********************************/
 
 
         /**Exit Button**/
         JButton exitButton = new JButton(exitString);
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int reply = JOptionPane.showConfirmDialog(null, exitConfirmMessage, exitString, JOptionPane.YES_NO_OPTION);
+                if(reply == JOptionPane.YES_OPTION)
+                {
+                    System.exit(0);
+                }
+            }
+        });
         gbc.gridx=2;
         gbc.gridy=6;
         this.add(exitButton, gbc);
