@@ -21,6 +21,8 @@ public class FsmPanel extends JPanel
     final private String acceptStatesString = "Accept States";
     final private String alphabetString = "Alphabet";
     final private String transitionsString = "State Transistions";
+    final private String saveString = "Save";
+    final private String exitString = "Exit";
 
     private JTextField numStates,
             startState,
@@ -115,6 +117,46 @@ public class FsmPanel extends JPanel
         this.add(transitions, gbc);
         /**********************************/
 
+
+        /**Save Button**/
+        JButton saveButton = new JButton(saveString);
+        gbc.gridx=1;
+        gbc.gridy=6;
+        gbc.gridwidth = 1;
+        gbc.insets = new Insets(20,10,10,10);
+        this.add(saveButton, gbc);
+
+        /**********************************/
+
+
+        /**Exit Button**/
+        JButton exitButton = new JButton(exitString);
+        gbc.gridx=2;
+        gbc.gridy=6;
+        this.add(exitButton, gbc);
+        /**********************************/
+
         this.setVisible(true);
+    }
+
+
+    public String getNumStates() {
+        return numStates.getText();
+    }
+
+    public String getStartState() {
+        return startState.getText();
+    }
+
+    public String getAcceptStates() {
+        return acceptStates.getText();
+    }
+
+    public String getAlphabet() {
+        return alphabet.getText();
+    }
+
+    public String getTransitions() {
+        return transitions.getText();
     }
 }
