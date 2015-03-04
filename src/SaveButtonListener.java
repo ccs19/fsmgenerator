@@ -6,15 +6,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
-import static java.lang.Integer.*;
-
 /**
- * Created by Chris on 3/3/2015.
+ * Listener for save button
  */
 public class SaveButtonListener implements ActionListener {
 
     FsmPanel listenPanel;
-    String saveString = "";
     String numStates = "";
     String alphabet = "";
     String stateTransitions = "";
@@ -37,9 +34,8 @@ public class SaveButtonListener implements ActionListener {
 
             String dialogMessage = "Cannot save\n";
 
-            for(int i = 0; i < unsafeSaveReasons.size(); i++)
-            {
-                dialogMessage += unsafeSaveReasons.get(i) + "\n";
+            for (String unsafeSaveReason : unsafeSaveReasons) {
+                dialogMessage += unsafeSaveReason + "\n";
             }
             //Show dialog with input errors found
             JOptionPane.showMessageDialog(null, dialogMessage, "Cannot save", JOptionPane.OK_OPTION);
@@ -73,16 +69,22 @@ public class SaveButtonListener implements ActionListener {
     private void checkAlphabet()
     {
         alphabet = listenPanel.getAlphabet();
+        if(alphabet.length() == 0)
+            unsafeSaveReasons.add("Invalid entry in Alphabet");
     }
 
     private void checkAccepStates()
     {
         acceptStates = listenPanel.getAcceptStates();
+        if(acceptStates.length() == 0)
+            unsafeSaveReasons.add("Invalid entry in Accept States");
     }
 
     private void checkStateTransitions()
     {
         stateTransitions = listenPanel.getTransitions();
+        if(stateTransitions.length() == 0)
+            unsafeSaveReasons.add("Invalid entry in State Transitions");
     }
 
     private void checkStartState()
@@ -101,6 +103,7 @@ public class SaveButtonListener implements ActionListener {
     private void saveAutomaton()
     {
         JFileChooser jFileChooser = new JFileChooser();
+        jFileChooser.setCurrentDirectory(new File(".")); //Select project directory
         int returnVal = jFileChooser.showSaveDialog(listenPanel);
 
         if(returnVal == JFileChooser.APPROVE_OPTION)
@@ -118,7 +121,7 @@ public class SaveButtonListener implements ActionListener {
             }
             catch (Exception e)
             {
-                JOptionPane.showMessageDialog(null, "Failed to save. Cannot write to disk.", "Fatal Error", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(null, "Failed to save. Cannot write to disk.", "Fatal Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
