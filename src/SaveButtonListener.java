@@ -12,11 +12,14 @@ import java.util.ArrayList;
 public class SaveButtonListener implements ActionListener {
 
     FsmPanel listenPanel;
-    String numStates = "";
+    String numStatesString = "";
+    int numStates = 0;
     String alphabet = "";
     String stateTransitions = "";
-    String startState = "";
+    String startStateString = "";
+    int startState = 0;
     String acceptStates = "";
+
 
     //Safe verification parameters
     ArrayList<String> unsafeSaveReasons;
@@ -55,14 +58,14 @@ public class SaveButtonListener implements ActionListener {
 
     private void checkNumStates()
     {
-        numStates = listenPanel.getNumStates();
+        numStatesString = listenPanel.getNumStates();
         try
         {
-            Integer.parseInt(numStates);
+            numStates = FsmChecker.checkNumStates(numStatesString, unsafeSaveReasons);
         }
         catch(NumberFormatException e )
         {
-            unsafeSaveReasons.add("Invalid entry in Number of States");
+            unsafeSaveReasons.add("Invalid entry in Number of States: Not a number");
         }
     }
 
@@ -84,19 +87,21 @@ public class SaveButtonListener implements ActionListener {
     {
         stateTransitions = listenPanel.getTransitions();
         if(stateTransitions.length() == 0)
+        {
             unsafeSaveReasons.add("Invalid entry in State Transitions");
+        }
     }
 
     private void checkStartState()
     {
-        startState = listenPanel.getStartState();
+        startStateString = listenPanel.getStartState();
         try
         {
-            Integer.parseInt(startState);
+            startState = FsmChecker.checkStartState(numStates, startStateString, unsafeSaveReasons);
         }
         catch (NumberFormatException e)
         {
-            unsafeSaveReasons.add("Invalid entry in Start State");
+            unsafeSaveReasons.add("Invalid entry in Start State: Not a number");
         }
     }
 
@@ -112,10 +117,10 @@ public class SaveButtonListener implements ActionListener {
 
             try {
                 BufferedWriter fileWriter = new BufferedWriter(new FileWriter(file));
-                fileWriter.write(numStates + "\n" +
+                fileWriter.write(numStatesString + "\n" +
                                  alphabet + "\n" +
                                  stateTransitions + "\n" +
-                                 startState + "\n" +
+                        startStateString + "\n" +
                                  acceptStates);
                 fileWriter.close();
             }
