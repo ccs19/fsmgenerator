@@ -24,11 +24,33 @@ public class FsmChecker {
     public static int checkNumStates(String numStatesString, ArrayList<String> errorList) throws NumberFormatException
     {
         int numStates = Integer.parseInt(numStatesString);
-        if(numStates < 0)
+        if(numStates <= 0)
         {
             errorList.add("Invalid entry in Number of States: Less than 0");
         }
         return numStates;
+    }
+
+
+    public static int[] checkAcceptStates(String acceptStatesString, ArrayList<String> errorList, int numStates) throws NumberFormatException
+    {
+        //Split string and get number of accept states
+        String[] acceptStatesParsed = acceptStatesString.split(",");
+        int numAcceptStates = acceptStatesParsed.length;
+        int[] acceptStates = new int[numAcceptStates];
+
+        if(numAcceptStates > numStates)
+        {
+            errorList.add("Invalid entry in Accept States: Too many accept states");
+        }
+        else
+        {
+            for(int i = 0 ; i < numAcceptStates; i++)
+            {
+                acceptStates[i] = Integer.parseInt(acceptStatesParsed[i]);
+            }
+        }
+        return acceptStates;
     }
 
 

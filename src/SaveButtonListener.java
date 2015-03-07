@@ -80,7 +80,18 @@ public class SaveButtonListener implements ActionListener {
     {
         acceptStates = listenPanel.getAcceptStates();
         if(acceptStates.length() == 0)
-            unsafeSaveReasons.add("Invalid entry in Accept States");
+            unsafeSaveReasons.add("Invalid entry in Accept States: No entry");
+        else
+        {
+            try{
+                FsmChecker.checkAcceptStates(acceptStates, unsafeSaveReasons, numStates);
+            }
+            catch(NumberFormatException e)
+            {
+                unsafeSaveReasons.add("Invalid entry in Accept States: Not a number");
+            }
+        }
+
     }
 
     private void checkStateTransitions()
