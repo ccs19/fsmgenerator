@@ -19,6 +19,7 @@ public class SaveButtonListener implements ActionListener {
     int startState = 0;
     int alphabetLength = 0;
     String alphabet = "";
+    String parsedAlphabet[];
     String stateTransitions = "";
     String startStateString = "";
 
@@ -81,7 +82,7 @@ public class SaveButtonListener implements ActionListener {
         alphabet = listenPanel.getAlphabet();
         if(alphabet.length() == 0)
             unsafeSaveReasons.add("Invalid entry in Alphabet");
-        String[] parsedAlphabet = FsmChecker.checkAlphabet(alphabet, unsafeSaveReasons);
+        parsedAlphabet = FsmChecker.checkAlphabet(alphabet, unsafeSaveReasons);
         if(parsedAlphabet != null) {
             alphabetLength = parsedAlphabet.length;
         }
@@ -115,7 +116,7 @@ public class SaveButtonListener implements ActionListener {
         {
             unsafeSaveReasons.add("Invalid entry in State Transitions");
         }
-        FsmChecker.checkStateTransitions(stateTransitions, unsafeSaveReasons, numStates, alphabetLength);
+        FsmChecker.checkStateTransitions(stateTransitions, unsafeSaveReasons, numStates, parsedAlphabet);
     }
 
     private void checkStartState()

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -8,7 +9,8 @@ import java.util.regex.PatternSyntaxException;
  */
 public class FsmChecker {
 
-    static String transitionsFormat = "\\(\\d:\\d:.\\)";
+    private static final String transitionsFormat = "\\(\\d:\\d:.\\)";
+    private static final int TRANS_LENGTH = 3;
 
 
     public static int checkStartState(int numStates, String startStateString, ArrayList<String> errorList) throws NumberFormatException
@@ -59,7 +61,7 @@ public class FsmChecker {
     }
 
 
-    public static String[] checkStateTransitions(String stateTransitionsString, ArrayList<String> errorList, int numStates, int numAlphabet)
+    public static String[] checkStateTransitions(String stateTransitionsString, ArrayList<String> errorList, int numStates, String[] alphabet)
     {
 
         //Split up transitions
@@ -73,7 +75,7 @@ public class FsmChecker {
             return parsedTransitions;
         }
 
-        //compile regex pattern and check each transition
+        //compile regex pattern and check each transition syntax
         Pattern transitionsPattern = Pattern.compile(transitionsFormat);
         for(int i = 0; i < parsedTransitions.length; i++) {
             Matcher transitionMatcher = transitionsPattern.matcher(parsedTransitions[i]);
@@ -83,7 +85,28 @@ public class FsmChecker {
             }
         }
 
+        //Check each transition for validity
+        for(int i = 0; i < parsedTransitions.length; i++) {
+            String[] openParen = parsedTransitions[i].split("\\(");
+            String[] closeParen = openParen[openParen.length-1].split("\\)");
+            String[] result = closeParen[closeParen.length-1].split(":");
+            int result0 = Integer.parseInt(result[0]);
+            int result1 = Integer.parseInt(result[1]);
 
+            if( result0 > numStates || result1 > numStates //Check if numerical state transitions exist
+                    || result0 < 0 || result1 < 0 )
+            {
+                errorList.add("Invalid entry in State Transitions: State doesn't exist");
+                return null;
+            }
+
+            //Then check that entry exists in alphabet
+            if(Arrays.asList(alphabet).contains(result[2]) == false)
+            {
+                errorList.add("Invalid entry in State Transitions: Character not in alphabet");
+                return null;
+            }
+        }
         return parsedTransitions;
     }
 
