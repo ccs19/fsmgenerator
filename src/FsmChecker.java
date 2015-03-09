@@ -75,6 +75,16 @@ public class FsmChecker {
             return parsedTransitions;
         }
 
+        //Check that all possible state transitions are accounted for
+        if(parsedTransitions.length != (numStates*alphabet.length))
+        {
+            if(parsedTransitions.length < numStates*alphabet.length)
+                errorList.add("Invalid entry in State Transitions: All possible transitions not accounted for");
+            else
+                errorList.add("Invalid entry in State Transitions: Too many state transitions");
+            return null;
+        }
+
         //compile regex pattern and check each transition syntax
         Pattern transitionsPattern = Pattern.compile(transitionsFormat);
         for(int i = 0; i < parsedTransitions.length; i++) {
