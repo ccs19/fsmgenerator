@@ -1,9 +1,14 @@
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Created by Chris on 3/5/2015.
  */
 public class FsmChecker {
+
+    static String transitionsFormat = "\\(\\d:\\d:.\\)";
 
 
     public static int checkStartState(int numStates, String startStateString, ArrayList<String> errorList) throws NumberFormatException
@@ -54,6 +59,49 @@ public class FsmChecker {
     }
 
 
+    public static String[] checkStateTransitions(String stateTransitionsString, ArrayList<String> errorList, int numStates, int numAlphabet)
+    {
+
+        //Split up transitions
+        String[] parsedTransitions = null;
+        try {
+            parsedTransitions = stateTransitionsString.split(",");
+        }
+        catch (PatternSyntaxException e )
+        {
+            errorList.add("Invalid entry in State Transitions: Are your entries seperated by commas?");
+            return parsedTransitions;
+        }
+
+        //compile regex pattern and check each transition
+        Pattern transitionsPattern = Pattern.compile(transitionsFormat);
+        for(int i = 0; i < parsedTransitions.length; i++) {
+            Matcher transitionMatcher = transitionsPattern.matcher(parsedTransitions[i]);
+            if (false == transitionMatcher.matches()) {
+                errorList.add("Invalid entry in State Transitions: Invalid syntax in transition " + i+1);
+                return null;
+            }
+        }
+
+
+        return parsedTransitions;
+    }
+
+
+    public static String[] checkAlphabet(String alphabetString, ArrayList<String> errorList)
+    {
+        String[] alphabet = null;
+        try{
+            alphabet = alphabetString.split(",");
+        }
+        catch (PatternSyntaxException e)
+        {
+            errorList.add("Invalid entry in Alphabet: Are your entries seperated by commas?");
+        }
+
+
+        return alphabet;
+    }
 
 
 }

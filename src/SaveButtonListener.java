@@ -1,3 +1,5 @@
+import com.sun.corba.se.spi.orbutil.fsm.FSM;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,10 +16,12 @@ public class SaveButtonListener implements ActionListener {
     FsmPanel listenPanel;
     String numStatesString = "";
     int numStates = 0;
+    int startState = 0;
+    int alphabetLength = 0;
     String alphabet = "";
     String stateTransitions = "";
     String startStateString = "";
-    int startState = 0;
+
     String acceptStates = "";
 
 
@@ -35,7 +39,7 @@ public class SaveButtonListener implements ActionListener {
         checkStrings();
         if(unsafeSaveReasons.size() > 0) {  //If any invalid input in text fields...
 
-            String dialogMessage = "Cannot save\n";
+            String dialogMessage = "\n";
 
             for (String unsafeSaveReason : unsafeSaveReasons) {
                 dialogMessage += unsafeSaveReason + "\n";
@@ -48,6 +52,9 @@ public class SaveButtonListener implements ActionListener {
         }
     }
 
+    /**
+     * Check all the user input
+     */
     private void checkStrings() {
         checkNumStates();
         checkAlphabet();
@@ -74,6 +81,13 @@ public class SaveButtonListener implements ActionListener {
         alphabet = listenPanel.getAlphabet();
         if(alphabet.length() == 0)
             unsafeSaveReasons.add("Invalid entry in Alphabet");
+        String[] parsedAlphabet = FsmChecker.checkAlphabet(alphabet, unsafeSaveReasons);
+        if(parsedAlphabet != null) {
+            alphabetLength = parsedAlphabet.length;
+        }
+        else{
+            alphabetLength = 0;
+        }
     }
 
     private void checkAccepStates()
@@ -101,6 +115,7 @@ public class SaveButtonListener implements ActionListener {
         {
             unsafeSaveReasons.add("Invalid entry in State Transitions");
         }
+        FsmChecker.checkStateTransitions(stateTransitions, unsafeSaveReasons, numStates, alphabetLength);
     }
 
     private void checkStartState()
