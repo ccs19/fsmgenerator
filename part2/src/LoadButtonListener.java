@@ -1,9 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -23,6 +21,8 @@ public class LoadButtonListener implements ActionListener {
 
     String acceptStates = "";
 
+    BufferedReader fileReader;
+
 
     //Safe verification parameters
     ArrayList<String> unsafeLoadReasons;
@@ -35,6 +35,7 @@ public class LoadButtonListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e){
         loadAutomaton();
+        checkAutomaton();
     }
 
     private void loadAutomaton(){
@@ -46,13 +47,24 @@ public class LoadButtonListener implements ActionListener {
         {
             File file = jFileChooser.getSelectedFile();
             try {
-                BufferedWriter fileWriter = new BufferedWriter(new FileWriter(file));
-                fileWriter.close();
+                fileReader = new BufferedReader(new FileReader(file));
             }
             catch (Exception e)
             {
                 JOptionPane.showMessageDialog(listenPanel, "Failed to load file. Cannot write to disk.", "Fatal Error", JOptionPane.ERROR_MESSAGE);
             }
         }
+    }
+
+
+    private void checkAutomaton(){
+        try {
+            String s = fileReader.readLine();
+            System.out.println("String " + s);
+        } catch (Exception e)
+        {
+
+        }
+
     }
 }
