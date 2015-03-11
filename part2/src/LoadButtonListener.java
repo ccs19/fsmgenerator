@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -57,14 +58,40 @@ public class LoadButtonListener implements ActionListener {
     }
 
 
-    private void checkAutomaton(){
+    private void checkAutomaton() {
         try {
-            String s = fileReader.readLine();
-            System.out.println("String " + s);
-        } catch (Exception e)
-        {
-
+            numStatesString = readNextLine();
+            alphabet = readNextLine();
+            stateTransitions = readNextLine();
+            startStateString = readNextLine();
+            acceptStates = readNextLine();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(listenPanel, "Error Reading File", "File Read Error", JOptionPane.ERROR_MESSAGE);
+        } catch (InvalidFsmFormatException e) {
+            JOptionPane.showMessageDialog(listenPanel, "Invalid file format", "Invalid File Format", JOptionPane.ERROR_MESSAGE);
+        }finally {
+            try{
+                fileReader.close();
+            } catch (IOException e){
+                JOptionPane.showMessageDialog(listenPanel, "Failed to close file", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
+    }
 
+    private String readNextLine() throws IOException, InvalidFsmFormatException{
+        String s = fileReader.readLine();
+        if(s == null) {
+            throw new InvalidFsmFormatException();
+        }
+        return s;
+    }
+
+
+    private class InvalidFsmFormatException extends Exception
+    {
+
+        public InvalidFsmFormatException(){
+            super("Invalid FSM File Format");
+        }
     }
 }
