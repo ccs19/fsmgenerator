@@ -44,16 +44,19 @@ public class FsmPanel extends JPanel
     FsmPanel()
     {
         super(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        GridBagConstraints gbc;
 
         /**Top row**/
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 3;
         this.add(topRow(), gbc);
 
         /**Alphabet**/
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         JLabel alphabetLabel = new JLabel(alphabetString);
         gbc.gridx=0;
         gbc.gridy=1;
@@ -61,6 +64,8 @@ public class FsmPanel extends JPanel
         gbc.gridwidth = 1;
         this.add(alphabetLabel, gbc);
 
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         alphabet = new JTextField(JTF_ALPHABET);
         gbc.gridx=0;
         gbc.gridy=2;
@@ -72,6 +77,8 @@ public class FsmPanel extends JPanel
 
 
         /**State Transisitions**/
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         JLabel transitionsLabel = new JLabel(transitionsString[0]);
         gbc.gridx=0;
         gbc.gridy=3;
@@ -79,6 +86,8 @@ public class FsmPanel extends JPanel
         gbc.gridwidth = 1;
         this.add(transitionsLabel, gbc);
 
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         JLabel transitionsLabel2 = new JLabel(transitionsString[1]);
         gbc.gridx=0;
         gbc.gridy=4;
@@ -86,6 +95,8 @@ public class FsmPanel extends JPanel
         gbc.gridwidth = 1;
         this.add(transitionsLabel2,gbc);
 
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         transitions = new JTextField(JTF_TRANSITIONS);
         gbc.gridx=0;
         gbc.gridy=5;
@@ -95,13 +106,15 @@ public class FsmPanel extends JPanel
         /**********************************/
 
 
-        /**Buttons**/
+        /**Save & Exit Buttons**/
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx=1;
         gbc.gridy=6;
         gbc.gridwidth = 2;
+        gbc.insets = textFieldInset;
         gbc.anchor = GridBagConstraints.LAST_LINE_END;
         this.add(addSaveExitButtons(),gbc );
-
 
         this.setVisible(true);
     }

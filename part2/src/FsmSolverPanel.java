@@ -20,23 +20,28 @@ public class FsmSolverPanel extends JPanel {
     FsmSolverPanel()
     {
         super(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        GridBagConstraints gbc;
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
+        /** Load & Exit buttons**/
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        gbc.gridwidth = 2;
+        gbc.insets = textFieldInset;
+        gbc.anchor = GridBagConstraints.LAST_LINE_END;
         this.add(addLoadExitButtons(), gbc);
 
-
+        this.setVisible(true);
     }
 
     private JPanel addLoadExitButtons() {
         //JPanel to return
         JPanel buttonsPanel = new JPanel(new GridLayout(1, 3, 10, 0));
 
-        /**Save Button**/
+        /**Load Button**/
         JButton loadButton = new JButton(loadString);
-        //loadButton.addActionListener(new SaveButtonListener(this));
+        loadButton.addActionListener(new LoadButtonListener(this));
         buttonsPanel.add(loadButton);
         /**********************************/
 
