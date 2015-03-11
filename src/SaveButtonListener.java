@@ -46,7 +46,7 @@ public class SaveButtonListener implements ActionListener {
                 dialogMessage += unsafeSaveReason + "\n";
             }
             //Show dialog with input errors found
-            JOptionPane.showMessageDialog(null, dialogMessage, "Cannot save", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(listenPanel, dialogMessage, "Cannot save", JOptionPane.OK_OPTION);
         }
         else {
             saveAutomaton();
@@ -153,7 +153,7 @@ public class SaveButtonListener implements ActionListener {
             }
             catch (Exception e)
             {
-                JOptionPane.showMessageDialog(null, "Failed to save. Cannot write to disk.", "Fatal Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(listenPanel, "Failed to save. Cannot write to disk.", "Fatal Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

@@ -10,7 +10,7 @@ import java.util.regex.PatternSyntaxException;
 public class FsmChecker {
 
     private static final String transitionsFormat = "\\(\\d:\\d:.\\)";
-    private static final int TRANS_LENGTH = 3;
+
 
 
     public static int checkStartState(int numStates, String startStateString, ArrayList<String> errorList) throws NumberFormatException
@@ -22,8 +22,9 @@ public class FsmChecker {
         }
         else if(startState > numStates)
         {
-            errorList.add("Invalid entry in Start State: Exceeds number of states");
+            errorList.add("Invalid entry in Start State: Start state doesn't exist");
         }
+
         return startState;
     }
 
@@ -55,6 +56,11 @@ public class FsmChecker {
             for(int i = 0 ; i < numAcceptStates; i++)
             {
                 acceptStates[i] = Integer.parseInt(acceptStatesParsed[i]);
+                if(acceptStates[i] > numStates) //Make sure state exists
+                {
+                    errorList.add("Invalid entry in Accept States: " + acceptStates[i]
+                    + " does not exist");
+                }
             }
         }
         return acceptStates;

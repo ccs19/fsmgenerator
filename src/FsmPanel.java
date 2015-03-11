@@ -33,7 +33,7 @@ public class FsmPanel extends JPanel
     Insets textFieldInset = new Insets(0,10,10,10);
 
 
-    //JTextFields
+    //User input fields
     private JTextField numStates,
             startState,
             acceptStates,
@@ -100,7 +100,7 @@ public class FsmPanel extends JPanel
         gbc.gridy=6;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.LAST_LINE_END;
-        this.add(addButtons(),gbc );
+        this.add(addSaveExitButtons(),gbc );
 
 
         this.setVisible(true);
@@ -165,7 +165,7 @@ public class FsmPanel extends JPanel
 
 
 
-    private JPanel addButtons()
+    private JPanel addSaveExitButtons()
     {
         //JPanel to return
         JPanel buttonsPanel = new JPanel(new GridLayout(1,3,10,0));
@@ -177,11 +177,12 @@ public class FsmPanel extends JPanel
         /**********************************/
 
         /**Exit Button**/
+        final Component thisPanel = this;
         JButton exitButton = new JButton(exitString);
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int reply = JOptionPane.showConfirmDialog(null, exitConfirmMessage, exitString, JOptionPane.YES_NO_OPTION);
+                int reply = JOptionPane.showConfirmDialog(thisPanel, exitConfirmMessage, exitString, JOptionPane.YES_NO_OPTION);
                 if(reply == JOptionPane.YES_OPTION)
                 {
                     System.exit(0);
