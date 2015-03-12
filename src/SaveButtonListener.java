@@ -28,6 +28,12 @@ public class SaveButtonListener implements ActionListener {
 
     //Safe verification parameters
     ArrayList<String> unsafeSaveReasons;
+    enum UnsafeReasons{
+        notNumber,
+        noEntry,
+
+    }
+
 
     SaveButtonListener(FsmPanel jPanel)
     {
@@ -66,6 +72,7 @@ public class SaveButtonListener implements ActionListener {
 
     private void checkNumStates()
     {
+        final String fieldName = "Number of States";
         numStatesString = listenPanel.getNumStates();
         try
         {
@@ -73,15 +80,16 @@ public class SaveButtonListener implements ActionListener {
         }
         catch(NumberFormatException e )
         {
-            unsafeSaveReasons.add("Invalid entry in Number of States: Not a number");
+            unsafeAdd(UnsafeReasons.notNumber, fieldName);
         }
     }
 
     private void checkAlphabet()
     {
+        final String fieldName = "Alphabet";
         alphabet = listenPanel.getAlphabet();
         if(alphabet.length() == 0)
-            unsafeSaveReasons.add("Invalid entry in Alphabet");
+            unsafeAdd(UnsafeReasons.notNumber, fieldName);
         parsedAlphabet = FsmChecker.checkAlphabet(alphabet, unsafeSaveReasons);
         if(parsedAlphabet != null) {
             alphabetLength = parsedAlphabet.length;
@@ -93,9 +101,10 @@ public class SaveButtonListener implements ActionListener {
 
     private void checkAccepStates()
     {
+        final String fieldName = "Accept States";
         acceptStates = listenPanel.getAcceptStates();
         if(acceptStates.length() == 0)
-            unsafeSaveReasons.add("Invalid entry in Accept States: No entry");
+            this.unsafeAdd(UnsafeReasons.noEntry, fieldName);
         else
         {
             try{
@@ -103,7 +112,7 @@ public class SaveButtonListener implements ActionListener {
             }
             catch(NumberFormatException e)
             {
-                unsafeSaveReasons.add("Invalid entry in Accept States: Not a number");
+                this.unsafeAdd(UnsafeReasons.notNumber, fieldName);
             }
         }
 
@@ -111,16 +120,18 @@ public class SaveButtonListener implements ActionListener {
 
     private void checkStateTransitions()
     {
+        final String fieldName = "State Transitions";
         stateTransitions = listenPanel.getTransitions();
         if(stateTransitions.length() == 0)
         {
-            unsafeSaveReasons.add("Invalid entry in State Transitions");
+            this.unsafeAdd(UnsafeReasons.noEntry, fieldName);
         }
         FsmChecker.checkStateTransitions(stateTransitions, unsafeSaveReasons, numStates, parsedAlphabet);
     }
 
     private void checkStartState()
     {
+        final String fieldName = "Start State";
         startStateString = listenPanel.getStartState();
         try
         {
@@ -128,7 +139,7 @@ public class SaveButtonListener implements ActionListener {
         }
         catch (NumberFormatException e)
         {
-            unsafeSaveReasons.add("Invalid entry in Start State: Not a number");
+            this.unsafeAdd(UnsafeReasons.notNumber, fieldName);
         }
     }
 
@@ -147,7 +158,7 @@ public class SaveButtonListener implements ActionListener {
                 fileWriter.write(numStatesString + "\n" +
                                  alphabet + "\n" +
                                  stateTransitions + "\n" +
-                        startStateString + "\n" +
+                                startStateString + "\n" +
                                  acceptStates);
                 fileWriter.close();
             }
@@ -156,5 +167,21 @@ public class SaveButtonListener implements ActionListener {
                 JOptionPane.showMessageDialog(listenPanel, "Failed to save. Cannot write to disk.", "Fatal Error", JOptionPane.ERROR_MESSAGE);
             }
         }
+    }
+
+    public void unsafeAdd(UnsafeReasons reason, String fieldName){
+        String messageToAdd = "Invalid entry in " + fieldName +": ";
+        switch (reason) {
+            case notNumber:
+                messageToAdd += "Not a number";
+                break;
+            case noEntry:
+                messageToAdd += "No entry";
+                break;
+            default:
+                messageToAdd += "Unknown error";
+                break;
+        }
+        unsafeSaveReasons.add(messageToAdd);
     }
 }
