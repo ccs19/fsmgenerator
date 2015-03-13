@@ -31,7 +31,10 @@ public class SaveButtonListener implements ActionListener {
     enum UnsafeReasons{
         notNumber,
         noEntry,
-
+        negativeState,
+        doesNotExist,
+        tooMany,
+        notEnough
     }
 
 
