@@ -3,7 +3,7 @@ import javax.swing.*;
 /**
  * Created by chris_000 on 3/10/2015.
  */
-public class Main {
+public class Part2 {
 
     private static final String title = "Fsm Solver";
     public static void main(String[] args) {

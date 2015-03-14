@@ -25,8 +25,6 @@ public class SaveButtonListener implements ActionListener {
 
     String acceptStates = "";
 
-
-    //Safe verification parameters
     ArrayList<String> unsafeSaveReasons;
     enum UnsafeReasons{
         notNumber,
@@ -75,24 +73,15 @@ public class SaveButtonListener implements ActionListener {
 
     private void checkNumStates()
     {
-        final String fieldName = "Number of States";
         numStatesString = listenPanel.getNumStates();
-        try
-        {
-            numStates = FsmChecker.checkNumStates(numStatesString, unsafeSaveReasons);
-        }
-        catch(NumberFormatException e )
-        {
-            unsafeAdd(UnsafeReasons.notNumber, fieldName);
-        }
+        numStates = FsmChecker.checkNumStates(numStatesString, unsafeSaveReasons);
+
     }
 
     private void checkAlphabet()
     {
-        final String fieldName = "Alphabet";
+
         alphabet = listenPanel.getAlphabet();
-        if(alphabet.length() == 0)
-            unsafeAdd(UnsafeReasons.notNumber, fieldName);
         parsedAlphabet = FsmChecker.checkAlphabet(alphabet, unsafeSaveReasons);
         if(parsedAlphabet != null) {
             alphabetLength = parsedAlphabet.length;
@@ -104,46 +93,22 @@ public class SaveButtonListener implements ActionListener {
 
     private void checkAccepStates()
     {
-        final String fieldName = "Accept States";
         acceptStates = listenPanel.getAcceptStates();
-        if(acceptStates.length() == 0)
-            this.unsafeAdd(UnsafeReasons.noEntry, fieldName);
-        else
-        {
-            try{
-                FsmChecker.checkAcceptStates(acceptStates, unsafeSaveReasons, numStates);
-            }
-            catch(NumberFormatException e)
-            {
-                this.unsafeAdd(UnsafeReasons.notNumber, fieldName);
-            }
-        }
-
+        FsmChecker.checkAcceptStates(acceptStates, unsafeSaveReasons, numStates);
     }
 
     private void checkStateTransitions()
     {
-        final String fieldName = "State Transitions";
+
         stateTransitions = listenPanel.getTransitions();
-        if(stateTransitions.length() == 0)
-        {
-            this.unsafeAdd(UnsafeReasons.noEntry, fieldName);
-        }
+
         FsmChecker.checkStateTransitions(stateTransitions, unsafeSaveReasons, numStates, parsedAlphabet);
     }
 
     private void checkStartState()
     {
-        final String fieldName = "Start State";
         startStateString = listenPanel.getStartState();
-        try
-        {
-            startState = FsmChecker.checkStartState(numStates, startStateString, unsafeSaveReasons);
-        }
-        catch (NumberFormatException e)
-        {
-            this.unsafeAdd(UnsafeReasons.notNumber, fieldName);
-        }
+        startState = FsmChecker.checkStartState(numStates, startStateString, unsafeSaveReasons);
     }
 
     private void saveAutomaton()
@@ -172,19 +137,5 @@ public class SaveButtonListener implements ActionListener {
         }
     }
 
-    public void unsafeAdd(UnsafeReasons reason, String fieldName){
-        String messageToAdd = "Invalid entry in " + fieldName +": ";
-        switch (reason) {
-            case notNumber:
-                messageToAdd += "Not a number";
-                break;
-            case noEntry:
-                messageToAdd += "No entry";
-                break;
-            default:
-                messageToAdd += "Unknown error";
-                break;
-        }
-        unsafeSaveReasons.add(messageToAdd);
-    }
+
 }

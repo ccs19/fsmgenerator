@@ -1,7 +1,7 @@
 import javax.swing.*;
 
 
-public class Main {
+public class Part1 {
 
 
     private static final String title = "Fsm Creator";

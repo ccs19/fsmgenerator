@@ -11,10 +11,19 @@ public class FsmSolverPanel extends JPanel {
     final private String loadString = "Load";
     final private String exitString = "Exit";
     final private String exitConfirmMessage = "Are you sure you want to exit?\nUnsaved automaton will be lost.";
+    private static final String stringEntryString = "Word entry";
 
     //GridBagConstraints padding
     Insets labelInset = new Insets(10,10,0,10);
     Insets textFieldInset = new Insets(0,10,10,10);
+
+
+    //User entry
+    private JTextField stringEntry;
+
+
+    //Constants
+    private static final int JTF_STRINGENTRYLEN = 50;
 
 
     FsmSolverPanel()
@@ -22,11 +31,32 @@ public class FsmSolverPanel extends JPanel {
         super(new GridBagLayout());
         GridBagConstraints gbc;
 
+
+        /**Text Entry**/
+        JLabel stringEntryLabel = new JLabel(stringEntryString);
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 3;
+        gbc.insets = labelInset;
+        this.add(stringEntryLabel, gbc);
+
+
+        stringEntry = new JTextField(JTF_STRINGENTRYLEN);
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 3;
+        gbc.insets = textFieldInset;
+        this.add(stringEntry, gbc);
+
         /** Load & Exit buttons**/
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 1;
-        gbc.gridy = 6;
+        gbc.gridy = 2;
         gbc.gridwidth = 2;
         gbc.insets = textFieldInset;
         gbc.anchor = GridBagConstraints.LAST_LINE_END;

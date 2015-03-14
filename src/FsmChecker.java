@@ -13,114 +13,153 @@ public class FsmChecker {
 
 
 
-    public static int checkStartState(int numStates, String startStateString, ArrayList<String> errorList) throws NumberFormatException
+
+
+    public static int checkStartState(int numStates, String startStateString, ArrayList<String> errorList)
     {
-        int startState = Integer.parseInt(startStateString);
-        if(startState < 0)
-        {
-            errorList.add("Invalid entry in Start State: Less than 0");
-        }
-        else if(startState > numStates)
-        {
-            errorList.add("Invalid entry in Start State: Start state doesn't exist");
+        int startState = 0;
+        final String fieldName = "Start State";
+
+        if(isZeroLength(startStateString)) //Check that entry exists
+            unsafeAdd(UnsafeReasons.emptyString, fieldName, errorList);
+
+        else {
+            try { //Try converting to int
+                startState = Integer.parseInt(startStateString);
+                if (startState < 0) {
+                    unsafeAdd(UnsafeReasons.lessThanZero, fieldName, errorList);
+                } else if (startState > numStates) {
+                    unsafeAdd(UnsafeReasons.stateDoesNotExist, fieldName, errorList);
+                }
+            }
+            catch (NumberFormatException e){
+                unsafeAdd(UnsafeReasons.notNumber, fieldName, errorList);
+            }
         }
 
         return startState;
     }
 
 
-    public static int checkNumStates(String numStatesString, ArrayList<String> errorList) throws NumberFormatException
+    public static int checkNumStates(String numStatesString, ArrayList<String> errorList)
     {
-        int numStates = Integer.parseInt(numStatesString);
-        if(numStates <= 0)
-        {
-            errorList.add("Invalid entry in Number of States: Less than 0");
+        int numStates = 0;
+        final String fieldName = "Number of States";
+
+        if(isZeroLength(numStatesString)) //Check that entry exists
+            unsafeAdd(UnsafeReasons.emptyString, fieldName, errorList);
+
+        else{
+            try
+            {
+                numStates = Integer.parseInt(numStatesString);
+                if (numStates <= 0)
+                    unsafeAdd(UnsafeReasons.lessThanZero, fieldName, errorList);
+            }catch(NumberFormatException e){
+
+            }
         }
+
         return numStates;
     }
 
 
-    public static int[] checkAcceptStates(String acceptStatesString, ArrayList<String> errorList, int numStates) throws NumberFormatException
+    public static int[] checkAcceptStates(String acceptStatesString, ArrayList<String> errorList, int numStates)
     {
-        //Split string and get number of accept states
-        String[] acceptStatesParsed = acceptStatesString.split(",");
-        int numAcceptStates = acceptStatesParsed.length;
-        int[] acceptStates = new int[numAcceptStates];
+        int[] acceptStates = null;
+        final String fieldName = "Accept States";
 
-        if(numAcceptStates > numStates)
-        {
-            errorList.add("Invalid entry in Accept States: Too many accept states");
-        }
-        else
-        {
-            for(int i = 0 ; i < numAcceptStates; i++)
-            {
-                acceptStates[i] = Integer.parseInt(acceptStatesParsed[i]);
-                if(acceptStates[i] > numStates) //Make sure state exists
-                {
-                    errorList.add("Invalid entry in Accept States: " + acceptStates[i]
-                    + " does not exist");
+        if(isZeroLength(acceptStatesString)) //Check that entry exists
+            unsafeAdd(UnsafeReasons.emptyString, fieldName, errorList);
+
+        else {
+                //Split string and get number of accept states
+                String[] acceptStatesParsed = acceptStatesString.split(",");
+                int numAcceptStates = acceptStatesParsed.length;
+                acceptStates = new int[numAcceptStates];
+
+                if (numAcceptStates > numStates) {
+                    unsafeAdd(UnsafeReasons.tooManyStates, fieldName, errorList);
+                    return null;
                 }
+                else
+                {
+                    for (int i = 0; i < numAcceptStates; i++) {
+                        try { //Try to convert to int
+                            acceptStates[i] = Integer.parseInt(acceptStatesParsed[i]);
+                            if (acceptStates[i] > numStates) //Make sure state exists
+                            {
+                                unsafeAdd(UnsafeReasons.stateDoesNotExist, fieldName, errorList);
+                                errorList.get(errorList.size() - 1).concat(" -> " + acceptStates[i]); //Give user info on invalid state
+                                return null;
+                            }
+                        } catch(NumberFormatException e){
+                            unsafeAdd(UnsafeReasons.notNumber, fieldName, errorList);
+                            return null;
+                        }
+                    }
+                }
+
             }
-        }
         return acceptStates;
     }
 
 
     public static String[] checkStateTransitions(String stateTransitionsString, ArrayList<String> errorList, int numStates, String[] alphabet)
     {
-
-        //Split up transitions
+        final String fieldName = "State Transitions";
         String[] parsedTransitions = null;
-        try {
-            parsedTransitions = stateTransitionsString.split(",");
-        }
-        catch (PatternSyntaxException e )
-        {
-            errorList.add("Invalid entry in State Transitions: Are your entries seperated by commas?");
-            return parsedTransitions;
-        }
 
-        //Check that all possible state transitions are accounted for
-        if(parsedTransitions.length != (numStates*alphabet.length))
-        {
-            if(parsedTransitions.length < numStates*alphabet.length)
-                errorList.add("Invalid entry in State Transitions: All possible transitions not accounted for");
-            else
-                errorList.add("Invalid entry in State Transitions: Too many state transitions");
-            return null;
-        }
+        if(isZeroLength(stateTransitionsString))//Check that entry exists
+            unsafeAdd(UnsafeReasons.emptyString, fieldName, errorList);
 
-        //compile regex pattern and check each transition syntax
-        Pattern transitionsPattern = Pattern.compile(transitionsFormat);
-        for(int i = 0; i < parsedTransitions.length; i++) {
-            Matcher transitionMatcher = transitionsPattern.matcher(parsedTransitions[i]);
-            if (false == transitionMatcher.matches()) {
-                errorList.add("Invalid entry in State Transitions: Invalid syntax in transition " + i+1);
-                return null;
+        else {
+            //Split up transitions
+            try {
+                parsedTransitions = stateTransitionsString.split(",");
+            } catch (PatternSyntaxException e) {
+                unsafeAdd(UnsafeReasons.patternSplitFail, fieldName, errorList);
+                return parsedTransitions;
             }
-        }
 
-        //Check each transition for validity
-        for(int i = 0; i < parsedTransitions.length; i++) {
-            String[] openParen = parsedTransitions[i].split("\\(");
-            String[] closeParen = openParen[openParen.length-1].split("\\)");
-            String[] result = closeParen[closeParen.length-1].split(":");
-            int result0 = Integer.parseInt(result[0]);
-            int result1 = Integer.parseInt(result[1]);
-
-            if( result0 > numStates || result1 > numStates //Check if numerical state transitions exist
-                    || result0 < 0 || result1 < 0 )
-            {
-                errorList.add("Invalid entry in State Transitions: State doesn't exist");
+            //Check that all possible state transitions are accounted for
+            if (parsedTransitions.length != (numStates * alphabet.length)) {
+                if (parsedTransitions.length < numStates * alphabet.length)
+                    unsafeAdd(UnsafeReasons.missingTransitions, fieldName, errorList);
+                else
+                    unsafeAdd(UnsafeReasons.tooManyTransitions, fieldName, errorList);
                 return null;
             }
 
-            //Then check that entry exists in alphabet
-            if(Arrays.asList(alphabet).contains(result[2]) == false)
-            {
-                errorList.add("Invalid entry in State Transitions: Character not in alphabet");
-                return null;
+            //compile regex pattern and check each transition syntax
+            Pattern transitionsPattern = Pattern.compile(transitionsFormat);
+            for (int i = 0; i < parsedTransitions.length; i++) {
+                Matcher transitionMatcher = transitionsPattern.matcher(parsedTransitions[i]);
+                if (false == transitionMatcher.matches()) {
+                    unsafeAdd(UnsafeReasons.patternSplitFail, fieldName, errorList);
+                    return null;
+                }
+            }
+
+            //Check each transition for validity
+            for (int i = 0; i < parsedTransitions.length; i++) {
+                String[] openParen = parsedTransitions[i].split("\\(");
+                String[] closeParen = openParen[openParen.length - 1].split("\\)");
+                String[] result = closeParen[closeParen.length - 1].split(":");
+                int result0 = Integer.parseInt(result[0]);
+                int result1 = Integer.parseInt(result[1]);
+
+                if (result0 > numStates || result1 > numStates //Check if numerical state transitions exist
+                        || result0 < 0 || result1 < 0) {
+                    unsafeAdd(UnsafeReasons.stateDoesNotExist, fieldName, errorList);
+                    return null;
+                }
+
+                //Then check that entry exists in alphabet
+                if (Arrays.asList(alphabet).contains(result[2]) == false) {
+                    unsafeAdd(UnsafeReasons.notInAlphabet, fieldName, errorList);
+                    return null;
+                }
             }
         }
         return parsedTransitions;
@@ -130,17 +169,75 @@ public class FsmChecker {
     public static String[] checkAlphabet(String alphabetString, ArrayList<String> errorList)
     {
         String[] alphabet = null;
-        try{
-            alphabet = alphabetString.split(",");
-        }
-        catch (PatternSyntaxException e)
-        {
-            errorList.add("Invalid entry in Alphabet: Are your entries seperated by commas?");
-        }
+        final String fieldName = "Alphabet";
 
-
+        if(isZeroLength(alphabetString)) //Check that entry exists
+            unsafeAdd(UnsafeReasons.emptyString, fieldName, errorList);
+        else {
+            try {
+                alphabet = alphabetString.split(",");
+            } catch (PatternSyntaxException e) {
+                unsafeAdd(UnsafeReasons.patternSplitFail, fieldName, errorList);
+            }
+        }
         return alphabet;
     }
 
+
+    //Safe verification parameters
+    enum UnsafeReasons{
+        notNumber,
+        emptyString,
+        patternSplitFail,
+        stateDoesNotExist,
+        lessThanZero,
+        tooManyStates,
+        tooManyTransitions,
+        missingTransitions,
+        notInAlphabet
+
+    }
+    public static void unsafeAdd(UnsafeReasons reason, String fieldName, ArrayList<String> invalidReasons){
+        String messageToAdd = "Invalid entry in " + fieldName +": ";
+        switch (reason) {
+            case notNumber:
+                messageToAdd += "Not a number";
+                break;
+            case emptyString:
+                messageToAdd += "No entry";
+                break;
+            case patternSplitFail:
+                messageToAdd += "Invalid syntax";
+                break;
+            case stateDoesNotExist:
+                messageToAdd += "State does not exist";
+                break;
+            case lessThanZero:
+                messageToAdd += "Less than zero";
+                break;
+            case tooManyStates:
+                messageToAdd += "Too many states";
+                break;
+            case tooManyTransitions:
+                messageToAdd += "Too many transitions";
+                break;
+            case missingTransitions:
+                messageToAdd += "All possible transitions not accounted for";
+                break;
+            case notInAlphabet:
+                messageToAdd += "Not in alphabet";
+                break;
+            default:
+                messageToAdd += "Unknown error";
+                break;
+        }
+        invalidReasons.add(messageToAdd);
+    }
+
+    private static boolean isZeroLength(String string){
+        if(string.length() == 0)
+            return true;
+        else return false;
+    }
 
 }
