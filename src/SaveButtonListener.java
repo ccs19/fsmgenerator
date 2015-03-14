@@ -26,14 +26,6 @@ public class SaveButtonListener implements ActionListener {
     String acceptStates = "";
 
     ArrayList<String> unsafeSaveReasons;
-    enum UnsafeReasons{
-        notNumber,
-        noEntry,
-        negativeState,
-        doesNotExist,
-        tooMany,
-        notEnough
-    }
 
 
     SaveButtonListener(FsmPanel jPanel)

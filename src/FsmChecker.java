@@ -6,7 +6,23 @@ import java.util.regex.PatternSyntaxException;
 
 /**
  * Created by Chris on 3/5/2015.
+ *
+ *
+ *
  */
+
+
+
+
+/** Required order to check automata
+ *  numstates
+ *  alphabet
+ *  acceptstates
+ *  statetransitions
+ *  startstate
+ **/
+
+
 public class FsmChecker {
 
     private static final String transitionsFormat = "\\(\\d:\\d:.\\)";

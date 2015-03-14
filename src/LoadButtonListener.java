@@ -12,23 +12,31 @@ import java.util.ArrayList;
  */
 public class LoadButtonListener implements ActionListener {
 
+
+    //Parent of the listener
     FsmSolverPanel listenPanel;
-    String numStatesString = "";
-    int numStates = 0;
-    int startState = 0;
-    int alphabetLength = 0;
-    String alphabet = "";
-    String parsedAlphabet[];
-    String stateTransitions = "";
+
+    //Raw data
+    String stateTransitionsString = "";
     String startStateString = "";
+    String acceptStatesString = "";
+    String numStatesString = "";
+    String alphabetString = "";
 
-    String acceptStates = "";
 
+    //Parsed data
+    String parsedAlphabet[] = null;
+    int parsedAcceptStates[] = null;
+    String parsedStateTransitions[] = null;
+    int numStates = -1;
+    int startState = -1;
+
+    //I/O
     BufferedReader fileReader;
-
 
     //Safe verification parameters
     ArrayList<String> unsafeLoadReasons;
+
 
     LoadButtonListener(FsmSolverPanel jPanel){
         listenPanel = jPanel;
@@ -37,11 +45,31 @@ public class LoadButtonListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e){
-        loadAutomaton();
-        checkAutomaton();
+
+        resetEntry(); //If we've failed once before, we need to reset parameters.
+
+        if(loadAutomaton()) {
+            checkAutomaton();
+            checkValues();
+        }
+        else return;
+
+        if(unsafeLoadReasons.size() > 0) {  //If any invalid input in text fields...
+
+            String dialogMessage = "\n";
+
+            for (String unsafeSaveReason : unsafeLoadReasons) {
+                dialogMessage += unsafeSaveReason + "\n";
+            }
+            //Show dialog with input errors found
+            JOptionPane.showMessageDialog(listenPanel, dialogMessage, "Cannot load", JOptionPane.OK_OPTION);
+            listenPanel.enableSolveButton(false);
+        }
+        else
+            listenPanel.enableSolveButton(true);
     }
 
-    private void loadAutomaton(){
+    private boolean loadAutomaton(){
         JFileChooser jFileChooser = new JFileChooser();
         jFileChooser.setCurrentDirectory(new File(".")); //Select project directory
         int returnVal = jFileChooser.showOpenDialog(listenPanel);
@@ -51,11 +79,16 @@ public class LoadButtonListener implements ActionListener {
             File file = jFileChooser.getSelectedFile();
             try {
                 fileReader = new BufferedReader(new FileReader(file));
+                return true;
             }
             catch (Exception e)
             {
                 JOptionPane.showMessageDialog(listenPanel, "Failed to load file. Cannot load from disk.", "Error", JOptionPane.ERROR_MESSAGE);
+                return false;
             }
+        }
+        else{
+            return false;
         }
     }
 
@@ -63,14 +96,16 @@ public class LoadButtonListener implements ActionListener {
     private void checkAutomaton() {
         try {
             numStatesString = readNextLine();
-            alphabet = readNextLine();
-            stateTransitions = readNextLine();
+            alphabetString = readNextLine();
+            stateTransitionsString = readNextLine();
             startStateString = readNextLine();
-            acceptStates = readNextLine();
+            acceptStatesString = readNextLine();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(listenPanel, "Error Reading File", "File Read Error", JOptionPane.ERROR_MESSAGE);
+            listenPanel.enableSolveButton(false);
         } catch (InvalidFsmFormatException e) {
             JOptionPane.showMessageDialog(listenPanel, "Invalid file format", "Invalid File Format", JOptionPane.ERROR_MESSAGE);
+            listenPanel.enableSolveButton(false);
         }finally {
             try{
                 fileReader.close();
@@ -88,6 +123,30 @@ public class LoadButtonListener implements ActionListener {
         return s;
     }
 
+    private void checkValues(){
+        numStates = FsmChecker.checkNumStates(numStatesString,unsafeLoadReasons);
+        parsedAlphabet = FsmChecker.checkAlphabet(alphabetString, unsafeLoadReasons);
+        parsedAcceptStates = FsmChecker.checkAcceptStates(acceptStatesString, unsafeLoadReasons, numStates);
+        parsedStateTransitions = FsmChecker.checkStateTransitions(stateTransitionsString, unsafeLoadReasons,
+                numStates, parsedAlphabet);
+        startState = FsmChecker.checkStartState(numStates, startStateString, unsafeLoadReasons);
+    }
+
+
+    private void resetEntry(){
+        unsafeLoadReasons = new ArrayList<String>();
+        numStates = -1;
+        parsedAlphabet = null;
+        parsedAcceptStates = null;
+        parsedStateTransitions = null;
+        startState = -1;
+        stateTransitionsString = "";
+        startStateString = "";
+        acceptStatesString = "";
+        numStatesString = "";
+        alphabetString = "";
+    }
+
 
     private class InvalidFsmFormatException extends Exception
     {
@@ -96,4 +155,9 @@ public class LoadButtonListener implements ActionListener {
             super("Invalid FSM File Format");
         }
     }
+
+
 }
+
+
+

@@ -24,6 +24,9 @@ public class FsmSolverPanel extends JPanel {
     //User entry
     private JTextField stringEntry;
 
+    //Buttons
+    private JButton solveButton;
+
 
     //Constants
     private static final int JTF_STRINGENTRYLEN = 30;
@@ -56,7 +59,7 @@ public class FsmSolverPanel extends JPanel {
         this.add(stringEntry, gbc);
 
         /**Solve button**/
-        JButton solveButton = new JButton(solveString);
+        solveButton = new JButton(solveString);
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
@@ -64,6 +67,7 @@ public class FsmSolverPanel extends JPanel {
         gbc.gridwidth = 1;
         gbc.insets = textFieldInset;
         solveButton.addActionListener(new LoadButtonListener(this));
+        solveButton.setEnabled(false);// Disabled to start
         this.add(solveButton, gbc);
 
         /** Load & Exit buttons**/
@@ -101,6 +105,11 @@ public class FsmSolverPanel extends JPanel {
         /**********************************/
 
         return buttonsPanel;
+    }
+
+
+    public void enableSolveButton(boolean option){
+        solveButton.setEnabled(option);
     }
 
 }
