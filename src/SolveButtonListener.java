@@ -29,8 +29,6 @@ public class SolveButtonListener implements ActionListener{
     }
 
 
-
-
     @Override
     public void actionPerformed(ActionEvent e) {
         setData();
@@ -42,9 +40,8 @@ public class SolveButtonListener implements ActionListener{
         int acceptStates[] = loadButtonListener.getParsedAcceptStates();
         parsedAcceptStates = new ArrayList<Integer>();
         for(int i : acceptStates) {
-            parsedAcceptStates.add(Integer.valueOf(acceptStates[i]));
+            parsedAcceptStates.add(Integer.valueOf(i));
         }
-
         parsedAlphabet = new ArrayList<String>(Arrays.asList(loadButtonListener.getParsedAlphabet()));
         parsedStateTransitions = new ArrayList<String>(Arrays.asList(loadButtonListener.getParsedStateTransitions()));
         numStates = loadButtonListener.getNumStates();
@@ -59,7 +56,11 @@ public class SolveButtonListener implements ActionListener{
     private boolean checkAlphabet(){
         int wordLength = word.length();
 
-        return false;
+        for(int i = 0; i < wordLength; i++){
+            if(!parsedAlphabet.contains(word.substring(i)))
+                return false;
+        }
+        return true;// all letters exist in alphabet
     }
 
 }
