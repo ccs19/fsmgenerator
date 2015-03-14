@@ -16,10 +16,6 @@ public class FsmSolverPanel extends JPanel {
     //GridBagConstraints padding
     Insets labelInset = new Insets(10,10,0,10);
     Insets textFieldInset = new Insets(0,10,10,10);
-    Insets loadExitBuffer = new Insets(0,0,0,5);
-
-    Insets solveBuffer = new Insets(10,0,0,10);
-
 
     //User entry
     private JTextField stringEntry;
@@ -27,6 +23,9 @@ public class FsmSolverPanel extends JPanel {
     //Buttons
     private JButton solveButton;
 
+
+    //Load listener
+    LoadButtonListener loadButtonListener = null;
 
     //Constants
     private static final int JTF_STRINGENTRYLEN = 30;
@@ -66,7 +65,7 @@ public class FsmSolverPanel extends JPanel {
         gbc.gridy = 2;
         gbc.gridwidth = 1;
         gbc.insets = textFieldInset;
-        solveButton.addActionListener(new LoadButtonListener(this));
+        solveButton.addActionListener(new SolveButtonListener(this, loadButtonListener));
         solveButton.setEnabled(false);// Disabled to start
         this.add(solveButton, gbc);
 
@@ -88,7 +87,8 @@ public class FsmSolverPanel extends JPanel {
         /**Load Button**/
 
         JButton loadButton = new JButton(loadString);
-        loadButton.addActionListener(new LoadButtonListener(this));
+        loadButtonListener = new LoadButtonListener(this);
+        loadButton.addActionListener(loadButtonListener);
         buttonsPanel.add(loadButton);
         /**********************************/
 

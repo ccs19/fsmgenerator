@@ -14,28 +14,28 @@ public class LoadButtonListener implements ActionListener {
 
 
     //Parent of the listener
-    FsmSolverPanel listenPanel;
+    private FsmSolverPanel listenPanel;
 
     //Raw data
-    String stateTransitionsString = "";
-    String startStateString = "";
-    String acceptStatesString = "";
-    String numStatesString = "";
-    String alphabetString = "";
+    private String stateTransitionsString = "";
+    private String startStateString = "";
+    private String acceptStatesString = "";
+    private String numStatesString = "";
+    private String alphabetString = "";
 
 
     //Parsed data
-    String parsedAlphabet[] = null;
-    int parsedAcceptStates[] = null;
-    String parsedStateTransitions[] = null;
-    int numStates = -1;
-    int startState = -1;
+    private String parsedAlphabet[] = null;
+    private int parsedAcceptStates[] = null;
+    private String parsedStateTransitions[] = null;
+    private int numStates = -1;
+    private int startState = -1;
 
     //I/O
-    BufferedReader fileReader;
+    private  BufferedReader fileReader;
 
     //Safe verification parameters
-    ArrayList<String> unsafeLoadReasons;
+    private ArrayList<String> unsafeLoadReasons;
 
 
     LoadButtonListener(FsmSolverPanel jPanel){
@@ -148,9 +148,29 @@ public class LoadButtonListener implements ActionListener {
     }
 
 
+    public int getStartState() {
+        return startState;
+    }
+
+    public int getNumStates() {
+        return numStates;
+    }
+
+    public String[] getParsedStateTransitions() {
+        return parsedStateTransitions;
+    }
+
+    public int[] getParsedAcceptStates() {
+        return parsedAcceptStates;
+    }
+
+    public String[] getParsedAlphabet() {
+        return parsedAlphabet;
+    }
+
+
     private class InvalidFsmFormatException extends Exception
     {
-
         public InvalidFsmFormatException(){
             super("Invalid FSM File Format");
         }
