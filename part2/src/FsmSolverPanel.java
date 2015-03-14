@@ -16,6 +16,7 @@ public class FsmSolverPanel extends JPanel {
     //GridBagConstraints padding
     Insets labelInset = new Insets(10,10,0,10);
     Insets textFieldInset = new Insets(0,10,10,10);
+    Insets buttonInsets = new Insets(0,0,0,5);
 
 
     //User entry
@@ -23,7 +24,7 @@ public class FsmSolverPanel extends JPanel {
 
 
     //Constants
-    private static final int JTF_STRINGENTRYLEN = 50;
+    private static final int JTF_STRINGENTRYLEN = 25;
 
 
     FsmSolverPanel()
@@ -38,7 +39,7 @@ public class FsmSolverPanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 3;
+        gbc.gridwidth = 1;
         gbc.insets = labelInset;
         this.add(stringEntryLabel, gbc);
 
@@ -67,27 +68,34 @@ public class FsmSolverPanel extends JPanel {
 
     private JPanel addLoadExitButtons() {
         //JPanel to return
-        JPanel buttonsPanel = new JPanel(new GridLayout(1, 3, 10, 0));
+        JPanel buttonsPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc;
 
         /**Load Button**/
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.LAST_LINE_END;
+        gbc.insets = buttonInsets;
         JButton loadButton = new JButton(loadString);
         loadButton.addActionListener(new LoadButtonListener(this));
-        buttonsPanel.add(loadButton);
+        buttonsPanel.add(loadButton, gbc);
         /**********************************/
 
         /**Exit Button**/
-        final Component thisPanel = this;
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.LAST_LINE_END;
+        gbc.insets = buttonInsets;
         JButton exitButton = new JButton(exitString);
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int reply = JOptionPane.showConfirmDialog(thisPanel, exitConfirmMessage, exitString, JOptionPane.YES_NO_OPTION);
-                if (reply == JOptionPane.YES_OPTION) {
                     System.exit(0);
                 }
-            }
         });
-        buttonsPanel.add(exitButton);
+        buttonsPanel.add(exitButton, gbc);
         /**********************************/
 
         return buttonsPanel;
