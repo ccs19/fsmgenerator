@@ -1,5 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Chris on 3/14/2015.
@@ -7,22 +9,22 @@ import java.awt.event.ActionListener;
 public class SolveButtonListener implements ActionListener{
 
     //Parsed data
-    private String parsedAlphabet[] = null;
-    private int parsedAcceptStates[] = null;
-    private String parsedStateTransitions[] = null;
+    private ArrayList<String> parsedAlphabet = null;
+    private ArrayList<Integer> parsedAcceptStates = null;
+    private ArrayList<String> parsedStateTransitions = null;
     private int numStates = -1;
     private int startState = -1;
 
-    //Parent JPanel
+    //Parent JPanel and load listener with data
     FsmSolverPanel parent = null;
+    LoadButtonListener loadButtonListener = null;
+
+    //word to check
+    String word = null;
 
 
     SolveButtonListener(FsmSolverPanel fsmSolverPanel, LoadButtonListener listener){
-        parsedAlphabet = listener.getParsedAlphabet();
-        parsedAcceptStates = listener.getParsedAcceptStates();
-        parsedStateTransitions = listener.getParsedStateTransitions();
-        numStates = listener.getNumStates();
-        startState = listener.getStartState();
+        loadButtonListener = listener;
         parent = fsmSolverPanel;
     }
 
@@ -31,6 +33,33 @@ public class SolveButtonListener implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        setData();
+        checkWord();
     }
+
+
+    private void setData(){
+        int acceptStates[] = loadButtonListener.getParsedAcceptStates();
+        parsedAcceptStates = new ArrayList<Integer>();
+        for(int i : acceptStates) {
+            parsedAcceptStates.add(Integer.valueOf(acceptStates[i]));
+        }
+
+        parsedAlphabet = new ArrayList<String>(Arrays.asList(loadButtonListener.getParsedAlphabet()));
+        parsedStateTransitions = new ArrayList<String>(Arrays.asList(loadButtonListener.getParsedStateTransitions()));
+        numStates = loadButtonListener.getNumStates();
+        startState = loadButtonListener.getStartState();
+        word = parent.getWordEntryString();
+    }
+
+    private void checkWord(){
+        checkAlphabet();
+    }
+
+    private boolean checkAlphabet(){
+        int wordLength = word.length();
+
+        return false;
+    }
+
 }

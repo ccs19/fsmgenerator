@@ -18,7 +18,7 @@ public class FsmSolverPanel extends JPanel {
     Insets textFieldInset = new Insets(0,10,10,10);
 
     //User entry
-    private JTextField stringEntry;
+    private JTextField wordEntry;
 
     //Buttons
     private JButton solveButton;
@@ -48,14 +48,14 @@ public class FsmSolverPanel extends JPanel {
         this.add(stringEntryLabel, gbc);
 
 
-        stringEntry = new JTextField(JTF_STRINGENTRYLEN);
+        wordEntry = new JTextField(JTF_STRINGENTRYLEN);
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 3;
         gbc.insets = textFieldInset;
-        this.add(stringEntry, gbc);
+        this.add(wordEntry, gbc);
 
         /**Solve button**/
         solveButton = new JButton(solveString);
@@ -112,4 +112,5 @@ public class FsmSolverPanel extends JPanel {
         solveButton.setEnabled(option);
     }
 
+    public String getWordEntryString(){ return wordEntry.getText();}
 }
