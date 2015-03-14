@@ -1,8 +1,10 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
-import java.text.ParseException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -52,7 +54,7 @@ public class LoadButtonListener implements ActionListener {
             }
             catch (Exception e)
             {
-                JOptionPane.showMessageDialog(listenPanel, "Failed to load file. Cannot write to disk.", "Fatal Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(listenPanel, "Failed to load file. Cannot load from disk.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

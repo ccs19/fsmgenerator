@@ -12,9 +12,6 @@ public class FsmChecker {
     private static final String transitionsFormat = "\\(\\d:\\d:.\\)";
 
 
-
-
-
     public static int checkStartState(int numStates, String startStateString, ArrayList<String> errorList)
     {
         int startState = 0;
@@ -28,7 +25,7 @@ public class FsmChecker {
                 startState = Integer.parseInt(startStateString);
                 if (startState < 0) {
                     unsafeAdd(UnsafeReasons.lessThanZero, fieldName, errorList);
-                } else if (startState > numStates) {
+                } else if (startState > numStates - 1) {
                     unsafeAdd(UnsafeReasons.stateDoesNotExist, fieldName, errorList);
                 }
             }
@@ -36,7 +33,6 @@ public class FsmChecker {
                 unsafeAdd(UnsafeReasons.notNumber, fieldName, errorList);
             }
         }
-
         return startState;
     }
 
@@ -87,7 +83,7 @@ public class FsmChecker {
                     for (int i = 0; i < numAcceptStates; i++) {
                         try { //Try to convert to int
                             acceptStates[i] = Integer.parseInt(acceptStatesParsed[i]);
-                            if (acceptStates[i] > numStates) //Make sure state exists
+                            if (acceptStates[i] > numStates - 1) //Make sure state exists
                             {
                                 unsafeAdd(UnsafeReasons.stateDoesNotExist, fieldName, errorList);
                                 errorList.get(errorList.size() - 1).concat(" -> " + acceptStates[i]); //Give user info on invalid state
@@ -149,7 +145,7 @@ public class FsmChecker {
                 int result0 = Integer.parseInt(result[0]);
                 int result1 = Integer.parseInt(result[1]);
 
-                if (result0 > numStates || result1 > numStates //Check if numerical state transitions exist
+                if (result0 > numStates - 1 || result1 > numStates - 1//Check if numerical state transitions exist
                         || result0 < 0 || result1 < 0) {
                     unsafeAdd(UnsafeReasons.stateDoesNotExist, fieldName, errorList);
                     return null;

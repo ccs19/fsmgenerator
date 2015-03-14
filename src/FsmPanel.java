@@ -18,7 +18,7 @@ public class FsmPanel extends JPanel
 
 
     //Text field label strings
-    final private String numStatesString = "Number of states";
+    final private String numStatesString = "Number of states\n (0 - n-1)";
     final private String startStateString = "Start State";
     final private String acceptStatesString = "Accept States (Seperated by commas)";
     final private String alphabetString = "Alphabet (Seperated by commas)";
@@ -195,11 +195,11 @@ public class FsmPanel extends JPanel
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int reply = JOptionPane.showConfirmDialog(thisPanel, exitConfirmMessage, exitString, JOptionPane.YES_NO_OPTION);
+                /**int reply = JOptionPane.showConfirmDialog(thisPanel, exitConfirmMessage, exitString, JOptionPane.YES_NO_OPTION);
                 if(reply == JOptionPane.YES_OPTION)
-                {
+                {**/
                     System.exit(0);
-                }
+             //   }
             }
         });
         buttonsPanel.add(exitButton);
