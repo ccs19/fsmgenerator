@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -62,15 +63,16 @@ public class SolveButtonListener implements ActionListener{
     private void checkWord(){
         valid = true;
 
-        checkWordThread.submit(new CheckWord(checkOption.checkAlphabet));
+        //checkWordThread.submit(new CheckWord(checkOption.checkAlphabet));
         checkWordThread.submit(new CheckWord(checkOption.generateStateTable));
         checkWordThread.submit(new CheckWord(checkOption.solveEntry));
+        checkWordThread.submit(new CheckWord(checkOption.isValidWord));
     }
 
 
 
 
-    enum checkOption{checkAlphabet, generateStateTable, solveEntry};
+    enum checkOption{checkAlphabet, generateStateTable, solveEntry, isValidWord};
 
     ArrayList<State> stateTable;
 
@@ -84,15 +86,21 @@ public class SolveButtonListener implements ActionListener{
 
 
         public void run(){
+
             switch(option){
                 case checkAlphabet:
                     checkAlphabet();
                     break;
                 case generateStateTable:
+                    if(!valid) return; //If invalid, do nothing
                     generateStateTable();
                     break;
                 case solveEntry:
+                    if(!valid) return; //If invalid, do nothing
                     solveEntry();
+                    break;
+                case isValidWord:
+                    isValidWord();
                     break;
                 default:
                     break;
@@ -104,9 +112,11 @@ public class SolveButtonListener implements ActionListener{
             int wordLength = word.length();
 
             for (int i = 0; i < wordLength; i++) {
-                if (!parsedAlphabet.contains(word.substring(i)))
+                if (!parsedAlphabet.contains(word.substring(i, i+1))) {
                     valid = false;
-            }
+                    return;
+                }
+                }
             valid = true;// all letters exist in alphabet
         }
 
@@ -142,7 +152,7 @@ public class SolveButtonListener implements ActionListener{
         private void solveEntry(){
 
             for(int i = 0; i < word.length(); i++) {
-                currentState = stateTable.get(currentState).getTransition(word.substring(i));
+                currentState = stateTable.get(currentState).getTransition(word.substring(i, i+1));
                 if(-1 == currentState){
                     valid = false;
                     break; //Out of for loop
@@ -151,6 +161,15 @@ public class SolveButtonListener implements ActionListener{
 
             if(!stateTable.get(currentState).isAcceptState()) //If not accept state
             valid = false;
+        }
+
+        private void isValidWord(){
+            if(valid){
+                JOptionPane.showMessageDialog(parent, "String is valid for this FSM!", "Valid String!", JOptionPane.OK_OPTION);
+            }
+            else{
+                JOptionPane.showMessageDialog(parent, "String is not valid for this FSM", "Invalid String!", JOptionPane.OK_OPTION);
+            }
         }
 
     }
