@@ -37,7 +37,13 @@ public class LoadButtonListener implements ActionListener {
     //Safe verification parameters
     private ArrayList<String> unsafeLoadReasons;
 
+    //Successfully opened file
+    private boolean openedFile = true;
 
+    /**
+     * Listener for load button
+     * @param jPanel The parent panel
+     */
     LoadButtonListener(FsmPanelPart2 jPanel){
         listenPanel = jPanel;
         unsafeLoadReasons = new ArrayList<String>();
@@ -61,14 +67,19 @@ public class LoadButtonListener implements ActionListener {
             for (String unsafeSaveReason : unsafeLoadReasons) {
                 dialogMessage += unsafeSaveReason + "\n";
             }
-            //Show dialog with input errors found
-            JOptionPane.showMessageDialog(listenPanel, dialogMessage, "Cannot load", JOptionPane.OK_OPTION);
+            //Show dialog with input errors found if file successfully read
+            if(openedFile)//Show dialog with input errors found if file successfully read
+                JOptionPane.showMessageDialog(listenPanel, dialogMessage, "Cannot load", JOptionPane.OK_OPTION);
             listenPanel.enableSolveButton(false);
         }
         else
             listenPanel.enableSolveButton(true);
     }
 
+    /**
+     * Opens JFileChooser to load file representing FSM
+     * @return true if file succesffully loaded, false if failed or cancelled.
+     */
     private boolean loadAutomaton(){
         JFileChooser jFileChooser = new JFileChooser();
         jFileChooser.setCurrentDirectory(new File(".")); //Select project directory
@@ -92,7 +103,10 @@ public class LoadButtonListener implements ActionListener {
         }
     }
 
-
+    /**
+     * Attempts to read in each line from the opened file
+     * If failure occurs, an error message is shown
+     */
     private void checkAutomaton() {
         try {
             numStatesString = readNextLine();
@@ -103,9 +117,11 @@ public class LoadButtonListener implements ActionListener {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(listenPanel, "Error Reading File", "File Read Error", JOptionPane.ERROR_MESSAGE);
             listenPanel.enableSolveButton(false);
+            openedFile = false;
         } catch (InvalidFsmFormatException e) {
             JOptionPane.showMessageDialog(listenPanel, "Invalid file format", "Invalid File Format", JOptionPane.ERROR_MESSAGE);
             listenPanel.enableSolveButton(false);
+            openedFile = false;
         }finally {
             try{
                 fileReader.close();
@@ -115,14 +131,24 @@ public class LoadButtonListener implements ActionListener {
         }
     }
 
+    /**
+     * Reads a line from the file and returns a string
+     * @return string read from file
+     * @throws IOException If failed to read file
+     * @throws InvalidFsmFormatException If invalid file format
+     */
     private String readNextLine() throws IOException, InvalidFsmFormatException{
+
         String s = fileReader.readLine();
-        if(s == null) {
+        if(s == null ) {
             throw new InvalidFsmFormatException();
         }
         return s;
     }
 
+    /**
+     * Sends each string to the FsmChecker class and fills in values
+     */
     private void checkValues(){
         numStates = FsmChecker.checkNumStates(numStatesString,unsafeLoadReasons);
         parsedAlphabet = FsmChecker.checkAlphabet(alphabetString, unsafeLoadReasons);
@@ -133,6 +159,9 @@ public class LoadButtonListener implements ActionListener {
     }
 
 
+    /**
+     * Resets all variables
+     */
     private void resetEntry(){
         unsafeLoadReasons = new ArrayList<String>();
         numStates = -1;
@@ -145,30 +174,53 @@ public class LoadButtonListener implements ActionListener {
         acceptStatesString = "";
         numStatesString = "";
         alphabetString = "";
+        openedFile = true;
     }
 
 
+    /**
+     *
+     * @return the starting state
+     */
     public int getStartState() {
         return startState;
     }
 
+    /**
+     *
+     * @return the number of states
+     */
     public int getNumStates() {
         return numStates;
     }
 
+    /**
+     *
+     * @return State transitions string array
+     */
     public String[] getParsedStateTransitions() {
         return parsedStateTransitions;
     }
 
+    /**
+     *
+     * @return Int array of accepts states
+     */
     public int[] getParsedAcceptStates() {
         return parsedAcceptStates;
     }
 
+    /**
+     *
+     * @return String array of parsed alphabet
+     */
     public String[] getParsedAlphabet() {
         return parsedAlphabet;
     }
 
-
+    /**
+     * If invalid file format found, throw this exception
+     */
     private class InvalidFsmFormatException extends Exception
     {
         public InvalidFsmFormatException(){

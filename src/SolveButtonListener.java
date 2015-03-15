@@ -33,6 +33,11 @@ public class SolveButtonListener implements ActionListener{
     ExecutorService checkWordThread = Executors.newSingleThreadExecutor();
 
 
+    /**
+     * Word solving class
+     * @param fsmSolverPanel Parent to the solve button
+     * @param listener Load button listener to retrieve strings
+     */
     SolveButtonListener(FsmPanelPart2 fsmSolverPanel, LoadButtonListener listener){
         loadButtonListener = listener;
         parent = fsmSolverPanel;
@@ -45,7 +50,9 @@ public class SolveButtonListener implements ActionListener{
         checkWord();
     }
 
-
+    /**
+     * Sets all necessary data needed to solve the word
+     */
     private void setData(){
         int acceptStates[] = loadButtonListener.getParsedAcceptStates();
         parsedAcceptStates = new ArrayList<Integer>();
@@ -60,10 +67,11 @@ public class SolveButtonListener implements ActionListener{
         word = parent.getWordEntryString();
     }
 
+    /**
+     * Submits data to checkWordThread
+     */
     private void checkWord(){
         valid = true;
-
-        //checkWordThread.submit(new CheckWord(checkOption.checkAlphabet));
         checkWordThread.submit(new CheckWord(checkOption.generateStateTable));
         checkWordThread.submit(new CheckWord(checkOption.solveEntry));
         checkWordThread.submit(new CheckWord(checkOption.isValidWord));
@@ -72,18 +80,22 @@ public class SolveButtonListener implements ActionListener{
 
 
 
+    //Options for runnable thread
     enum checkOption{checkAlphabet, generateStateTable, solveEntry, isValidWord};
 
+    //Table containing state date
     ArrayList<State> stateTable;
 
+
+    /**
+     * Runnable class to solve word
+     */
     private class CheckWord implements Runnable {
         private checkOption option;
-
 
         CheckWord(checkOption option){
             this.option = option;
         }
-
 
         public void run(){
 
@@ -108,6 +120,9 @@ public class SolveButtonListener implements ActionListener{
         }
 
 
+        /**
+         * Checks that all letters exist in the alphabet
+         */
         private void checkAlphabet() {
             int wordLength = word.length();
 
@@ -125,6 +140,9 @@ public class SolveButtonListener implements ActionListener{
                           TRANS_STATE = 1,
                           CHAR = 2;
 
+        /**
+         * Generates the state transition table
+         */
         private void generateStateTable(){
             stateTable = new ArrayList<State>();
             for(int i = 0; i < numStates; i++){ //Create states
@@ -149,6 +167,10 @@ public class SolveButtonListener implements ActionListener{
         }
 
 
+        /**
+         * Attempts to solve the word entered.
+         * If the word is not valid, the valid variable is set to false
+         */
         private void solveEntry(){
 
             for(int i = 0; i < word.length(); i++) {
@@ -163,6 +185,9 @@ public class SolveButtonListener implements ActionListener{
             valid = false;
         }
 
+        /**
+         * Checks if a valid word was found and shows a message dialog
+         */
         private void isValidWord(){
             System.out.println("Accept states: ");
             for(int i : parsedAcceptStates)
