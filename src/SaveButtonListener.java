@@ -1,5 +1,3 @@
-import com.sun.corba.se.spi.orbutil.fsm.FSM;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +11,7 @@ import java.util.ArrayList;
  */
 public class SaveButtonListener implements ActionListener {
 
-    FsmPanel listenPanel;
+    FsmPanelPart1 listenPanel;
     String numStatesString = "";
     int numStates = 0;
     int startState = 0;
@@ -28,7 +26,7 @@ public class SaveButtonListener implements ActionListener {
     ArrayList<String> unsafeSaveReasons;
 
 
-    SaveButtonListener(FsmPanel jPanel)
+    SaveButtonListener(FsmPanelPart1 jPanel)
     {
         listenPanel = jPanel;
     }

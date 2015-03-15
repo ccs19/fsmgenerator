@@ -14,7 +14,7 @@ public class Part1 {
         {
             public void run(){
                 JFrame mainFrame = new JFrame(title);
-                mainFrame.getContentPane().add(new FsmPanel());
+                mainFrame.getContentPane().add(new FsmPanelPart1());
                 mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 mainFrame.pack();
                 Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

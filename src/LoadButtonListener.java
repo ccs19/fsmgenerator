@@ -14,7 +14,7 @@ public class LoadButtonListener implements ActionListener {
 
 
     //Parent of the listener
-    private FsmSolverPanel listenPanel;
+    private FsmPanelPart2 listenPanel;
 
     //Raw data
     private String stateTransitionsString = "";
@@ -38,7 +38,7 @@ public class LoadButtonListener implements ActionListener {
     private ArrayList<String> unsafeLoadReasons;
 
 
-    LoadButtonListener(FsmSolverPanel jPanel){
+    LoadButtonListener(FsmPanelPart2 jPanel){
         listenPanel = jPanel;
         unsafeLoadReasons = new ArrayList<String>();
     }

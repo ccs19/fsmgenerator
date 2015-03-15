@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 /**
  * Created by chris_000 on 3/10/2015.
  */
-public class FsmSolverPanel extends JPanel {
+public class FsmPanelPart2 extends JPanel {
 
     final private String loadString = "Load";
     final private String exitString = "Exit";
@@ -31,7 +31,7 @@ public class FsmSolverPanel extends JPanel {
     private static final int JTF_STRINGENTRYLEN = 30;
 
 
-    FsmSolverPanel()
+    FsmPanelPart2()
     {
         super(new GridBagLayout());
         GridBagConstraints gbc;
@@ -57,6 +57,16 @@ public class FsmSolverPanel extends JPanel {
         gbc.insets = textFieldInset;
         this.add(wordEntry, gbc);
 
+
+        /** Load & Exit buttons**/
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 2;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        gbc.insets = textFieldInset;
+        this.add(addButtons(), gbc);
+
         /**Solve button**/
         solveButton = new JButton(solveString);
         gbc = new GridBagConstraints();
@@ -68,15 +78,6 @@ public class FsmSolverPanel extends JPanel {
         solveButton.addActionListener(new SolveButtonListener(this, loadButtonListener));
         solveButton.setEnabled(false);// Disabled to start
         this.add(solveButton, gbc);
-
-        /** Load & Exit buttons**/
-        gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 2;
-        gbc.gridy = 2;
-        gbc.gridwidth = 1;
-        gbc.insets = textFieldInset;
-        this.add(addButtons(), gbc);
 
         this.setVisible(true);
     }

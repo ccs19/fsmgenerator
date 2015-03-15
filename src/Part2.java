@@ -14,7 +14,7 @@ public class Part2 {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 JFrame mainFrame = new JFrame(title);
-                mainFrame.getContentPane().add(new FsmSolverPanel());
+                mainFrame.getContentPane().add(new FsmPanelPart2());
                 mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 mainFrame.pack();
                 Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 /**
  * Created by Chris on 3/1/2015.
  */
-public class FsmPanel extends JPanel
+public class FsmPanelPart1 extends JPanel
 {
 
     //Text field lengths
@@ -41,7 +41,7 @@ public class FsmPanel extends JPanel
             transitions;
     ////////////////////
 
-    FsmPanel()
+    FsmPanelPart1()
     {
         super(new GridBagLayout());
         GridBagConstraints gbc;
