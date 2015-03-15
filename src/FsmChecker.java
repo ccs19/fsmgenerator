@@ -26,19 +26,22 @@ import java.util.regex.PatternSyntaxException;
 public class FsmChecker {
 
     private static final String transitionsFormat = "\\(\\d:\\d:.\\)";
-
     private static final boolean ACCEPT_NFA = true;
-
     private static boolean nfaFound;
 
-
-    public static void initNfaVariable(){
+    private static void initNfaVariable(){
         nfaFound = false;
     }
 
+    /**
+     * Checks the start state and verifies it exists
+     * @param numStates Number of states
+     * @param startStateString String representing start state
+     * @param errorList List of errors encountered
+     * @return An int representing the starting state
+     */
     public static int checkStartState(int numStates, String startStateString, ArrayList<String> errorList)
     {
-
         int startState = 0;
         final String fieldName = "Start State";
 
@@ -62,6 +65,12 @@ public class FsmChecker {
     }
 
 
+    /**
+     * Checks the number of states and verifies the string isn't empty
+     * @param numStatesString String representing number of states
+     * @param errorList List of errors encountered
+     * @return The number of states
+     */
     public static int checkNumStates(String numStatesString, ArrayList<String> errorList)
     {
         initNfaVariable();
@@ -86,6 +95,13 @@ public class FsmChecker {
     }
 
 
+    /**
+     * Checks that the accept states entered are valid
+     * @param acceptStatesString String of the accept states
+     * @param errorList List of errors encountered
+     * @param numStates Number of states
+     * @return int array representing accept states
+     */
     public static int[] checkAcceptStates(String acceptStatesString, ArrayList<String> errorList, int numStates)
     {
         int[] acceptStates = null;
@@ -126,7 +142,14 @@ public class FsmChecker {
         return acceptStates;
     }
 
-
+    /**
+     * Checks that all state transitions entered are valid
+     * @param stateTransitionsString String representing state transitions
+     * @param errorList List of errors encountered
+     * @param numStates Number of states
+     * @param alphabet Alphabet of FSA
+     * @return Parsed state transitions in string array
+     */
     public static String[] checkStateTransitions(String stateTransitionsString, ArrayList<String> errorList, int numStates, String[] alphabet)
     {
         final String fieldName = "State Transitions";
@@ -186,7 +209,12 @@ public class FsmChecker {
         return parsedTransitions;
     }
 
-
+    /**
+     * Checks that the entered alphabet is valid
+     * @param alphabetString String representing alphabet
+     * @param errorList List of errors encountered
+     * @return Parsed string array of alphabet
+     */
     public static String[] checkAlphabet(String alphabetString, ArrayList<String> errorList)
     {
         String[] alphabet = null;
@@ -218,7 +246,14 @@ public class FsmChecker {
         notInAlphabet
 
     }
-    public static void unsafeAdd(UnsafeReasons reason, String fieldName, ArrayList<String> invalidReasons){
+
+    /**
+     * Adds error message to error ArrayList
+     * @param reason Error message to add
+     * @param fieldName Text field where error was encountered
+     * @param invalidReasons List of errors encountered
+     */
+    private static void unsafeAdd(UnsafeReasons reason, String fieldName, ArrayList<String> invalidReasons){
         String messageToAdd = "Invalid entry in " + fieldName +": ";
         switch (reason) {
             case notNumber:
@@ -263,16 +298,29 @@ public class FsmChecker {
         invalidReasons.add(messageToAdd);
     }
 
+    /**
+     * Checks the length of a string isn't zero
+     * @param string String to check
+     * @return true if string length is zero, false if not zero
+     */
     private static boolean isZeroLength(String string){
         if(string.length() == 0)
             return true;
         else return false;
     }
 
+    /**
+     * Sets the nfa found variable
+     * @param found true or false
+     */
     private static void setNfaFound(boolean found){
         nfaFound = found;
     }
 
+    /**
+     * If an NFA was found, returns true, else false
+     * @return Nfa found
+     */
     public static boolean getNfaFound(){
         return nfaFound;
     }
