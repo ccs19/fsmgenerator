@@ -164,6 +164,10 @@ public class SolveButtonListener implements ActionListener{
         }
 
         private void isValidWord(){
+            System.out.println("Accept states: ");
+            for(int i : parsedAcceptStates)
+                System.out.println(" " + i);
+            System.out.println("Ending state: " + currentState);
             if(valid){
                 JOptionPane.showMessageDialog(parent, "String is valid for this FSM!", "Valid String!", JOptionPane.OK_OPTION);
             }

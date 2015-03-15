@@ -103,6 +103,10 @@ public class SaveButtonListener implements ActionListener {
 
     private void saveAutomaton()
     {
+        if(FsmChecker.getNfaFound()){
+            JOptionPane.showMessageDialog(listenPanel, "You are about to save an NFA", "NOTICE", JOptionPane.OK_OPTION);
+        }
+
         JFileChooser jFileChooser = new JFileChooser();
         jFileChooser.setCurrentDirectory(new File(".")); //Select project directory
         int returnVal = jFileChooser.showSaveDialog(listenPanel);

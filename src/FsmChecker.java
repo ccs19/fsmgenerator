@@ -27,9 +27,18 @@ public class FsmChecker {
 
     private static final String transitionsFormat = "\\(\\d:\\d:.\\)";
 
+    private static final boolean ACCEPT_NFA = true;
+
+    private static boolean nfaFound;
+
+
+    public static void initNfaVariable(){
+        nfaFound = false;
+    }
 
     public static int checkStartState(int numStates, String startStateString, ArrayList<String> errorList)
     {
+
         int startState = 0;
         final String fieldName = "Start State";
 
@@ -55,6 +64,7 @@ public class FsmChecker {
 
     public static int checkNumStates(String numStatesString, ArrayList<String> errorList)
     {
+        initNfaVariable();
         int numStates = 0;
         final String fieldName = "Number of States";
 
@@ -140,7 +150,6 @@ public class FsmChecker {
                     unsafeAdd(UnsafeReasons.missingTransitions, fieldName, errorList);
                 else
                     unsafeAdd(UnsafeReasons.tooManyTransitions, fieldName, errorList);
-                return null;
             }
 
             //compile regex pattern and check each transition syntax
@@ -231,10 +240,18 @@ public class FsmChecker {
                 messageToAdd += "Too many states";
                 break;
             case tooManyTransitions:
-                messageToAdd += "Too many transitions";
+                if(!ACCEPT_NFA)messageToAdd += "Too many transitions";
+                else {
+                    setNfaFound(true);
+                    return;
+                }
                 break;
             case missingTransitions:
-                messageToAdd += "All possible transitions not accounted for";
+                if(!ACCEPT_NFA) messageToAdd += "All possible transitions not accounted for";
+                else{
+                    setNfaFound(true);
+                    return;
+                }
                 break;
             case notInAlphabet:
                 messageToAdd += "Not in alphabet";
@@ -250,6 +267,14 @@ public class FsmChecker {
         if(string.length() == 0)
             return true;
         else return false;
+    }
+
+    private static void setNfaFound(boolean found){
+        nfaFound = found;
+    }
+
+    public static boolean getNfaFound(){
+        return nfaFound;
     }
 
 }
