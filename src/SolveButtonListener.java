@@ -16,6 +16,7 @@ public class SolveButtonListener implements ActionListener{
     private ArrayList<String> parsedStateTransitions = null;
     private int numStates = -1;
     private int startState = -1;
+    private int currentState;
 
     //Boolean for valid word
     private boolean valid = true;
@@ -54,6 +55,7 @@ public class SolveButtonListener implements ActionListener{
         parsedStateTransitions = new ArrayList<String>(Arrays.asList(loadButtonListener.getParsedStateTransitions()));
         numStates = loadButtonListener.getNumStates();
         startState = loadButtonListener.getStartState();
+        currentState = startState;
         word = parent.getWordEntryString();
     }
 
@@ -62,17 +64,17 @@ public class SolveButtonListener implements ActionListener{
 
         checkWordThread.submit(new CheckWord(checkOption.checkAlphabet));
         checkWordThread.submit(new CheckWord(checkOption.generateStateTable));
+        checkWordThread.submit(new CheckWord(checkOption.solveEntry));
     }
 
 
 
 
-    enum checkOption{checkAlphabet, generateStateTable};
+    enum checkOption{checkAlphabet, generateStateTable, solveEntry};
 
     ArrayList<State> stateTable;
 
     private class CheckWord implements Runnable {
-        private int currentState = startState;
         private checkOption option;
 
 
@@ -88,6 +90,9 @@ public class SolveButtonListener implements ActionListener{
                     break;
                 case generateStateTable:
                     generateStateTable();
+                    break;
+                case solveEntry:
+                    solveEntry();
                     break;
                 default:
                     break;
@@ -131,6 +136,21 @@ public class SolveButtonListener implements ActionListener{
                     System.err.println("Failed to convert state transition! Data was already parsed... this shouldn't happen!");
                 };
             }
+        }
+
+
+        private void solveEntry(){
+
+            for(int i = 0; i < word.length(); i++) {
+                currentState = stateTable.get(currentState).getTransition(word.substring(i));
+                if(-1 == currentState){
+                    valid = false;
+                    break; //Out of for loop
+                }
+            }
+
+            if(!stateTable.get(currentState).isAcceptState()) //If not accept state
+            valid = false;
         }
 
     }

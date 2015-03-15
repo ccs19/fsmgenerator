@@ -43,5 +43,9 @@ public class State {
         }
     }
 
+    public boolean isAcceptState(){
+        return acceptState;
+    }
+
 
 }
