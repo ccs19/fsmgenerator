@@ -1,3 +1,5 @@
+package plproject3;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
@@ -87,7 +89,7 @@ public class FsmChecker {
                 if (numStates <= 0)
                     unsafeAdd(UnsafeReasons.lessThanZero, fieldName, errorList);
             }catch(NumberFormatException e){
-
+                unsafeAdd(UnsafeReasons.notNumber, fieldName, errorList);
             }
         }
 
@@ -128,7 +130,6 @@ public class FsmChecker {
                             if (acceptStates[i] > numStates - 1) //Make sure state exists
                             {
                                 unsafeAdd(UnsafeReasons.stateDoesNotExist, fieldName, errorList);
-                                errorList.get(errorList.size() - 1).concat(" -> " + acceptStates[i]); //Give user info on invalid state
                                 return null;
                             }
                         } catch(NumberFormatException e){
@@ -164,7 +165,7 @@ public class FsmChecker {
                 parsedTransitions = stateTransitionsString.split(",");
             } catch (PatternSyntaxException e) {
                 unsafeAdd(UnsafeReasons.patternSplitFail, fieldName, errorList);
-                return parsedTransitions;
+                return null;
             }
 
             //Check that all possible state transitions are accounted for
@@ -304,9 +305,7 @@ public class FsmChecker {
      * @return true if string length is zero, false if not zero
      */
     private static boolean isZeroLength(String string){
-        if(string.length() == 0)
-            return true;
-        else return false;
+        return string.length() == 0;
     }
 
     /**

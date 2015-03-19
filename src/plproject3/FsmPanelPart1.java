@@ -1,10 +1,14 @@
+package plproject3;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by Chris on 3/1/2015.
+ * Author: Christopher Schneider
+ * Programming Langauges Project 3
+ * Finite State Machine Solver
  */
 public class FsmPanelPart1 extends JPanel
 {

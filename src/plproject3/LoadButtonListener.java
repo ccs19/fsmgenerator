@@ -1,3 +1,5 @@
+package plproject3;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,7 +10,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Created by chris_000 on 3/10/2015.
+ * Author: Christopher Schneider
+ * Programming Langauges Project 3
+ * Finite State Machine Solver
  */
 public class LoadButtonListener implements ActionListener {
 
@@ -54,7 +58,9 @@ public class LoadButtonListener implements ActionListener {
 
         resetEntry(); //If we've failed once before, we need to reset parameters.
 
-        if(loadAutomaton()) {
+
+
+        if(openFile()) {
             checkAutomaton();
             checkValues();
         }
@@ -72,15 +78,46 @@ public class LoadButtonListener implements ActionListener {
                 JOptionPane.showMessageDialog(listenPanel, dialogMessage, "Cannot load", JOptionPane.OK_OPTION);
             listenPanel.enableSolveButton(false);
         }
-        else
+        else {
+            loadString();
             listenPanel.enableSolveButton(true);
+        }
     }
+
+
+    /**
+     * Prompts the user if they would like to load a string from disk. If so, the file is read, and the first
+     * line in the file is placed in the text field.
+     */
+    private void loadString(){
+        int returnVal = JOptionPane.showConfirmDialog(listenPanel, "Do you want to load the string from disk?",
+                                                        "Load String", JOptionPane.YES_NO_OPTION);
+        if(returnVal == JOptionPane.YES_OPTION){
+            if(openFile()){
+                try{ //Read in string and set string field
+                    String entry = readNextLine();
+                    listenPanel.setWordEntryString(entry);
+                }catch (Exception e){
+                    JOptionPane.showMessageDialog(listenPanel, "Error Reading File", "File Read Error", JOptionPane.ERROR_MESSAGE);
+                }finally {
+                    try{
+                        fileReader.close();
+                    } catch (IOException e){
+                        JOptionPane.showMessageDialog(listenPanel, "Failed to close file", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        }
+    }
+
+
+
 
     /**
      * Opens JFileChooser to load file representing FSM
      * @return true if file succesffully loaded, false if failed or cancelled.
      */
-    private boolean loadAutomaton(){
+    private boolean openFile(){
         JFileChooser jFileChooser = new JFileChooser();
         jFileChooser.setCurrentDirectory(new File(".")); //Select project directory
         int returnVal = jFileChooser.showOpenDialog(listenPanel);

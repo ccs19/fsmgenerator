@@ -1,20 +1,22 @@
+package plproject3;
+
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by chris_000 on 3/10/2015.
- */
-public class Part2 {
 
-    private static final String title = "Fsm Solver";
+public class Part1 {
+
+
+    private static final String title = "Fsm Creator";
+
+
     public static void main(String[] args) {
 
-
-
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            public void run(){
                 JFrame mainFrame = new JFrame(title);
-                mainFrame.getContentPane().add(new FsmPanelPart2());
+                mainFrame.getContentPane().add(new FsmPanelPart1());
                 mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 mainFrame.pack();
                 Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -24,5 +26,4 @@ public class Part2 {
         });
 
     }
-
 }

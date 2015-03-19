@@ -1,3 +1,5 @@
+package plproject3;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,7 +9,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Created by Chris on 3/14/2015.
+ * Author: Christopher Schneider
+ * Programming Langauges Project 3
+ * Finite State Machine Solver
  */
 public class SolveButtonListener implements ActionListener{
 
@@ -57,7 +61,7 @@ public class SolveButtonListener implements ActionListener{
         int acceptStates[] = loadButtonListener.getParsedAcceptStates();
         parsedAcceptStates = new ArrayList<Integer>();
         for(int i : acceptStates) {
-            parsedAcceptStates.add(Integer.valueOf(i));
+            parsedAcceptStates.add(i);
         }
         parsedAlphabet = new ArrayList<String>(Arrays.asList(loadButtonListener.getParsedAlphabet()));
         parsedStateTransitions = new ArrayList<String>(Arrays.asList(loadButtonListener.getParsedStateTransitions()));
@@ -81,7 +85,7 @@ public class SolveButtonListener implements ActionListener{
 
 
     //Options for runnable thread
-    enum checkOption{checkAlphabet, generateStateTable, solveEntry, isValidWord};
+    enum checkOption{checkAlphabet, generateStateTable, solveEntry, isValidWord}
 
     //Table containing state date
     ArrayList<State> stateTable;
@@ -146,7 +150,7 @@ public class SolveButtonListener implements ActionListener{
         private void generateStateTable(){
             stateTable = new ArrayList<State>();
             for(int i = 0; i < numStates; i++){ //Create states
-                stateTable.add(new State(numStates, parsedAlphabet.size()));
+                stateTable.add(new State());
                 if(parsedAcceptStates.contains(Integer.valueOf(i))) //Set accept state var if applicable
                     stateTable.get(i).setAcceptState(true);
             }

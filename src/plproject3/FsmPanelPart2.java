@@ -1,14 +1,18 @@
+package plproject3;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by chris_000 on 3/10/2015.
+ * Author: Christopher Schneider
+ * Programming Langauges Project 3
+ * Finite State Machine Solver
  */
 public class FsmPanelPart2 extends JPanel {
 
-    final private String loadString = "Load";
+    final private String loadString = "Load Automaton";
     final private String exitString = "Exit";
     final private String solveString = "Solve";
     private static final String stringEntryString = "Word entry";
@@ -82,6 +86,10 @@ public class FsmPanelPart2 extends JPanel {
         this.setVisible(true);
     }
 
+    /**
+     * Adds load and save buttons
+     * @return Panel of load/save buttons
+     */
     private JPanel addButtons() {
         //JPanel to return
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -108,10 +116,19 @@ public class FsmPanelPart2 extends JPanel {
         return buttonsPanel;
     }
 
-
+    /**
+     * Enable or disable solve button
+     * @param option Enable or disable solve button
+     */
     public void enableSolveButton(boolean option){
         solveButton.setEnabled(option);
     }
 
+    /**
+     * Returns user entry in text field
+     * @return User entry
+     */
     public String getWordEntryString(){ return wordEntry.getText();}
+
+    public void setWordEntryString(String entry){wordEntry.setText(entry);}
 }

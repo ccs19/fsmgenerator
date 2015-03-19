@@ -1,30 +1,27 @@
+package plproject3;
+
 import java.util.ArrayList;
 
 /**
- * Created by chris_000 on 3/15/2015.
+ * Author: Christopher Schneider
+ * Programming Langauges Project 3
+ * Finite State Machine Solver
  */
 public class State {
 
     private boolean acceptState;
-    private int numStates;
-    private int alphabetSize;
     private ArrayList<Integer> transitions;
 
-    State(int numStates, int alphabetSize){
+    State(){
         this.acceptState = false;
-        this.numStates = numStates;
-        this.alphabetSize = alphabetSize;
         transitions = new ArrayList<Integer>();
 
     }
 
     public void addTransition(int transitionTo, String character){
         int intCharacter = (int)character.charAt(0);
-        transitions.add(Integer.valueOf(intCharacter));
-        transitions.add(Integer.valueOf(transitionTo));
-
-        //DEBUG
-        System.out.println("Added " + transitionTo + character);
+        transitions.add(intCharacter);
+        transitions.add(transitionTo);
     }
 
     public void setAcceptState(boolean isAcceptState){
