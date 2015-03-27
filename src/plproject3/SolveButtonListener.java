@@ -78,7 +78,6 @@ public class SolveButtonListener implements ActionListener{
         fsm = new Fsm(startState, numStates, word, parsedAlphabet, parsedStateTransitions,
                 parsedAcceptStates);
         checkWordThread.submit(fsm);
-        checkWordThread.submit(fsm);
         isValidWord();
     }
 
