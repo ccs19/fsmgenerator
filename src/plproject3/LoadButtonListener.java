@@ -44,6 +44,9 @@ public class LoadButtonListener implements ActionListener {
     //Successfully opened file
     private boolean openedFile = true;
 
+    //String to save previous directory
+    String previousDir = ".";
+
     /**
      * Listener for load button
      * @param jPanel The parent panel
@@ -118,8 +121,9 @@ public class LoadButtonListener implements ActionListener {
      * @return true if file succesffully loaded, false if failed or cancelled.
      */
     private boolean openFile(){
+
         JFileChooser jFileChooser = new JFileChooser();
-        jFileChooser.setCurrentDirectory(new File(".")); //Select project directory
+        jFileChooser.setCurrentDirectory(new File(previousDir));
         int returnVal = jFileChooser.showOpenDialog(listenPanel);
 
         if(returnVal == JFileChooser.APPROVE_OPTION)
@@ -132,10 +136,18 @@ public class LoadButtonListener implements ActionListener {
             catch (Exception e)
             {
                 JOptionPane.showMessageDialog(listenPanel, "Failed to load file. Cannot load from disk.", "Error", JOptionPane.ERROR_MESSAGE);
+
                 return false;
+            }finally{
+                try {
+                    previousDir = file.getCanonicalPath(); //Save directory
+                }catch(Exception e){
+                    previousDir = "."; //If this fails for some reason, default to application dir
+                }
             }
         }
         else{
+
             return false;
         }
     }
