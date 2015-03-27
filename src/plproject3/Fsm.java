@@ -1,6 +1,7 @@
 package plproject3;
 
 import javax.swing.*;
+import java.sql.Array;
 import java.util.ArrayList;
 
 /**
@@ -10,7 +11,10 @@ public class Fsm implements Runnable{
 
     private int currentState;
     private int numStates;
-
+    private String word;
+    private ArrayList<String> parsedAlphabet;
+    private ArrayList<String> parsedStateTransitions;
+    private ArrayList<Integer> parsedAcceptStates;
 
     //Options for runnable thread
     enum checkOption{checkAlphabet, generateStateTable, solveEntry, isValidWord}
@@ -23,35 +27,28 @@ public class Fsm implements Runnable{
 
     private checkOption option;
 
-    Fsm(int startState, int numStates) {
+    Fsm(int startState, int numStates, String word, ArrayList<String> parsedAlphabet,
+        ArrayList<String> parsedStateTransitions, ArrayList<Integer> parsedAcceptStates) {
         currentState = startState;
+        this.numStates = numStates;
+        this.word = word;
+        this.parsedAlphabet = parsedAlphabet;
+        this.parsedStateTransitions = parsedStateTransitions;
+        this.parsedAcceptStates = parsedAcceptStates;
     }
 
-    Fsm(checkOption option){
+    public void setOption(checkOption option){
         this.option = option;
     }
 
     public void run(){
-
-        switch(option){
-            case checkAlphabet:
                 checkAlphabet();
-                break;
-            case generateStateTable:
                 if(!valid) return; //If invalid, do nothing
                 generateStateTable();
-                break;
-            case solveEntry:
                 if(!valid) return; //If invalid, do nothing
                 solveEntry();
-                break;
-            case isValidWord:
-                isValidWord();
-                break;
-            default:
-                break;
         }
-    }
+
 
 
     /**
@@ -119,20 +116,10 @@ public class Fsm implements Runnable{
             valid = false;
     }
 
-    /**
-     * Checks if a valid word was found and shows a message dialog
-     */
-    private void isValidWord(){
-        System.out.println("Accept states: ");
-        for(int i : parsedAcceptStates)
-            System.out.println(" " + i);
-        System.out.println("Ending state: " + currentState);
-        if(valid){
-            JOptionPane.showMessageDialog(parent, "String is valid for this FSM!", "Valid String!", JOptionPane.OK_OPTION);
-        }
-        else{
-            JOptionPane.showMessageDialog(parent, "String is not valid for this FSM", "Invalid String!", JOptionPane.OK_OPTION);
-        }
+
+
+    public boolean getValid(){
+        return valid;
     }
 
 }

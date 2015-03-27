@@ -22,6 +22,9 @@ public class SolveButtonListener implements ActionListener{
     private int numStates = -1;
     private int startState = -1;
 
+    //Generated state machine
+    Fsm fsm;
+
 
 
     //Parent JPanel and load listener with data
@@ -72,10 +75,27 @@ public class SolveButtonListener implements ActionListener{
      * Submits data to checkWordThread
      */
     private void checkWord(){
-        Fsm fsm = new Fsm(startState, numStates);
-        checkWordThread.submit(fsm.generateStateTable());
-        checkWordThread.submit(new CheckWord(checkOption.solveEntry));
-        checkWordThread.submit(new CheckWord(checkOption.isValidWord));
+        fsm = new Fsm(startState, numStates, word, parsedAlphabet, parsedStateTransitions,
+                parsedAcceptStates);
+        checkWordThread.submit(fsm);
+        checkWordThread.submit(fsm);
+        isValidWord();
+    }
+
+
+    /**
+     * Checks if a valid word was found and shows a message dialog
+     */
+    private void isValidWord(){
+        System.out.println("Accept states: ");
+        for(int i : parsedAcceptStates)
+            System.out.println(" " + i);
+        if(fsm.getValid()){
+            JOptionPane.showMessageDialog(parent, "String is valid for this FSM!", "Valid String!", JOptionPane.OK_OPTION);
+        }
+        else{
+            JOptionPane.showMessageDialog(parent, "String is not valid for this FSM", "Invalid String!", JOptionPane.OK_OPTION);
+        }
     }
 
 }
