@@ -1,0 +1,5 @@
+(defun nth (n l)
+  (cond ((= n 1) (car l))
+        (t (nth (- n 1) (cdr l)))
+  )
+)
