@@ -6,19 +6,19 @@
 		((EQUAL 'y (CAR L))(S1 (CDR L)))
 		((EQUAL 'z (CAR L))NIL)
 		((EQUAL 'a (CAR L))NIL)
-		(T (SO (CDR L)))
+		(T NIL)
 	)
 )
 
 (DEFUN S1 (L)
-  (COND 
+  (COND
+        ((NULL L) T)
 		((ATOM L) NIL)
-		((NULL L) T)
 		((EQUAL 'x (CAR L))(S2 (CDR L)))
 		((EQUAL 'y (CAR L))NIL)
 		((EQUAL 'z (CAR L))NIL)
 		((EQUAL 'a (CAR L))NIL)
-		(T (S1 (CDR L)))
+		(T T)
 	)
 )
 
@@ -30,7 +30,7 @@
 		((EQUAL 'y (CAR L)) (S3 (CDR L)))
 		((EQUAL 'z (CAR L))NIL)
 		((EQUAL 'a (CAR L))NIL)
-		(T (S2 (CDR L)))
+		(T NIL)
 	)
 )
 
@@ -40,9 +40,9 @@
 		((NULL L) T)
 		((EQUAL 'x (CAR L))(S3 (CDR L)))
 		((EQUAL 'y (CAR L))NIL)
-		((EQUAL 'z (CAR L))NIL)
+		((EQUAL 'z (CAR L))(S4 (CDR L)))
 		((EQUAL 'a (CAR L))NIL)
-		(T (S3 (CDR L)))
+		(T T)
 	)
 )
 
@@ -51,10 +51,10 @@
 		((ATOM L) NIL)
 		((NULL L) NIL)
 		((EQUAL 'x (CAR L))(S4 (CDR L)))
-		((EQUAL 'y (CAR L)) (S1 (CDR L)))
+		((EQUAL 'y (CAR L))NIL)
 		((EQUAL 'z (CAR L))NIL)
-		((EQUAL 'a (CAR L))NIL)
-		(T (S4 (CDR L)))
+		((EQUAL 'a (CAR L)) (S1 (CDR L)))
+		(T NIL)
 	)
 )
 	  
