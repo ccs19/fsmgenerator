@@ -20,7 +20,7 @@ public class Fsm implements Runnable{
     enum checkOption{checkAlphabet, generateStateTable, solveEntry, isValidWord}
 
     //Table containing state date
-    ArrayList<State> stateTable;
+    private ArrayList<State> stateTable;
 
     //Boolean for valid word
     private boolean valid = true;
@@ -93,7 +93,7 @@ public class Fsm implements Runnable{
                 stateTable.get(state).addTransition(transitionState, s[CHAR]);
             } catch(NumberFormatException e){
                 System.err.println("Failed to convert state transition! Data was already parsed... this shouldn't happen!");
-            };
+            }
         }
     }
 

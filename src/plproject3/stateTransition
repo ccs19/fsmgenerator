@@ -1,0 +1,5 @@
+Rough draft of generating state transition info:
+
+Fsm class w/ state table
+Needed: parsedAlphabet
+After generateStateTable: Send state table plus parsed alphabet to new class to generate Lisp code.
