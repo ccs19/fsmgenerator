@@ -14,15 +14,18 @@ public class GenerateLisp {
 
 
 
+    //Filename
+    String fileName = "fsm.lsp";
 
 
     //Necessary strings to generate FSM that will be used repeatedly
     String startfunction = "(DEFUN "; /**FunctionName**/
-    String startFunctionCheckAtom = "(L)" +
-            "\n\t(COND\n\t" +
-            "((ATOM L) NIL)\n" +
-            "((NULL L) "; /**T or NIL**/
-    String equal = "((EQUAL '";
+    String startFunctionCheckAccept = "(L)" +
+            "\n\t(COND" +
+                    "\n\t\t((NULL L) "; /**T or NIL**/
+    String checkAtom = "\n\t\t((ATOM L) NIL)";
+
+    String equal = "\n\t\t((EQUAL '";
 
 
     String car = "(CAR L))";
@@ -41,10 +44,42 @@ public class GenerateLisp {
         int numStates = stateTable.size();
 
         for(int i = 0; i < numStates; i++){
-
+            String state = generateStateFunction(i);
+            System.out.println("\n\n" + state);
         }
     }
 
+    public String generateStateFunction(int stateNum){
+        State state = stateTable.get(stateNum);
+        String s = startfunction; // (DEFUN
+        s += "S" + stateNum;      // (S(NUM))
+        s += startFunctionCheckAccept +  //(L) (COND ((NULL L)
+                this.isAcceptState(state) + ")"; // T OR NIL)
+        s += checkAtom;
+        s += getTransitions(state);
+
+
+
+
+
+        return s;
+    }
+
+    private String isAcceptState(State s){
+        if(s.isAcceptState() == true){
+            return "T";
+        }
+        else return "NIL";
+    }
+
+    private String getTransitions(State state){
+        String transitions;
+
+
+        return transitions;
+
+
+    }
 
 
 }

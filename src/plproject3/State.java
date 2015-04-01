@@ -28,6 +28,12 @@ public class State {
         this.acceptState = isAcceptState;
     }
 
+
+    /**
+     *
+     * @param character
+     * @return
+     */
     public int getTransition(String character){
         int intCharacter = (int)character.charAt(0);
 
