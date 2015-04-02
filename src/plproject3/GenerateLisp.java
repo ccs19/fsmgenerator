@@ -17,6 +17,14 @@ public class GenerateLisp {
     //Filename
     String fileName = "fsm.lsp";
 
+    //Starting function
+    String fsmFunction = "(DEFUN FSM (L)" +
+            "\n\t(COND" +
+            checkAtom +
+            "\b\t\t" +
+            "((EQUAL T (S";
+    String fsmFunction2 = " (L))";
+
 
     //Necessary strings to generate FSM that will be used repeatedly
     String startfunction = "(DEFUN "; /**FunctionName**/
@@ -42,11 +50,15 @@ public class GenerateLisp {
 
     public void generateLisp(){
         int numStates = stateTable.size();
+        String state = generateStartFunction();
+        state += "\n\n";
 
         for(int i = 0; i < numStates; i++){
-            String state = generateStateFunction(i);
-            System.out.println("\n\n" + state);
+            state += generateStateFunction(i);
+            state += "\n\n";
         }
+
+        System.out.println(state);
     }
 
     public String generateStateFunction(int stateNum){
@@ -83,5 +95,8 @@ public class GenerateLisp {
         return transitions;
     }
 
+    private String generateStartFunction(){
+        String s = "DEFUN "
+    }
 
 }
