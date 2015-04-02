@@ -11,6 +11,7 @@ public class Fsm implements Runnable{
 
     private int currentState;
     private int numStates;
+    private int startState;
     private String word;
     private ArrayList<String> parsedAlphabet;
     private ArrayList<String> parsedStateTransitions;
@@ -30,6 +31,7 @@ public class Fsm implements Runnable{
     Fsm(int startState, int numStates, String word, ArrayList<String> parsedAlphabet,
         ArrayList<String> parsedStateTransitions, ArrayList<Integer> parsedAcceptStates) {
         currentState = startState;
+        this.startState = startState;
         this.numStates = numStates;
         this.word = word;
         this.parsedAlphabet = parsedAlphabet;
@@ -129,6 +131,10 @@ public class Fsm implements Runnable{
 
     public ArrayList<String> getParsedAlphabet(){
         return parsedAlphabet;
+    }
+
+    public int getStartState(){
+        return startState;
     }
 }
 

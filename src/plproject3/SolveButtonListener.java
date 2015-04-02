@@ -57,7 +57,7 @@ public class SolveButtonListener implements ActionListener{
     }
 
     private void printData(){
-        GenerateLisp g = new GenerateLisp(fsm.getStateTable(), fsm.getParsedAlphabet(), 0);
+        GenerateLisp g = new GenerateLisp(fsm);
         g.generateLisp();
     }
 

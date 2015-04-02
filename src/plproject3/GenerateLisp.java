@@ -10,6 +10,7 @@ public class GenerateLisp {
     private ArrayList<State> stateTable;
     private ArrayList<String> parsedAlphabet;
     private int startState;
+    private String lispProgram = "";
 
 
 
@@ -42,29 +43,32 @@ public class GenerateLisp {
             checkAtom +
             "\n\t\t" +
             "((EQUAL T (S";
-    String fsmFunction2 = " L)) (PRINC \"This is a valid string!\"" +
+    String fsmFunction2 = " L)) (PRINC \"This is a valid string!\"))" +
             "\n\t\t(T (PRINC \"This is an invalid string!\"))" +
             "\n\t)" +
             "\n)";
 
 
-    public GenerateLisp(ArrayList<State> stateTable, ArrayList<String> parsedAlphabet, int startState){
-        this.parsedAlphabet = parsedAlphabet;
-        this.startState = startState;
-        this.stateTable = stateTable;
+    public GenerateLisp(Fsm fsm){
+        this.parsedAlphabet = fsm.getParsedAlphabet();
+        this.startState = fsm.getStartState();
+        this.stateTable = fsm.getStateTable();
     }
 
+
+    /**Generates a lisp program and puts it in a string
+     *
+     */
     public void generateLisp(){
         int numStates = stateTable.size();
-        String state = generateStartFunction();
-        state += "\n\n";
+        lispProgram = generateStartFunction();
+        lispProgram += "\n\n";
 
         for(int i = 0; i < numStates; i++){
-            state += generateStateFunction(i);
-            state += "\n\n";
+            lispProgram += generateStateFunction(i);
+            lispProgram += "\n\n";
         }
-
-        System.out.println(state);
+        System.out.println(lispProgram);
     }
 
     public String generateStateFunction(int stateNum){
@@ -103,6 +107,10 @@ public class GenerateLisp {
 
     private String generateStartFunction(){
          return fsmFunction + startState + fsmFunction2;
+    }
+
+    public String getLispProgram(){
+        return lispProgram;
     }
 
 }
