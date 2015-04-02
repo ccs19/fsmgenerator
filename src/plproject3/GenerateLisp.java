@@ -28,9 +28,9 @@ public class GenerateLisp {
     String equal = "\n\t\t((EQUAL '";
 
 
-    String car = "(CAR L))";
-    String cdr = "(CDR L)))";
-    String end = "\n\t\t(T NIL)\n\t)\n)";
+    String car = " (CAR L))";
+    String cdr = " (CDR L)))\n";
+    String end = "\n\t\t(T (NULL))\n\t)\n)";
 
 
 
@@ -55,11 +55,9 @@ public class GenerateLisp {
         s += "S" + stateNum;      // (S(NUM))
         s += startFunctionCheckAccept +  //(L) (COND ((NULL L)
                 this.isAcceptState(state) + ")"; // T OR NIL)
-        s += checkAtom;
+        s += checkAtom; //      ((ATOM L) NIL)
         s += getTransitions(state);
-
-
-
+        s += end;
 
 
         return s;
@@ -73,12 +71,16 @@ public class GenerateLisp {
     }
 
     private String getTransitions(State state){
-        String transitions;
-
-
+        String transitions = "";
+        for(int i = 0; i < parsedAlphabet.size(); i++){
+            int transition = state.getTransition(parsedAlphabet.get(i));
+            if(transition != -1){
+                transitions += equal + parsedAlphabet.get(i);
+                transitions += car + "(S" + transition + cdr;
+            }
+        }
+        if(transitions == "")  transitions += "\n";
         return transitions;
-
-
     }
 
 
