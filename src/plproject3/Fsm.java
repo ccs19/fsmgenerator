@@ -122,6 +122,14 @@ public class Fsm implements Runnable{
         return valid;
     }
 
+
+    public ArrayList<State> getStateTable(){
+        return stateTable;
+    }
+
+    public ArrayList<String> getParsedAlphabet(){
+        return parsedAlphabet;
+    }
 }
 
 

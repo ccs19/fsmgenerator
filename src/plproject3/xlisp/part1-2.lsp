@@ -12,7 +12,6 @@
   (COND 
 		((NULL L) T)
 		((ATOM L) NIL)
-		((EQUAL 'NULL (CAR L)) T)
 		((EQUAL 'x (CAR L))(S2 (CDR L)))
 		(T (NULL))
 	)

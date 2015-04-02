@@ -29,7 +29,7 @@ public class GenerateLisp {
 
 
     String car = " (CAR L))";
-    String cdr = " (CDR L)))\n";
+    String cdr = " (CDR L)))";
     String end = "\n\t\t(T (NULL))\n\t)\n)";
 
 
