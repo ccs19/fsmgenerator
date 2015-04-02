@@ -26,22 +26,26 @@ public class Fsm implements Runnable{
     //Boolean for valid word
     private boolean valid = true;
 
-    private checkOption option;
-
-    Fsm(int startState, int numStates, String word, ArrayList<String> parsedAlphabet,
-        ArrayList<String> parsedStateTransitions, ArrayList<Integer> parsedAcceptStates) {
-        currentState = startState;
-        this.startState = startState;
-        this.numStates = numStates;
+    Fsm(FsmData fsmData, String word){
         this.word = word;
-        this.parsedAlphabet = parsedAlphabet;
-        this.parsedStateTransitions = parsedStateTransitions;
-        this.parsedAcceptStates = parsedAcceptStates;
+        setFsmData(fsmData);
     }
 
-    public void setOption(checkOption option){
-        this.option = option;
+
+    Fsm(FsmData fsmData) {
+        setFsmData(fsmData);
     }
+
+
+    public void setFsmData(FsmData fsmData){
+        currentState = fsmData.getStartState();
+        this.startState = fsmData.getStartState();
+        this.numStates = fsmData.getNumStates();
+        this.parsedAlphabet = fsmData.getAlphabet();
+        this.parsedStateTransitions = fsmData.getStateTransitions();
+        this.parsedAcceptStates = fsmData.getAcceptStates();
+    }
+
 
     public void run(){
                 checkAlphabet();
