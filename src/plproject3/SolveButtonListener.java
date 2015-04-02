@@ -24,6 +24,7 @@ public class SolveButtonListener implements ActionListener{
 
     //Generated state machine
     Fsm fsm;
+    FsmData fsmData;
 
 
 
@@ -43,15 +44,21 @@ public class SolveButtonListener implements ActionListener{
      * @param fsmSolverPanel Parent to the solve button
      * @param listener Load button listener to retrieve strings
      */
-    SolveButtonListener(FsmPanelPart2 fsmSolverPanel, LoadButtonListener listener){
-        loadButtonListener = listener;
+    SolveButtonListener(FsmPanelPart2 fsmSolverPanel){
         parent = fsmSolverPanel;
     }
 
 
+    public void setFsmData(FsmData fsmData){
+        this.fsmData = fsmData;
+    }
+
+    public void setWord(String word){
+        this.word = word;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        setData();
         checkWord();
         printData();
     }
@@ -61,28 +68,13 @@ public class SolveButtonListener implements ActionListener{
         g.generateLisp();
     }
 
-    /**
-     * Sets all necessary data needed to solve the word
-     */
-    private void setData(){
-        int acceptStates[] = loadButtonListener.getParsedAcceptStates();
-        parsedAcceptStates = new ArrayList<Integer>();
-        for(int i : acceptStates) {
-            parsedAcceptStates.add(i);
-        }
-        parsedAlphabet = new ArrayList<String>(Arrays.asList(loadButtonListener.getParsedAlphabet()));
-        parsedStateTransitions = new ArrayList<String>(Arrays.asList(loadButtonListener.getParsedStateTransitions()));
-        numStates = loadButtonListener.getNumStates();
-        startState = loadButtonListener.getStartState();
-        word = parent.getWordEntryString();
-    }
+
 
     /**
      * Submits data to checkWordThread
      */
     private void checkWord(){
-        fsm = new Fsm(startState, numStates, word, parsedAlphabet, parsedStateTransitions,
-                parsedAcceptStates);
+        fsm = new Fsm(fsmData, word);
         checkWordThread.submit(fsm);
         isValidWord();
     }
@@ -93,8 +85,9 @@ public class SolveButtonListener implements ActionListener{
      */
     private void isValidWord(){
         System.out.println("Accept states: ");
-        for(int i : parsedAcceptStates)
-            System.out.println(" " + i);
+        for(int i = 0; i < fsmData.getAcceptStates().size(); i++){
+            System.out.println(fsmData.getAcceptStates().get(i));
+        }
         if(fsm.getValid()){
             JOptionPane.showMessageDialog(parent, "String is valid for this FSM!", "Valid String!", JOptionPane.OK_OPTION);
         }

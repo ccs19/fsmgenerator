@@ -62,29 +62,6 @@ public class GenerateLispButtonListener implements ActionListener {
         g.generateLisp();
     }
 
-    /**
-     * Sets all necessary data needed to solve the word
-     */
-    private void setData(){
-        int acceptStates[] = loadButtonListener.getParsedAcceptStates();
-        parsedAcceptStates = new ArrayList<Integer>();
-        for(int i : acceptStates) {
-            parsedAcceptStates.add(i);
-        }
-        parsedAlphabet = new ArrayList<String>(Arrays.asList(loadButtonListener.getParsedAlphabet()));
-        parsedStateTransitions = new ArrayList<String>(Arrays.asList(loadButtonListener.getParsedStateTransitions()));
-        numStates = loadButtonListener.getNumStates();
-        startState = loadButtonListener.getStartState();
-        word = parent.getWordEntryString();
-    }
-
-    /**
-     * Submits data to checkWordThread
-     */
-    private void createFsm(){
-        fsm = new Fsm(startState, numStates, word, parsedAlphabet, parsedStateTransitions,
-                parsedAcceptStates);
-    }
 
 
     /**

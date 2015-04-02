@@ -12,7 +12,7 @@ public class Fsm implements Runnable{
     private int currentState;
     private int numStates;
     private int startState;
-    private String word;
+    private String word = null;
     private ArrayList<String> parsedAlphabet;
     private ArrayList<String> parsedStateTransitions;
     private ArrayList<Integer> parsedAcceptStates;
@@ -48,6 +48,7 @@ public class Fsm implements Runnable{
 
 
     public void run(){
+                if(null == word) throw new RuntimeException("Word in Fsm not initialized!");
                 checkAlphabet();
                 if(!valid) return; //If invalid, do nothing
                 generateStateTable();

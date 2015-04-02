@@ -23,6 +23,10 @@ public class FsmData {
         this.startState = startState;
     }
 
+    public FsmData(){
+
+    }
+
     public ArrayList<Integer> getAcceptStates() {
         return acceptStates;
     }

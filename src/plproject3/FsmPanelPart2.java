@@ -30,6 +30,7 @@ public class FsmPanelPart2 extends JPanel {
 
     //Load listener
     LoadButtonListener loadButtonListener = null;
+    SolveButtonListener solveButtonListener = null;
 
     //Constants
     private static final int JTF_STRINGENTRYLEN = 30;
@@ -79,7 +80,8 @@ public class FsmPanelPart2 extends JPanel {
         gbc.gridy = 2;
         gbc.gridwidth = 1;
         gbc.insets = textFieldInset;
-        solveButton.addActionListener(new SolveButtonListener(this, loadButtonListener));
+        solveButtonListener = new SolveButtonListener(this);
+        solveButton.addActionListener(solveButtonListener);
         solveButton.setEnabled(false);// Disabled to start
         this.add(solveButton, gbc);
 
@@ -121,6 +123,8 @@ public class FsmPanelPart2 extends JPanel {
      * @param option Enable or disable solve button
      */
     public void enableSolveButton(boolean option){
+        solveButtonListener.setFsmData(loadButtonListener.getFsmData());
+        solveButtonListener.setWord(this.getWordEntryString());
         solveButton.setEnabled(option);
     }
 

@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Author: Christopher Schneider
@@ -15,6 +16,10 @@ import java.util.ArrayList;
  * Finite State Machine Solver
  */
 public class LoadButtonListener implements ActionListener {
+
+
+    //FsmData
+    private FsmData fsmData;
 
 
     //Parent of the listener
@@ -29,9 +34,9 @@ public class LoadButtonListener implements ActionListener {
 
 
     //Parsed data
-    private String parsedAlphabet[] = null;
-    private int parsedAcceptStates[] = null;
-    private String parsedStateTransitions[] = null;
+    private ArrayList<String> parsedAlphabet = null;
+    private ArrayList<Integer> parsedAcceptStates = null;
+    private ArrayList<String> parsedStateTransitions = null;
     private int numStates = -1;
     private int startState = -1;
 
@@ -84,8 +89,10 @@ public class LoadButtonListener implements ActionListener {
         else {
             loadString();
             listenPanel.enableSolveButton(true);
+
         }
     }
+
 
 
     /**
@@ -200,11 +207,25 @@ public class LoadButtonListener implements ActionListener {
      */
     private void checkValues(){
         numStates = FsmChecker.checkNumStates(numStatesString,unsafeLoadReasons);
-        parsedAlphabet = FsmChecker.checkAlphabet(alphabetString, unsafeLoadReasons);
-        parsedAcceptStates = FsmChecker.checkAcceptStates(acceptStatesString, unsafeLoadReasons, numStates);
-        parsedStateTransitions = FsmChecker.checkStateTransitions(stateTransitionsString, unsafeLoadReasons,
-                numStates, parsedAlphabet);
+
+        parsedAlphabet = new ArrayList<String>
+                (Arrays.asList(FsmChecker.checkAlphabet(alphabetString, unsafeLoadReasons)));
+
+        int acceptStates[] = FsmChecker.checkAcceptStates(acceptStatesString, unsafeLoadReasons, numStates);
+        parsedAcceptStates = new ArrayList<Integer>();
+        for(int i: acceptStates){
+            parsedAcceptStates.add(i);
+        }
+        parsedStateTransitions = new ArrayList<String>
+                (Arrays.asList(FsmChecker.checkStateTransitions(
+                        stateTransitionsString, unsafeLoadReasons, numStates, parsedAlphabet.toArray(new String[0]))));
+
         startState = FsmChecker.checkStartState(numStates, startStateString, unsafeLoadReasons);
+        fsmData = new FsmData(parsedAcceptStates,
+                parsedStateTransitions,
+                parsedAlphabet,
+                numStates,
+                startState);
     }
 
 
@@ -226,46 +247,10 @@ public class LoadButtonListener implements ActionListener {
         openedFile = true;
     }
 
-
-    /**
-     *
-     * @return the starting state
-     */
-    public int getStartState() {
-        return startState;
+    public FsmData getFsmData(){
+        return fsmData;
     }
 
-    /**
-     *
-     * @return the number of states
-     */
-    public int getNumStates() {
-        return numStates;
-    }
-
-    /**
-     *
-     * @return State transitions string array
-     */
-    public String[] getParsedStateTransitions() {
-        return parsedStateTransitions;
-    }
-
-    /**
-     *
-     * @return Int array of accepts states
-     */
-    public int[] getParsedAcceptStates() {
-        return parsedAcceptStates;
-    }
-
-    /**
-     *
-     * @return String array of parsed alphabet
-     */
-    public String[] getParsedAlphabet() {
-        return parsedAlphabet;
-    }
 
     /**
      * If invalid file format found, throw this exception
