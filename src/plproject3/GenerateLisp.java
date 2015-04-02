@@ -17,14 +17,6 @@ public class GenerateLisp {
     //Filename
     String fileName = "fsm.lsp";
 
-    //Starting function
-    String fsmFunction = "(DEFUN FSM (L)" +
-            "\n\t(COND" +
-            checkAtom +
-            "\b\t\t" +
-            "((EQUAL T (S";
-    String fsmFunction2 = " (L))";
-
 
     //Necessary strings to generate FSM that will be used repeatedly
     String startfunction = "(DEFUN "; /**FunctionName**/
@@ -40,6 +32,20 @@ public class GenerateLisp {
     String cdr = " (CDR L)))";
     String end = "\n\t\t(T (NULL))\n\t)\n)";
 
+
+
+
+    //Starting function
+    String fsmFunction = "(DEFUN FSM (L)" +
+            "\n\t(COND" +
+            "\n\t\t" +
+            checkAtom +
+            "\n\t\t" +
+            "((EQUAL T (S";
+    String fsmFunction2 = " L)) (PRINC \"This is a valid string!\"" +
+            "\n\t\t(T (PRINC \"This is an invalid string!\"))" +
+            "\n\t)" +
+            "\n)";
 
 
     public GenerateLisp(ArrayList<State> stateTable, ArrayList<String> parsedAlphabet, int startState){
@@ -96,7 +102,7 @@ public class GenerateLisp {
     }
 
     private String generateStartFunction(){
-        String s = "DEFUN "
+         return fsmFunction + startState + fsmFunction2;
     }
 
 }
