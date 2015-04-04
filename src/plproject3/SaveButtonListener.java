@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class SaveButtonListener implements ActionListener {
 
-    FsmPanelPart1 listenPanel;
+    FsmCreatorPanel listenPanel;
     String numStatesString = "";
     int numStates = 0;
     int startState = 0;
@@ -28,7 +28,7 @@ public class SaveButtonListener implements ActionListener {
     ArrayList<String> unsafeSaveReasons;
 
 
-    SaveButtonListener(FsmPanelPart1 jPanel)
+    SaveButtonListener(FsmCreatorPanel jPanel)
     {
         listenPanel = jPanel;
     }

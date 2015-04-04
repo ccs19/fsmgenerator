@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -29,7 +28,7 @@ public class SolveButtonListener implements ActionListener{
 
 
     //Parent JPanel and load listener with data
-    private FsmPanelPart2 parent = null;
+    private FsmSolverPanel parent = null;
     private LoadButtonListener loadButtonListener = null;
 
     //word to check
@@ -44,7 +43,7 @@ public class SolveButtonListener implements ActionListener{
      * @param fsmSolverPanel Parent to the solve button
      * @param listener Load button listener to retrieve strings
      */
-    SolveButtonListener(FsmPanelPart2 fsmSolverPanel){
+    SolveButtonListener(FsmSolverPanel fsmSolverPanel){
         parent = fsmSolverPanel;
     }
 

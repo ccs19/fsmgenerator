@@ -1,17 +1,9 @@
 package plproject3;
 
-import plproject3.Fsm;
-import plproject3.FsmPanelPart2;
-import plproject3.GenerateLisp;
-import plproject3.LoadButtonListener;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Created by chris_000 on 4/2/2015.
@@ -31,7 +23,7 @@ public class GenerateLispButtonListener implements ActionListener {
 
 
     //Parent JPanel and load listener with data
-    private FsmPanelPart2 parent = null;
+    private FsmSolverPanel parent = null;
     private LoadButtonListener loadButtonListener = null;
 
     //word to check
@@ -46,7 +38,7 @@ public class GenerateLispButtonListener implements ActionListener {
      * @param fsmSolverPanel Parent to the solve button
      * @param listener Load button listener to retrieve strings
      */
-    GenerateLispButtonListener(FsmPanelPart2 fsmSolverPanel, LoadButtonListener listener, FsmData fsmData){
+    GenerateLispButtonListener(FsmSolverPanel fsmSolverPanel, LoadButtonListener listener, FsmData fsmData){
         parent = fsmSolverPanel;
         this.fsmData = fsmData;
     }

@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
  * Programming Langauges Project 3
  * Finite State Machine Solver
  */
-public class FsmPanelPart2 extends JPanel {
+public class FsmSolverPanel extends JPanel {
 
     final private String loadString = "Load Automaton";
     final private String exitString = "Exit";
@@ -36,7 +36,7 @@ public class FsmPanelPart2 extends JPanel {
     private static final int JTF_STRINGENTRYLEN = 30;
 
 
-    FsmPanelPart2()
+    FsmSolverPanel()
     {
         super(new GridBagLayout());
         GridBagConstraints gbc;

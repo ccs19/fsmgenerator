@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
  * Programming Langauges Project 3
  * Finite State Machine Solver
  */
-public class FsmPanelPart1 extends JPanel
+public class FsmCreatorPanel extends JPanel
 {
 
     //Text field lengths
@@ -45,7 +45,7 @@ public class FsmPanelPart1 extends JPanel
             transitions;
     ////////////////////
 
-    FsmPanelPart1()
+    FsmCreatorPanel()
     {
         super(new GridBagLayout());
         GridBagConstraints gbc;
