@@ -37,7 +37,7 @@ public class GenerateLispButtonListener implements ActionListener {
 
     //Manual save info
     private static final String lispExt = ".lsp",
-            lispDescription = "Lisp";
+            lispDescription = "Lisp (*.lsp)";
 
 
 
