@@ -3,6 +3,8 @@ package plproject3;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,24 +14,14 @@ import java.util.concurrent.Executors;
  * Programming Langauges Project 3
  * Finite State Machine Solver
  */
-public class SolveButtonListener implements ActionListener{
-
-    //Parsed data
-    private ArrayList<String> parsedAlphabet = null;
-    private ArrayList<Integer> parsedAcceptStates = null;
-    private ArrayList<String> parsedStateTransitions = null;
-    private int numStates = -1;
-    private int startState = -1;
+public class LoadStringButtonListener implements ActionListener{
 
     //Generated state machine
     Fsm fsm;
     FsmData fsmData;
 
-
-
     //Parent JPanel and load listener with data
     private FsmSolverPanel parent = null;
-    private LoadButtonListener loadButtonListener = null;
 
     //word to check
     private String word = null;
@@ -41,10 +33,27 @@ public class SolveButtonListener implements ActionListener{
     /**
      * Word solving class
      * @param fsmSolverPanel Parent to the solve button
-     * @param listener Load button listener to retrieve strings
      */
-    SolveButtonListener(FsmSolverPanel fsmSolverPanel){
+    LoadStringButtonListener(FsmSolverPanel fsmSolverPanel){
         parent = fsmSolverPanel;
+
+    }
+
+
+    /**
+     * Prompts the user if they would like to load a string from disk. If so, the file is read, and the first
+     * line in the file is placed in the text field.
+     */
+    private void loadString(){
+
+        BufferedReader b = FileManager.openFile(parent);
+        try{
+            String s = FileManager.readNextLine(b);
+            parent.setWordEntryString(s);
+            this.setWord(s);
+        } catch (Exception e){
+            JOptionPane.showMessageDialog(parent, "Error Reading File", "File Read Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
 
@@ -58,13 +67,8 @@ public class SolveButtonListener implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        loadString();
         checkWord();
-        printData();
-    }
-
-    private void printData(){
-        GenerateLisp g = new GenerateLisp(fsm);
-        g.generateLisp();
     }
 
 

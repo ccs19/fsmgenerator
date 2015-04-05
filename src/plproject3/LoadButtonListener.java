@@ -84,41 +84,16 @@ public class LoadButtonListener implements ActionListener {
             //Show dialog with input errors found if file successfully read
             if(openedFile)//Show dialog with input errors found if file successfully read
                 JOptionPane.showMessageDialog(listenPanel, dialogMessage, "Cannot load", JOptionPane.OK_OPTION);
-            listenPanel.enableSolveButton(false);
+            listenPanel.enableButtons(false);
         }
         else {
-            loadString();
-            listenPanel.enableSolveButton(true);
+            listenPanel.enableButtons(true);
 
         }
     }
 
 
 
-    /**
-     * Prompts the user if they would like to load a string from disk. If so, the file is read, and the first
-     * line in the file is placed in the text field.
-     */
-    private void loadString(){
-        int returnVal = JOptionPane.showConfirmDialog(listenPanel, "Do you want to load the string from disk?",
-                                                        "Load String", JOptionPane.YES_NO_OPTION);
-        if(returnVal == JOptionPane.YES_OPTION){
-            if(openFile()){
-                try{ //Read in string and set string field
-                    String entry = readNextLine();
-                    listenPanel.setWordEntryString(entry);
-                }catch (Exception e){
-                    JOptionPane.showMessageDialog(listenPanel, "Error Reading File", "File Read Error", JOptionPane.ERROR_MESSAGE);
-                }finally {
-                    try{
-                        fileReader.close();
-                    } catch (IOException e){
-                        JOptionPane.showMessageDialog(listenPanel, "Failed to close file", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            }
-        }
-    }
 
 
 
@@ -129,34 +104,11 @@ public class LoadButtonListener implements ActionListener {
      */
     private boolean openFile(){
 
-        JFileChooser jFileChooser = new JFileChooser();
-        jFileChooser.setCurrentDirectory(new File(previousDir));
-        int returnVal = jFileChooser.showOpenDialog(listenPanel);
-
-        if(returnVal == JFileChooser.APPROVE_OPTION)
-        {
-            File file = jFileChooser.getSelectedFile();
-            try {
-                fileReader = new BufferedReader(new FileReader(file));
-                return true;
-            }
-            catch (Exception e)
-            {
-                JOptionPane.showMessageDialog(listenPanel, "Failed to load file. Cannot load from disk.", "Error", JOptionPane.ERROR_MESSAGE);
-
-                return false;
-            }finally{
-                try {
-                    previousDir = file.getCanonicalPath(); //Save directory
-                }catch(Exception e){
-                    previousDir = "."; //If this fails for some reason, default to application dir
-                }
-            }
-        }
-        else{
-
+        fileReader = FileManager.openFile(listenPanel);
+        if(fileReader == null)
             return false;
-        }
+        else
+            return true;
     }
 
     /**
@@ -165,18 +117,19 @@ public class LoadButtonListener implements ActionListener {
      */
     private void checkAutomaton() {
         try {
-            numStatesString = readNextLine();
-            alphabetString = readNextLine();
-            stateTransitionsString = readNextLine();
-            startStateString = readNextLine();
-            acceptStatesString = readNextLine();
+            String fsmData[] = FileManager.readNextLine(fileReader).split(";");
+            numStatesString = fsmData[FsmData.NUM_STATES];
+            alphabetString = fsmData[FsmData.ALPHABET];
+            stateTransitionsString = fsmData[FsmData.TRANSITIONS];
+            startStateString = fsmData[FsmData.START_STATE];
+            acceptStatesString = fsmData[FsmData.ACCEPT_STATES];
         } catch (IOException e) {
             JOptionPane.showMessageDialog(listenPanel, "Error Reading File", "File Read Error", JOptionPane.ERROR_MESSAGE);
-            listenPanel.enableSolveButton(false);
+            listenPanel.enableButtons(false);
             openedFile = false;
-        } catch (InvalidFsmFormatException e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(listenPanel, "Invalid file format", "Invalid File Format", JOptionPane.ERROR_MESSAGE);
-            listenPanel.enableSolveButton(false);
+            listenPanel.enableButtons(false);
             openedFile = false;
         }finally {
             try{
@@ -187,20 +140,6 @@ public class LoadButtonListener implements ActionListener {
         }
     }
 
-    /**
-     * Reads a line from the file and returns a string
-     * @return string read from file
-     * @throws IOException If failed to read file
-     * @throws InvalidFsmFormatException If invalid file format
-     */
-    private String readNextLine() throws IOException, InvalidFsmFormatException{
-
-        String s = fileReader.readLine();
-        if(s == null ) {
-            throw new InvalidFsmFormatException();
-        }
-        return s;
-    }
 
     /**
      * Sends each string to the FsmChecker class and fills in values
@@ -252,15 +191,7 @@ public class LoadButtonListener implements ActionListener {
     }
 
 
-    /**
-     * If invalid file format found, throw this exception
-     */
-    private class InvalidFsmFormatException extends Exception
-    {
-        public InvalidFsmFormatException(){
-            super("Invalid FSM File Format");
-        }
-    }
+
 
 
 }

@@ -12,25 +12,27 @@ import java.awt.event.ActionListener;
  */
 public class FsmSolverPanel extends JPanel {
 
-    final private String loadString = "Load Automaton";
-    final private String exitString = "Exit";
-    final private String solveString = "Solve";
+    private static final String loadString = "Load FSA";
+    private static final String exitString = "Exit";
+    private static final String solveString = "Load String";
     private static final String stringEntryString = "Word entry";
 
-    //GridBagConstraints padding
-    Insets labelInset = new Insets(10,10,0,10);
-    Insets textFieldInset = new Insets(0,10,10,10);
 
-    //User entry
-    private JTextField wordEntry;
+    //GridBagConstraints padding
+    private static final Insets labelInset = new Insets(10,10,0,10);
+    private static final Insets textFieldInset = new Insets(0,10,10,10);
 
     //Buttons
-    private JButton solveButton;
+    private JButton solveStringButton;
+    private JButton saveLispButton;
 
+    //Text field
+    private JTextField wordEntry;
 
     //Load listener
-    LoadButtonListener loadButtonListener = null;
-    SolveButtonListener solveButtonListener = null;
+    private LoadButtonListener loadButtonListener = null;
+    private LoadStringButtonListener loadStringButtonListener = null;
+    private GenerateLispButtonListener lispButtonListener = null;
 
     //Constants
     private static final int JTF_STRINGENTRYLEN = 30;
@@ -52,8 +54,9 @@ public class FsmSolverPanel extends JPanel {
         gbc.insets = labelInset;
         this.add(stringEntryLabel, gbc);
 
-
+        /**Load string**/
         wordEntry = new JTextField(JTF_STRINGENTRYLEN);
+        wordEntry.setEditable(false);
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
@@ -73,17 +76,17 @@ public class FsmSolverPanel extends JPanel {
         this.add(addButtons(), gbc);
 
         /**Solve button**/
-        solveButton = new JButton(solveString);
+        solveStringButton = new JButton(solveString);
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 1;
         gbc.insets = textFieldInset;
-        solveButtonListener = new SolveButtonListener(this);
-        solveButton.addActionListener(solveButtonListener);
-        solveButton.setEnabled(false);// Disabled to start
-        this.add(solveButton, gbc);
+        loadStringButtonListener = new LoadStringButtonListener(this);
+        solveStringButton.addActionListener(loadStringButtonListener);
+        solveStringButton.setEnabled(false);// Disabled to start
+        this.add(solveStringButton, gbc);
 
         this.setVisible(true);
     }
@@ -122,10 +125,16 @@ public class FsmSolverPanel extends JPanel {
      * Enable or disable solve button
      * @param option Enable or disable solve button
      */
-    public void enableSolveButton(boolean option){
-        solveButtonListener.setFsmData(loadButtonListener.getFsmData());
-        solveButtonListener.setWord(this.getWordEntryString());
-        solveButton.setEnabled(option);
+    public void enableButtons(boolean option){
+
+        /**Solve button**/
+        loadStringButtonListener.setFsmData(loadButtonListener.getFsmData());
+        loadStringButtonListener.setWord(this.getWordEntryString());
+        solveStringButton.setEnabled(option);
+
+
+        /**Lisp button**/
+
     }
 
     /**
