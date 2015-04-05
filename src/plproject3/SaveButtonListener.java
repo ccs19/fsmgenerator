@@ -13,19 +13,22 @@ import java.util.ArrayList;
  */
 public class SaveButtonListener implements ActionListener {
 
-    FsmCreatorPanel listenPanel;
-    String numStatesString = "";
-    int numStates = 0;
-    int startState = 0;
-    int alphabetLength = 0;
-    String alphabet = "";
-    String parsedAlphabet[];
-    String stateTransitions = "";
-    String startStateString = "";
+    private FsmCreatorPanel listenPanel;
+    private String numStatesString = "";
+    private int numStates = 0;
+    private int startState = 0;
+    private int alphabetLength = 0;
+    private String alphabet = "";
+    private String parsedAlphabet[];
+    private String stateTransitions = "";
+    private String startStateString = "";
 
-    String acceptStates = "";
+    private  String acceptStates = "";
 
-    ArrayList<String> unsafeSaveReasons;
+    private ArrayList<String> unsafeSaveReasons;
+
+    //Separator for FSA saving
+    private static final String separator = ";";
 
 
     SaveButtonListener(FsmCreatorPanel jPanel)
@@ -119,10 +122,10 @@ public class SaveButtonListener implements ActionListener {
 
             try {
                 BufferedWriter fileWriter = new BufferedWriter(new FileWriter(file));
-                fileWriter.write(numStatesString + "\n" +
-                                 alphabet + "\n" +
-                                 stateTransitions + "\n" +
-                                startStateString + "\n" +
+                fileWriter.write(numStatesString + separator +
+                                 alphabet + separator +
+                                 stateTransitions + separator +
+                                startStateString + separator +
                                  acceptStates);
                 fileWriter.close();
             }

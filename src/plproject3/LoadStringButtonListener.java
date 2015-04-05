@@ -49,15 +49,20 @@ public class LoadStringButtonListener implements ActionListener{
      * Prompts the user if they would like to load a string from disk. If so, the file is read, and the first
      * line in the file is placed in the text field.
      */
-    private void loadString(){
+    private boolean loadString(){
 
         BufferedReader b = FileManager.openFile(parent);
-        try{
-            String s = FileManager.readNextLine(b);
-            parent.setWordEntryString(s);
-            this.setWord(s);
-        } catch (Exception e){
-            JOptionPane.showMessageDialog(parent, "Error Reading File", "File Read Error", JOptionPane.ERROR_MESSAGE);
+        if(b == null) return false;
+        else {
+            try {
+                String s = FileManager.readNextLine(b);
+                parent.setWordEntryString(s);
+                this.setWord(s);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(parent, "Error Reading File", "File Read Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+            return true;
         }
     }
 
@@ -72,8 +77,10 @@ public class LoadStringButtonListener implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        loadString();
-        checkWord();
+        boolean result = loadString();
+        if(result)
+            checkWord();
+
     }
 
 

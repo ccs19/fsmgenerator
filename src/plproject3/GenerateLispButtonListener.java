@@ -10,17 +10,10 @@ import java.util.ArrayList;
  */
 public class GenerateLispButtonListener implements ActionListener {
 
-    //Parsed data
-    private ArrayList<String> parsedAlphabet = null;
-    private ArrayList<Integer> parsedAcceptStates = null;
-    private ArrayList<String> parsedStateTransitions = null;
-    private int numStates = -1;
-    private int startState = -1;
-
     //Generated state machine
     Fsm fsm;
-
-
+    //Fsm data
+    FsmData fsmData;
 
     //Parent JPanel and load listener with data
     private FsmSolverPanel parent = null;
@@ -29,8 +22,7 @@ public class GenerateLispButtonListener implements ActionListener {
     //word to check
     private String word = null;
 
-    //Fsm data
-    FsmData fsmData;
+
 
 
     /**
@@ -52,23 +44,6 @@ public class GenerateLispButtonListener implements ActionListener {
     private void printData(){
         GenerateLisp g = new GenerateLisp(fsm);
         g.generateLisp();
-    }
-
-
-
-    /**
-     * Checks if a valid word was found and shows a message dialog
-     */
-    private void isValidWord(){
-        System.out.println("Accept states: ");
-        for(int i : parsedAcceptStates)
-            System.out.println(" " + i);
-        if(fsm.getValid()){
-            JOptionPane.showMessageDialog(parent, "String is valid for this FSM!", "Valid String!", JOptionPane.OK_OPTION);
-        }
-        else{
-            JOptionPane.showMessageDialog(parent, "String is not valid for this FSM", "Invalid String!", JOptionPane.OK_OPTION);
-        }
     }
 
 }
