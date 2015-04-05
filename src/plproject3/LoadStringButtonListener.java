@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Author: Christopher Schneider
@@ -20,6 +21,10 @@ public class LoadStringButtonListener implements ActionListener{
     Fsm fsm;
     FsmData fsmData;
 
+    //Timeout for executor thread in seconds
+    int timeOut = 5;
+
+
     //Parent JPanel and load listener with data
     private FsmSolverPanel parent = null;
 
@@ -27,7 +32,7 @@ public class LoadStringButtonListener implements ActionListener{
     private String word = null;
 
     //Thread to run checking
-    private ExecutorService checkWordThread = Executors.newSingleThreadExecutor();
+    private ExecutorService checkWordThread;
 
 
     /**
@@ -77,9 +82,17 @@ public class LoadStringButtonListener implements ActionListener{
      * Submits data to checkWordThread
      */
     private void checkWord(){
+        checkWordThread = Executors.newSingleThreadExecutor();
         fsm = new Fsm(fsmData, word);
         checkWordThread.submit(fsm);
-        isValidWord();
+        checkWordThread.shutdown();
+        try {
+            checkWordThread.awaitTermination(timeOut, TimeUnit.SECONDS);
+            isValidWord();
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(parent, "Timeout when solving FSM", "Timeout", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
 
@@ -98,5 +111,4 @@ public class LoadStringButtonListener implements ActionListener{
             JOptionPane.showMessageDialog(parent, "String is not valid for this FSM", "Invalid String!", JOptionPane.OK_OPTION);
         }
     }
-
 }
