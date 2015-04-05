@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by chris_000 on 4/2/2015.
@@ -11,9 +14,9 @@ import java.util.ArrayList;
 public class GenerateLispButtonListener implements ActionListener {
 
     //Generated state machine
-    Fsm fsm;
+    private Fsm fsm;
     //Fsm data
-    FsmData fsmData;
+    private FsmData fsmData;
 
     //Parent JPanel and load listener with data
     private FsmSolverPanel parent = null;
@@ -22,17 +25,28 @@ public class GenerateLispButtonListener implements ActionListener {
     //word to check
     private String word = null;
 
+    //Quicksave option
+    private boolean quickSave;
+
+    //Executor thread info
+    private int timeOut = 5;
+    private ExecutorService fsmThread;
+
+    //Quick save filename
+    private static final String quickSaveName = "fsm.lsp";
+
+    //Manual save info
+    private static final String lispExt = ".lsp",
+            lispDescription = "Lisp";
 
 
 
     /**
      * Word solving class
      * @param fsmSolverPanel Parent to the solve button
-     * @param listener Load button listener to retrieve strings
      */
-    GenerateLispButtonListener(FsmSolverPanel fsmSolverPanel, LoadButtonListener listener, FsmData fsmData){
+    GenerateLispButtonListener(FsmSolverPanel fsmSolverPanel){
         parent = fsmSolverPanel;
-        this.fsmData = fsmData;
     }
 
 
@@ -43,9 +57,32 @@ public class GenerateLispButtonListener implements ActionListener {
 
     private void printData(){
         GenerateLisp g = new GenerateLisp(fsm);
-        g.generateLisp();
+        String lispData = g.generateLisp();
+        if(!quickSave)
+            FileManager.saveFile(parent,lispData, lispExt, lispDescription);
+        else if (quickSave){
+            FileManager.saveFile(parent, lispData, quickSaveName);
+        }
     }
 
+    public void setFsmData(FsmData fsmData){
+        this.fsmData = fsmData;
+        fsm = new Fsm(fsmData);
+        fsm.setOption(Fsm.checkOption.generateStateTable);
+        fsmThread = Executors.newSingleThreadExecutor();
+        fsmThread.submit(fsm);
+        fsmThread.shutdown();
+        try{
+            fsmThread.awaitTermination(timeOut, TimeUnit.SECONDS);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(parent, "Timeout when generating Lisp", "Timeout", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+    public void setQuickSave(boolean option){
+        this.quickSave = option;
+    }
 }
 
 

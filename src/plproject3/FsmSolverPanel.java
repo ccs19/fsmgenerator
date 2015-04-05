@@ -2,8 +2,7 @@ package plproject3;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 /**
  * Author: Christopher Schneider
@@ -12,19 +11,27 @@ import java.awt.event.ActionListener;
  */
 public class FsmSolverPanel extends JPanel {
 
-    private static final String loadString = "Load FSA";
+    private static final String loadString = "Load";
     private static final String exitString = "Exit";
     private static final String solveString = "Load String";
-    private static final String stringEntryString = "Word entry";
+    private static final String stringEntryString = "Word";
+    private static final String generateLispQuickString = "Generate Lisp Quick";
+    private static final String generateLispString = "Generate Lisp";
+    private static final String genereatePrologString = "Generate Prolog";
+    private static final String generatePrologQuickString = "Generate Prolog Quick";
 
+    //Menu data
+    private final String menuLabelFile = "Load FSA";
+    private JMenuBar menuBar;
+    private JMenu menu;
+    private JMenuItem menuItem;
 
     //GridBagConstraints padding
     private static final Insets labelInset = new Insets(10,10,0,10);
-    private static final Insets textFieldInset = new Insets(0,10,10,10);
+    private static final Insets buttonInset = new Insets(0,10,10,10);
 
     //Buttons
     private JButton solveStringButton;
-    private JButton saveLispButton;
 
     //Text field
     private JTextField wordEntry;
@@ -32,10 +39,20 @@ public class FsmSolverPanel extends JPanel {
     //Load listener
     private LoadButtonListener loadButtonListener = null;
     private LoadStringButtonListener loadStringButtonListener = null;
+
+    //Lisp items
     private GenerateLispButtonListener lispButtonListener = null;
+    private JButton generateLispButton;
+    private JButton quickGenerateLispButton;
+
+    //Prolog items
+    //private GeneratePrologButtonListener generatePrologButtonListener = null;
+    private JButton generatePrologButton;
+    private JButton quickGeneratePrologButton;
+
 
     //Constants
-    private static final int JTF_STRINGENTRYLEN = 30;
+    private static final int JTF_STRINGENTRYLEN = 15;
 
 
     FsmSolverPanel()
@@ -43,83 +60,90 @@ public class FsmSolverPanel extends JPanel {
         super(new GridBagLayout());
         GridBagConstraints gbc;
 
-
         /**Text Entry**/
         JLabel stringEntryLabel = new JLabel(stringEntryString);
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
-        gbc.gridy = 0;
+        gbc.gridy = 1;
         gbc.gridwidth = 1;
         gbc.insets = labelInset;
         this.add(stringEntryLabel, gbc);
 
-        /**Load string**/
+        /**Word Loaded static text box**/
         wordEntry = new JTextField(JTF_STRINGENTRYLEN);
         wordEntry.setEditable(false);
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 3;
-        gbc.insets = textFieldInset;
+        gbc.gridy = 2;
+        gbc.gridwidth = 2;
+        gbc.insets = buttonInset;
         this.add(wordEntry, gbc);
 
-
-        /** Load & Exit buttons**/
+        /**Generate Lisp**/
+        generateLispButton = new JButton(generateLispString);
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 2;
         gbc.gridy = 2;
         gbc.gridwidth = 1;
-        gbc.insets = textFieldInset;
-        this.add(addButtons(), gbc);
+        gbc.insets = buttonInset;
+        generateLispButton.setEnabled(false);
+        generateLispButton.addActionListener(new GenerateLispButtonListener(this));
+        this.add(generateLispButton, gbc);
 
-        /**Solve button**/
+        /**Generate Lisp Quick**/
+        quickGenerateLispButton = new JButton(generateLispQuickString);
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 3;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        gbc.insets = buttonInset;
+        quickGenerateLispButton.addActionListener(new GenerateLispButtonListener(this));
+        quickGenerateLispButton.setEnabled(false);
+        this.add(quickGenerateLispButton, gbc);
+
+        /**Load string button**/
         solveStringButton = new JButton(solveString);
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.gridwidth = 1;
-        gbc.insets = textFieldInset;
+        gbc.insets = buttonInset;
         loadStringButtonListener = new LoadStringButtonListener(this);
         solveStringButton.addActionListener(loadStringButtonListener);
         solveStringButton.setEnabled(false);// Disabled to start
         this.add(solveStringButton, gbc);
 
+        /**Generate Prolog buttons**/
+        generatePrologButton = new JButton(genereatePrologString);
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 2;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        gbc.insets = buttonInset;
+        generatePrologButton.setEnabled(false);
+        this.add(generatePrologButton, gbc);
+
+        /**Quick generate Prolog**/
+        //Unused until next project
+        quickGeneratePrologButton = new JButton(generatePrologQuickString);
+        gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 3;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        gbc.insets = buttonInset;
+        quickGeneratePrologButton.setEnabled(false);
+        this.add(quickGeneratePrologButton, gbc);
+
         this.setVisible(true);
     }
 
-    /**
-     * Adds load and save buttons
-     * @return Panel of load/save buttons
-     */
-    private JPanel addButtons() {
-        //JPanel to return
-        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        /**Load Button**/
-
-        JButton loadButton = new JButton(loadString);
-        loadButtonListener = new LoadButtonListener(this);
-        loadButton.addActionListener(loadButtonListener);
-        buttonsPanel.add(loadButton);
-        /**********************************/
-
-        /**Exit Button**/
-       // gbc.insets = buttonInsets;
-        JButton exitButton = new JButton(exitString);
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                    System.exit(0);
-                }
-        });
-        buttonsPanel.add(exitButton);
-        /**********************************/
-
-        return buttonsPanel;
-    }
 
     /**
      * Enable or disable solve button
@@ -131,9 +155,19 @@ public class FsmSolverPanel extends JPanel {
         loadStringButtonListener.setFsmData(loadButtonListener.getFsmData());
         loadStringButtonListener.setWord(this.getWordEntryString());
         solveStringButton.setEnabled(option);
+        generateLispButton.setEnabled(option);
+        quickGenerateLispButton.setEnabled(option);
 
+        /**Set necessary data to generate code**/
+        ActionListener listeners[] = generateLispButton.getActionListeners();
+        GenerateLispButtonListener generateLispButtonListener = (GenerateLispButtonListener)listeners[0];
+        generateLispButtonListener.setFsmData(loadButtonListener.getFsmData());
+        generateLispButtonListener.setQuickSave(false);
 
-        /**Lisp button**/
+        listeners = quickGenerateLispButton.getActionListeners();
+        generateLispButtonListener = (GenerateLispButtonListener)listeners[0];
+        generateLispButtonListener.setFsmData(loadButtonListener.getFsmData());
+        generateLispButtonListener.setQuickSave(true);
 
     }
 
@@ -144,4 +178,32 @@ public class FsmSolverPanel extends JPanel {
     public String getWordEntryString(){ return wordEntry.getText();}
 
     public void setWordEntryString(String entry){wordEntry.setText(entry);}
+
+    public JMenuBar generateMenu(){
+        /**Create menubar**/
+        menuBar = new JMenuBar();
+
+        /**Add file**/
+        menu = new JMenu(menuLabelFile);
+        menu.getAccessibleContext().setAccessibleDescription(menuLabelFile);
+        menuBar.add(menu);
+
+        /**Load FSA item**/
+        loadButtonListener = new LoadButtonListener(this);
+        menuItem = new JMenuItem(loadString);
+        menuItem.addMouseListener(loadButtonListener);
+        menu.add(menuItem);
+
+        /**Exit item**/
+        menuItem = new JMenuItem(exitString);
+        menuItem.addMouseListener(new MouseAdapter(){
+           @Override
+            public void mousePressed(MouseEvent m){
+               System.exit(0);
+           }
+        });
+        menu.add(menuItem);
+
+        return menuBar;
+    }
 }

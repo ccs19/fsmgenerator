@@ -18,11 +18,13 @@ public class FsmSolver {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 JFrame mainFrame = new JFrame(title);
-                mainFrame.getContentPane().add(new FsmSolverPanel());
+                FsmSolverPanel fsmSolverPanel = new FsmSolverPanel();
+                mainFrame.getContentPane().add(fsmSolverPanel);
                 mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                mainFrame.pack();
                 Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
                 mainFrame.setLocation(dim.width/2-mainFrame.getSize().width/2, dim.height/2-mainFrame.getSize().height/2);
+                mainFrame.setJMenuBar(fsmSolverPanel.generateMenu());
+                mainFrame.pack();
                 mainFrame.setVisible(true);
             }
         });

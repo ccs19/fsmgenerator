@@ -16,39 +16,40 @@ public class GenerateLisp {
 
 
     //Filename
-    String fileName = "fsm.lsp";
+    private static final String fileName = "fsm.lsp",
 
 
     //Necessary strings to generate FSM that will be used repeatedly
-    String startfunction = "(DEFUN "; /**FunctionName**/
-    String startFunctionCheckAccept = "(L)" +
+    startfunction = "(DEFUN ", /**FunctionName**/
+    startFunctionCheckAccept = "(L)" +
             "\n\t(COND" +
-                    "\n\t\t((NULL L) "; /**T or NIL**/
-    String checkAtom = "\n\t\t((ATOM L) NIL)";
+                    "\n\t\t((NULL L) ", /**T or NIL**/
+    checkAtom = "\n\t\t((ATOM L) NIL)",
 
-    String equal = "\n\t\t((EQUAL '";
-
-
-    String car = " (CAR L))";
-    String cdr = " (CDR L)))";
-    String end = "\n\t\t(T (NULL))\n\t)\n)";
+    equal = "\n\t\t((EQUAL '",
 
 
-
+    car = " (CAR L))",
+    cdr = " (CDR L)))",
+    end = "\n\t\t(T (NULL))\n\t)\n)",
 
     //Starting function
-    String fsmFunction = "(DEFUN FSM (L)" +
+     fsmFunction = "(DEFUN FSM (L)" +
             "\n\t(COND" +
             "\n\t\t" +
             checkAtom +
             "\n\t\t" +
-            "((EQUAL T (S";
-    String fsmFunction2 = " L)) (PRINC \"This is a valid string!\"))" +
+            "((EQUAL T (S",
+     fsmFunction2 = " L)) (PRINC \"This is a valid string!\"))" +
             "\n\t\t(T (PRINC \"This is an invalid string!\"))" +
             "\n\t)" +
             "\n)";
 
 
+    /**
+     *
+     * @param fsm
+     */
     public GenerateLisp(Fsm fsm){
         this.parsedAlphabet = fsm.getParsedAlphabet();
         this.startState = fsm.getStartState();
@@ -59,7 +60,7 @@ public class GenerateLisp {
     /**Generates a lisp program and puts it in a string
      *
      */
-    public void generateLisp(){
+    public String generateLisp(){
         int numStates = stateTable.size();
         lispProgram = generateStartFunction();
         lispProgram += "\n\n";
@@ -68,9 +69,15 @@ public class GenerateLisp {
             lispProgram += generateStateFunction(i);
             lispProgram += "\n\n";
         }
-        System.out.println(lispProgram);
+        return lispProgram;
     }
 
+
+    /**
+     *
+     * @param stateNum
+     * @return
+     */
     public String generateStateFunction(int stateNum){
         State state = stateTable.get(stateNum);
         String s = startfunction; // (DEFUN
@@ -109,8 +116,5 @@ public class GenerateLisp {
          return fsmFunction + startState + fsmFunction2;
     }
 
-    public String getLispProgram(){
-        return lispProgram;
-    }
 
 }

@@ -17,8 +17,11 @@ public class Fsm implements Runnable{
     private ArrayList<String> parsedStateTransitions;
     private ArrayList<Integer> parsedAcceptStates;
 
+
     //Options for runnable thread
     enum checkOption{checkAlphabet, generateStateTable, solveEntry, isValidWord}
+
+    private checkOption option;
 
     //Table containing state date
     private ArrayList<State> stateTable;
@@ -46,14 +49,28 @@ public class Fsm implements Runnable{
         this.parsedAcceptStates = fsmData.getAcceptStates();
     }
 
+    public void setOption(checkOption option){
+        this.option = option;
+    }
+
 
     public void run(){
-                if(null == word) throw new RuntimeException("Word in Fsm not initialized!");
+        switch(option) {
+            case checkAlphabet:
+                if (null == word) throw new RuntimeException("Word in Fsm not initialized!");
                 checkAlphabet();
-                if(!valid) return; //If invalid, do nothing
+                break;
+
+            case generateStateTable:
+                if (!valid) return; //If invalid, do nothing
                 generateStateTable();
-                if(!valid) return; //If invalid, do nothing
+                break;
+
+            case solveEntry:
+                if (!valid) return; //If invalid, do nothing
                 solveEntry();
+                break;
+        }
         }
 
 

@@ -1,11 +1,9 @@
 package plproject3;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +13,7 @@ import java.util.Arrays;
  * Programming Langauges Project 3
  * Finite State Machine Solver
  */
-public class LoadButtonListener implements ActionListener {
+public class LoadButtonListener implements MouseListener {
 
 
     //FsmData
@@ -49,9 +47,6 @@ public class LoadButtonListener implements ActionListener {
     //Successfully opened file
     private boolean openedFile = true;
 
-    //String to save previous directory
-    String previousDir = ".";
-
     /**
      * Listener for load button
      * @param jPanel The parent panel
@@ -62,12 +57,8 @@ public class LoadButtonListener implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e){
-
+    public void mousePressed(MouseEvent m){
         resetEntry(); //If we've failed once before, we need to reset parameters.
-
-
-
         if(openFile()) {
             checkAutomaton();
             checkValues();
@@ -92,10 +83,25 @@ public class LoadButtonListener implements ActionListener {
         }
     }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
 
+    }
 
+    @Override
+    public void mouseReleased(MouseEvent e) {
 
+    }
 
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 
 
     /**
