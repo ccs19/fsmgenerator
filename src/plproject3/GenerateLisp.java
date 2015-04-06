@@ -25,7 +25,7 @@ public class GenerateLisp {
 
     car = " (CAR L))",
     cdr = " (CDR L)))",
-    end = "\n\t\t(T (NULL))\n\t)\n)",
+    end = "\n\t\t(T (S0 (CAR L)))\n\t)\n)",
 
     //Starting function
      fsmFunction = "(DEFUN FSM (L)" +
