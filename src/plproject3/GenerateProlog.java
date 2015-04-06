@@ -11,13 +11,13 @@ public class GenerateProlog {
     private ArrayList<State> stateTable;
     private ArrayList<String> parsedAlphabet;
     private int startState;
-    private String lispProgram = "";
+    private String prologProgram = "";
 
 
     //Necessary strings to generate FSM that will be used repeatedly
 
     private static final String commentHeaderFooter = "%%**************************%%\n",
-    acceptStatesHeader = commentHeaderFooter + "%% Accept States\t\t\t%%\n" + commentHeaderFooter,
+    acceptStatesHeader = commentHeaderFooter + "%% Accept States\t\t\t%%\n\n" + commentHeaderFooter,
     rulesHeader = commentHeaderFooter + "%% RULES \t\t\t\t\t%%\n" + commentHeaderFooter;
 
 
@@ -25,7 +25,7 @@ public class GenerateProlog {
      *
      * @param fsm Initialized FSM data
      */
-    public GenerateLisp(Fsm fsm){
+    public GenerateProlog(Fsm fsm){
         this.parsedAlphabet = fsm.getParsedAlphabet();
         this.startState = fsm.getStartState();
         this.stateTable = fsm.getStateTable();
@@ -35,48 +35,22 @@ public class GenerateProlog {
     /**Generates a lisp program and puts it in a string
      * @return Lisp program
      */
-    public String generateLisp(){
+    public String generateProlog(){
         int numStates = stateTable.size();
-        lispProgram = generateStartFunction();
-        lispProgram += "\n\n";
+
+        prologProgram += acceptStatesHeader;
+        prologProgram += generateAcceptStates();
+        prologProgram += "\n\n" + rulesHeader + "\n";
+        prologProgram += generateStartRule();
 
         for(int i = 0; i < numStates; i++){
-            lispProgram += generateStateFunction(i);
-            lispProgram += "\n\n";
+            prologProgram += generateStateData(i);
+            prologProgram += generateStateHeader(i);
+            prologProgram += getTransitions(stateTable.get(0), i);
         }
-        return lispProgram;
-    }
 
-
-    /**
-     *
-     * @param stateNum State number
-     * @return A function representing a state
-     */
-    public String generateStateFunction(int stateNum){
-        State state = stateTable.get(stateNum);
-        String s = startfunction; // (DEFUN
-        s += "S" + stateNum;      // (S(NUM))
-        s += startFunctionCheckAccept +  //(L) (COND ((NULL L)
-                this.isAcceptState(state) + ")"; // T OR NIL)
-        s += checkAtom; //      ((ATOM L) NIL)
-        s += getTransitions(state);
-        s += end;
-
-
-        return s;
-    }
-
-    /**
-     *
-     * @param s State
-     * @return T or NIL depending on if the state of accepting or not
-     */
-    private String isAcceptState(State s){
-        if(s.isAcceptState()){
-            return "T";
-        }
-        else return "NIL";
+        System.out.println(prologProgram);
+        return prologProgram;
     }
 
     /**
@@ -93,6 +67,7 @@ public class GenerateProlog {
             }
         }
         if(transitions.equals(""))  transitions += "\n";
+        transitions += "\n";
         return transitions;
     }
 
@@ -100,25 +75,30 @@ public class GenerateProlog {
      *
      * @return An initial function that calls the starting state function
      */
-    private String generateStartFunction(){
+    private String generateStartRule(){
         return "fsa(List) :- s" + startState + "(List)";
     }
 
-
+    private String generateAcceptStates(){
+        String acceptStates = "";
+        int i = 0;
+        for(State s : stateTable){
+            if(s.isAcceptState()){
+                acceptStates += "accept(s" + i + ")."; //accept(si).
+            }
+            i++;
+        }
+        return acceptStates;
+    }
 
     private String generateStateHeader(int stateNum){
         return
-                (commentHeaderFooter + "%% s" + stateNum + "   \t\t\t\t\t%%" + commentHeaderFooter);
+                (commentHeaderFooter + "%% s" + stateNum + "   \t\t\t\t\t%%" + commentHeaderFooter + "\n");
     }
 
-    private String generateAcceptRule(int stateNum){
+    private String generateStateData(int stateNum){
         String state = "s" + stateNum;
-        return
-                (state + "([]) :- accept("+ state +").\n");
-    }
-
-    private String generateFunctionCall(int stateNum){
-        String state = "s" + stateNum;
-        return (state + "([Head | Tail]) :- " + state + "(Head, Tail).\n");
+        return (state + "([]) :- accept(" + state + ").\n" +
+                state + "([Head | Tail]) :- " + state + "(Head, Tail).\n");
     }
 }

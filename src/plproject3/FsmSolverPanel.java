@@ -128,6 +128,7 @@ public class FsmSolverPanel extends JPanel {
         gbc.gridwidth = 1;
         gbc.insets = buttonInset;
         generatePrologButton.setEnabled(false);
+        generatePrologButton.addActionListener(new GeneratePrologButtonListener(this));
         this.add(generatePrologButton, gbc);
 
         /**Quick generate Prolog**/
@@ -140,6 +141,7 @@ public class FsmSolverPanel extends JPanel {
         gbc.gridwidth = 1;
         gbc.insets = buttonInset;
         quickGeneratePrologButton.setEnabled(false);
+        quickGeneratePrologButton.addActionListener(new GeneratePrologButtonListener(this));
         this.add(quickGeneratePrologButton, gbc);
 
         this.setVisible(true);
@@ -155,9 +157,13 @@ public class FsmSolverPanel extends JPanel {
         /**Solve button**/
         loadStringButtonListener.setFsmData(loadButtonListener.getFsmData());
         loadStringButtonListener.setWord(this.getWordEntryString());
+
+        /**Enable buttons**/
         solveStringButton.setEnabled(option);
         generateLispButton.setEnabled(option);
         quickGenerateLispButton.setEnabled(option);
+        generatePrologButton.setEnabled(option);
+        quickGeneratePrologButton.setEnabled(option);
 
         /**Set necessary data to generate code**/
         //Set generateLispButton data
@@ -171,6 +177,18 @@ public class FsmSolverPanel extends JPanel {
         generateLispButtonListener = (GenerateLispButtonListener)listeners[0];
         generateLispButtonListener.setFsmData(loadButtonListener.getFsmData());
         generateLispButtonListener.setQuickSave(true);
+
+        //Set generatePrologButton
+        listeners = generatePrologButton.getActionListeners();
+        GeneratePrologButtonListener generatePrologButtonListener = (GeneratePrologButtonListener)listeners[0];
+        generatePrologButtonListener.setFsmData(loadButtonListener.getFsmData());
+        generatePrologButtonListener.setQuickSave(false);
+
+        //Set generatePrologButton quicksave
+        listeners = quickGeneratePrologButton.getActionListeners();
+        generatePrologButtonListener = (GeneratePrologButtonListener)listeners[0];
+        generatePrologButtonListener.setFsmData(loadButtonListener.getFsmData());
+        generatePrologButtonListener.setQuickSave(true);
 
     }
 
