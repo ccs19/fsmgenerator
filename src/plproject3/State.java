@@ -12,27 +12,40 @@ public class State {
     private boolean acceptState;
     private ArrayList<Integer> transitions;
 
+
+    /**
+     * Class representing one state in an FSM
+     */
     State(){
         this.acceptState = false;
         transitions = new ArrayList<Integer>();
 
     }
 
+    /**
+     * Adds a transition to a state
+     * @param transitionTo State to transition to
+     * @param character Character that triggers transition
+     */
     public void addTransition(int transitionTo, String character){
         int intCharacter = (int)character.charAt(0);
         transitions.add(intCharacter);
         transitions.add(transitionTo);
     }
 
+    /**
+     *
+     * @param isAcceptState Set whether or not this state is an accept state
+     */
     public void setAcceptState(boolean isAcceptState){
         this.acceptState = isAcceptState;
     }
 
 
     /**
-     *
-     * @param character
-     * @return
+     *  Returns state to transition to
+     * @param character Input
+     * @return The state to transition to. On failure, return -1
      */
     public int getTransition(String character){
         int intCharacter = (int)character.charAt(0);
@@ -46,6 +59,10 @@ public class State {
         }
     }
 
+    /**
+     *
+     * @return If this is an accept state
+     */
     public boolean isAcceptState(){
         return acceptState;
     }

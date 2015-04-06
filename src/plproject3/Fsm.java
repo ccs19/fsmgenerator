@@ -27,12 +27,20 @@ public class Fsm implements Runnable{
     //Boolean for valid word
     private boolean valid = true;
 
+    /**
+     *
+     * @param fsmData Initialized fsm data
+     * @param word Word to be checked
+     */
     Fsm(FsmData fsmData, String word){
         this.word = word;
         setFsmData(fsmData);
     }
 
-
+    /**
+     * Constructor if no word is to be analyzed
+     * @param fsmData Initialized fsm data
+     */
     Fsm(FsmData fsmData) {
         setFsmData(fsmData);
     }
@@ -145,20 +153,35 @@ public class Fsm implements Runnable{
     }
 
 
-
+    /**
+     *
+     * @return If FSM/String is valid
+     */
     public boolean getValid(){
         return valid;
     }
 
 
+    /**
+     *
+     * @return State table
+     */
     public ArrayList<State> getStateTable(){
         return stateTable;
     }
 
+    /**
+     *
+     * @return Parsed alphabet
+     */
     public ArrayList<String> getParsedAlphabet(){
         return parsedAlphabet;
     }
 
+    /**
+     *
+     * @return Starting state
+     */
     public int getStartState(){
         return startState;
     }

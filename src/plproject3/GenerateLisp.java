@@ -3,7 +3,7 @@ package plproject3;
 import java.util.ArrayList;
 
 /**
- * Created by Chris on 3/30/2015.
+ * Generates a lisp program from a FSM object
  */
 public class GenerateLisp {
 
@@ -13,14 +13,8 @@ public class GenerateLisp {
     private String lispProgram = "";
 
 
-
-
-    //Filename
-    private static final String fileName = "fsm.lsp",
-
-
     //Necessary strings to generate FSM that will be used repeatedly
-    startfunction = "(DEFUN ", /**FunctionName**/
+    private static final String startfunction = "(DEFUN ", /**FunctionName**/
     startFunctionCheckAccept = "(L)" +
             "\n\t(COND" +
                     "\n\t\t((NULL L) ", /**T or NIL**/
@@ -48,7 +42,7 @@ public class GenerateLisp {
 
     /**
      *
-     * @param fsm
+     * @param fsm Initialized FSM data
      */
     public GenerateLisp(Fsm fsm){
         this.parsedAlphabet = fsm.getParsedAlphabet();
@@ -58,7 +52,7 @@ public class GenerateLisp {
 
 
     /**Generates a lisp program and puts it in a string
-     *
+     * @return Lisp program
      */
     public String generateLisp(){
         int numStates = stateTable.size();
@@ -75,8 +69,8 @@ public class GenerateLisp {
 
     /**
      *
-     * @param stateNum
-     * @return
+     * @param stateNum State number
+     * @return A function representing a state
      */
     public String generateStateFunction(int stateNum){
         State state = stateTable.get(stateNum);
@@ -92,26 +86,40 @@ public class GenerateLisp {
         return s;
     }
 
+    /**
+     *
+     * @param s State
+     * @return T or NIL depending on if the state of accepting or not
+     */
     private String isAcceptState(State s){
-        if(s.isAcceptState() == true){
+        if(s.isAcceptState()){
             return "T";
         }
         else return "NIL";
     }
 
+    /**
+     *
+     * @param state A state
+     * @return A string representing state transitions
+     */
     private String getTransitions(State state){
         String transitions = "";
-        for(int i = 0; i < parsedAlphabet.size(); i++){
-            int transition = state.getTransition(parsedAlphabet.get(i));
-            if(transition != -1){
-                transitions += equal + parsedAlphabet.get(i);
+        for (String aParsedAlphabet : parsedAlphabet) {
+            int transition = state.getTransition(aParsedAlphabet);
+            if (transition != -1) {
+                transitions += equal + aParsedAlphabet;
                 transitions += car + "(S" + transition + cdr;
             }
         }
-        if(transitions == "")  transitions += "\n";
+        if(transitions.equals(""))  transitions += "\n";
         return transitions;
     }
 
+    /**
+     *
+     * @return An initial function that calls the starting state function
+     */
     private String generateStartFunction(){
          return fsmFunction + startState + fsmFunction2;
     }

@@ -64,10 +64,18 @@ public class LoadStringButtonListener implements ActionListener{
     }
 
 
+    /**
+     *
+     * @param fsmData Initialized FSM data
+     */
     public void setFsmData(FsmData fsmData){
         this.fsmData = fsmData;
     }
 
+    /**
+     *
+     * @param word Word to be analyzed
+     */
     public void setWord(String word){
         this.word = word;
     }

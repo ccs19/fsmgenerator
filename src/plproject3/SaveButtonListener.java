@@ -31,6 +31,10 @@ public class SaveButtonListener implements ActionListener {
     private static final String separator = ";";
 
 
+    /**
+     *
+     * @param jPanel The main panel
+     */
     SaveButtonListener(FsmCreatorPanel jPanel)
     {
         listenPanel = jPanel;
@@ -66,6 +70,9 @@ public class SaveButtonListener implements ActionListener {
         checkStartState();
     }
 
+    /**
+     * Checks that number of states is valid
+     */
     private void checkNumStates()
     {
         numStatesString = listenPanel.getNumStates();
@@ -73,6 +80,9 @@ public class SaveButtonListener implements ActionListener {
 
     }
 
+    /**
+     * Checks that alphabet is valid
+     */
     private void checkAlphabet()
     {
 
@@ -86,12 +96,19 @@ public class SaveButtonListener implements ActionListener {
         }
     }
 
+
+    /**
+     * Checks that accept states are valid
+     */
     private void checkAccepStates()
     {
         acceptStates = listenPanel.getAcceptStates();
         FsmChecker.checkAcceptStates(acceptStates, unsafeSaveReasons, numStates);
     }
 
+    /**
+     * Checks that state transitions are valid
+     */
     private void checkStateTransitions()
     {
 
@@ -100,12 +117,18 @@ public class SaveButtonListener implements ActionListener {
         FsmChecker.checkStateTransitions(stateTransitions, unsafeSaveReasons, numStates, parsedAlphabet);
     }
 
+    /**
+     * Verifies starting state exists
+     */
     private void checkStartState()
     {
         startStateString = listenPanel.getStartState();
         startState = FsmChecker.checkStartState(numStates, startStateString, unsafeSaveReasons);
     }
 
+    /**
+     * Saves the automaton to disk
+     */
     private void saveAutomaton()
     {
         if(FsmChecker.getNfaFound()){

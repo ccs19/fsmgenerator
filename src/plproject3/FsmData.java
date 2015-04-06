@@ -3,7 +3,7 @@ package plproject3;
 import java.util.ArrayList;
 
 /**
- * Created by chris_000 on 4/2/2015.
+ * Class representing data relevant to a finite state machine
  */
 public class FsmData {
 
@@ -18,6 +18,14 @@ public class FsmData {
                         START_STATE = 3, ACCEPT_STATES = 4;
 
 
+    /**
+     * Constructor for finite state machine data
+     * @param acceptStates Accept states
+     * @param stateTransitions Transitions
+     * @param alphabet Alphabet
+     * @param numStates Number of states
+     * @param startState Starting stae
+     */
     public FsmData(ArrayList<Integer> acceptStates, ArrayList<String> stateTransitions,
                    ArrayList<String> alphabet, int numStates, int startState){
         this.acceptStates = acceptStates;
@@ -27,26 +35,45 @@ public class FsmData {
         this.startState = startState;
     }
 
-    public FsmData(){
 
-    }
-
+    /**
+     *
+     * @return Accept states
+     */
     public ArrayList<Integer> getAcceptStates() {
         return acceptStates;
     }
 
+
+    /**
+     *
+     * @return State transitions
+     */
     public ArrayList<String> getStateTransitions() {
         return stateTransitions;
     }
 
+    /**
+     *
+     * @return FSM Alphabet
+     */
     public ArrayList<String> getAlphabet() {
         return alphabet;
     }
 
+    /**
+     *
+     * @return Number of states
+     */
     public int getNumStates() {
         return numStates;
     }
 
+
+    /**
+     *
+     * @return Starting state
+     */
     public int getStartState() {
         return startState;
     }
