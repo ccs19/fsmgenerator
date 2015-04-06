@@ -2,7 +2,9 @@ package plproject3;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Author: Christopher Schneider
@@ -41,7 +43,6 @@ public class FsmSolverPanel extends JPanel {
     private LoadStringButtonListener loadStringButtonListener = null;
 
     //Lisp items
-    private GenerateLispButtonListener lispButtonListener = null;
     private JButton generateLispButton;
     private JButton quickGenerateLispButton;
 
@@ -159,11 +160,13 @@ public class FsmSolverPanel extends JPanel {
         quickGenerateLispButton.setEnabled(option);
 
         /**Set necessary data to generate code**/
+        //Set generateLispButton data
         ActionListener listeners[] = generateLispButton.getActionListeners();
         GenerateLispButtonListener generateLispButtonListener = (GenerateLispButtonListener)listeners[0];
         generateLispButtonListener.setFsmData(loadButtonListener.getFsmData());
         generateLispButtonListener.setQuickSave(false);
 
+        //Set generateLispButton quicksave
         listeners = quickGenerateLispButton.getActionListeners();
         generateLispButtonListener = (GenerateLispButtonListener)listeners[0];
         generateLispButtonListener.setFsmData(loadButtonListener.getFsmData());
@@ -177,8 +180,16 @@ public class FsmSolverPanel extends JPanel {
      */
     public String getWordEntryString(){ return wordEntry.getText();}
 
+    /**
+     * Sets the static text box
+     * @param entry The string to put in the text box
+     */
     public void setWordEntryString(String entry){wordEntry.setText(entry);}
 
+    /**
+     * Creates Menu
+     * @return JMenuBar
+     */
     public JMenuBar generateMenu(){
         /**Create menubar**/
         menuBar = new JMenuBar();

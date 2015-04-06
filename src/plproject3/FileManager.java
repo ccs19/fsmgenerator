@@ -5,12 +5,19 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 
 /**
- * Created by chris_000 on 4/5/2015.
+ * Class to handle opening and writing files.
+ * Used in the FsmSolver
  */
 public class FileManager{
 
     private static String previousDir = ".";
 
+
+    /**
+     * Opens a file a returns a bufferedReader to that file
+     * @param panel The panel associated with the JFileChooser
+     * @return A BufferedReader. If failed, the BufferedReader is null
+     */
     public static BufferedReader openFile(JPanel panel){
         JFileChooser jFileChooser = new JFileChooser();
         jFileChooser.setCurrentDirectory(new File(previousDir));
@@ -28,23 +35,22 @@ public class FileManager{
             }finally{
                 try {
                     previousDir = file.getParent() + "\\"; //Save directory
-                    return bufferedReader;
                 }catch(Exception e){
                     previousDir = "."; //If this fails for some reason, default to application dir
-                    return bufferedReader;
                 }
             }
         }
-        else
-            return bufferedReader;
+        return bufferedReader;
     }
 
 
-
-    public static String getPreviousDir(){
-        return previousDir;
-    }
-
+    /**
+     * Reads a line from a file
+     * @param bufferedReader The buffered reader to read from
+     * @return The line read
+     * @throws IOException
+     * @throws InvalidFsmFormatException
+     */
     public static String readNextLine(BufferedReader bufferedReader) throws IOException, InvalidFsmFormatException{
         String s = bufferedReader.readLine();
         if(s == null)
@@ -52,6 +58,14 @@ public class FileManager{
         return s;
     }
 
+
+    /**
+     * Saves a file through a JFileChooser
+     * @param panel Panel assocaiated with JFileChooser
+     * @param data A string of data to save
+     * @param extension The file extension
+     * @param description Description of the file to save
+     */
     public static void saveFile(JPanel panel, String data, String extension, String description){
         JFileChooser jFileChooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(description, extension);
@@ -77,11 +91,25 @@ public class FileManager{
         }
     }
 
+
+    /**
+     * Saves a file based on a name
+     * @param panel The parent panel if an error message should be shown
+     * @param data The data to save
+     * @param fileName The file name
+     */
     public static void saveFile(JPanel panel, String data, String fileName){
         File file = new File(fileName);
         writeFile(panel, data, file);
     }
 
+
+    /**
+     * Writes data to a file
+     * @param panel The panel to show an error message on
+     * @param data The data to save
+     * @param file The file name
+     */
     private static void writeFile(JPanel panel, String data, File file){
         try {
             BufferedWriter fileWriter = new BufferedWriter(new FileWriter(file));

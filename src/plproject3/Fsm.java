@@ -1,11 +1,9 @@
 package plproject3;
 
-import javax.swing.*;
-import java.sql.Array;
 import java.util.ArrayList;
 
 /**
- * Created by chris_000 on 3/26/2015.
+ * A class representing a finite state machine
  */
 public class Fsm implements Runnable{
 
@@ -19,7 +17,7 @@ public class Fsm implements Runnable{
 
 
     //Options for runnable thread
-    enum checkOption{checkAlphabet, generateStateTable, solveEntry, isValidWord}
+    enum checkOption{ generateStateTable, solveEntry}
 
     private checkOption option;
 
@@ -40,6 +38,10 @@ public class Fsm implements Runnable{
     }
 
 
+    /**
+     * Sets fsmData
+     * @param fsmData Initialized FsmData object
+     */
     public void setFsmData(FsmData fsmData){
         currentState = fsmData.getStartState();
         this.startState = fsmData.getStartState();
@@ -49,29 +51,31 @@ public class Fsm implements Runnable{
         this.parsedAcceptStates = fsmData.getAcceptStates();
     }
 
+    /**
+     * Set the runnable option
+     * @param option  Runnable option
+     */
     public void setOption(checkOption option){
         this.option = option;
     }
 
 
+
     public void run(){
         switch(option) {
-            case checkAlphabet:
-                if (null == word) throw new RuntimeException("Word in Fsm not initialized!");
-                checkAlphabet();
-                break;
-
             case generateStateTable:
-                if (!valid) return; //If invalid, do nothing
                 generateStateTable();
                 break;
 
             case solveEntry:
+                if(null == word) throw new RuntimeException("Word in Fsm not Initialized!");
+                checkAlphabet();
                 if (!valid) return; //If invalid, do nothing
+                generateStateTable();
                 solveEntry();
                 break;
         }
-        }
+    }
 
 
 
@@ -107,15 +111,15 @@ public class Fsm implements Runnable{
         }
 
         //then fill states with transitions
-        for(int i = 0; i < parsedStateTransitions.size(); i++){
-            String s[] = parsedStateTransitions.get(i).split("\\(");
+        for (String parsedStateTransition : parsedStateTransitions) {
+            String s[] = parsedStateTransition.split("\\(");
             s = s[1].split("\\)");
             s = s[0].split(":");
-            try{
+            try {
                 int state = Integer.parseInt(s[CUR_STATE]);
                 int transitionState = Integer.parseInt(s[TRANS_STATE]);
                 stateTable.get(state).addTransition(transitionState, s[CHAR]);
-            } catch(NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.err.println("Failed to convert state transition! Data was already parsed... this shouldn't happen!");
             }
         }

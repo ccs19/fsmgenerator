@@ -3,30 +3,24 @@ package plproject3;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by chris_000 on 4/2/2015.
+ * Listener for generate lisp button
  */
 public class GenerateLispButtonListener implements ActionListener {
 
     //Generated state machine
     private Fsm fsm;
-    //Fsm data
-    private FsmData fsmData;
+
 
     //Parent JPanel and load listener with data
     private FsmSolverPanel parent = null;
-    private LoadButtonListener loadButtonListener = null;
-
-    //word to check
-    private String word = null;
 
     //Quicksave option
-    private boolean quickSave;
+    private boolean quickSave = false;
 
     //Executor thread info
     private int timeOut = 5;
@@ -55,18 +49,24 @@ public class GenerateLispButtonListener implements ActionListener {
         printData();
     }
 
+    /**
+     * Makes a call to generate lisp and saves the data
+     */
     private void printData(){
         GenerateLisp g = new GenerateLisp(fsm);
         String lispData = g.generateLisp();
         if(!quickSave)
             FileManager.saveFile(parent,lispData, lispExt, lispDescription);
-        else if (quickSave){
+        else {
             FileManager.saveFile(parent, lispData, quickSaveName);
         }
     }
 
+    /**
+     * Sets the fsmData and generates the state machine based on that data
+     * @param fsmData Data of the FSM
+     */
     public void setFsmData(FsmData fsmData){
-        this.fsmData = fsmData;
         fsm = new Fsm(fsmData);
         fsm.setOption(Fsm.checkOption.generateStateTable);
         fsmThread = Executors.newSingleThreadExecutor();
@@ -80,6 +80,10 @@ public class GenerateLispButtonListener implements ActionListener {
     }
 
 
+    /**
+     * Sets the quicksave option
+     * @param option Whether or not this listener should quicksave
+     */
     public void setQuickSave(boolean option){
         this.quickSave = option;
     }

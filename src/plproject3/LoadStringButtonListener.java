@@ -4,8 +4,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +20,7 @@ public class LoadStringButtonListener implements ActionListener{
     FsmData fsmData;
 
     //Timeout for executor thread in seconds
-    int timeOut = 5;
+    int timeOut = 30;
 
 
     //Parent JPanel and load listener with data
@@ -41,7 +39,6 @@ public class LoadStringButtonListener implements ActionListener{
      */
     LoadStringButtonListener(FsmSolverPanel fsmSolverPanel){
         parent = fsmSolverPanel;
-
     }
 
 
@@ -80,7 +77,6 @@ public class LoadStringButtonListener implements ActionListener{
         boolean result = loadString();
         if(result)
             checkWord();
-
     }
 
 
@@ -91,7 +87,9 @@ public class LoadStringButtonListener implements ActionListener{
     private void checkWord(){
         checkWordThread = Executors.newSingleThreadExecutor();
         fsm = new Fsm(fsmData, word);
+        fsm.setOption(Fsm.checkOption.solveEntry);
         checkWordThread.submit(fsm);
+
         checkWordThread.shutdown();
         try {
             checkWordThread.awaitTermination(timeOut, TimeUnit.SECONDS);
@@ -112,10 +110,10 @@ public class LoadStringButtonListener implements ActionListener{
             System.out.println(fsmData.getAcceptStates().get(i));
         }
         if(fsm.getValid()){
-            JOptionPane.showMessageDialog(parent, "String is valid for this FSM!", "Valid String!", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(parent, "String is valid for this FSM!", "Valid String!", JOptionPane.INFORMATION_MESSAGE);
         }
         else{
-            JOptionPane.showMessageDialog(parent, "String is not valid for this FSM", "Invalid String!", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(parent, "String is not valid for this FSM", "Invalid String!", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }
