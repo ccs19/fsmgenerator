@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="fsmgenerator:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/fsmgenerator_jar</output-path>
+    <root id="archive" name="fsmgenerator.jar">
+      <element id="module-output" name="fsmgenerator" />
+    </root>
+  </artifact>
+</component>

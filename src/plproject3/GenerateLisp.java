@@ -31,7 +31,6 @@ public class GenerateLisp {
      fsmFunction = "(DEFUN FSM (L)" +
             "\n\t(COND" +
             "\n\t\t" +
-            checkAtom +
             "\n\t\t" +
             "((EQUAL T (S",
      fsmFunction2 = " L)) (PRINC \"This is a valid string!\"))" +

@@ -4,5 +4,5 @@
     <entry_points version="2.0" />
   </component>
   <component name="IdProvider" IDEtalkID="1B89AFFA87BFB0D5B0C624ECB64E46C0" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
 </project>
