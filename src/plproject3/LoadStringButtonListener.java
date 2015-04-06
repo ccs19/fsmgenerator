@@ -49,18 +49,22 @@ public class LoadStringButtonListener implements ActionListener{
     private boolean loadString(){
 
         BufferedReader b = FileManager.openFile(parent);
+        String s = "";
         if(b == null) return false;
         else {
             try {
-                String s = FileManager.readNextLine(b);
-                parent.setWordEntryString(s);
-                this.setWord(s);
+                int nextChar;
+                while(true) {
+                    nextChar = b.read();
+                    if(nextChar == -1) break;
+                    s += (char)nextChar;
+                }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(parent, "Error Reading File", "File Read Error", JOptionPane.ERROR_MESSAGE);
                 return false;
-            }
-            return true;
+            } finally { this.setWord(s); }
         }
+        return true;
     }
 
 
