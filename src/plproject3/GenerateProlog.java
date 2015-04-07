@@ -17,7 +17,7 @@ public class GenerateProlog {
     //Necessary strings to generate FSM that will be used repeatedly
 
     private static final String commentHeaderFooter = "%%**************************%%\n",
-    acceptStatesHeader = commentHeaderFooter + "%% Accept States\t\t\t%%\n\n" + commentHeaderFooter,
+    acceptStatesHeader = commentHeaderFooter + "%% Accept States\t\t\t%%\n" + commentHeaderFooter + "\n",
     rulesHeader = commentHeaderFooter + "%% RULES \t\t\t\t\t%%\n" + commentHeaderFooter;
 
 
@@ -44,9 +44,9 @@ public class GenerateProlog {
         prologProgram += generateStartRule();
 
         for(int i = 0; i < numStates; i++){
-            prologProgram += generateStateData(i);
             prologProgram += generateStateHeader(i);
-            prologProgram += getTransitions(stateTable.get(0), i);
+            prologProgram += generateStateData(i);
+            prologProgram += getTransitions(stateTable.get(i), i);
         }
 
         System.out.println(prologProgram);
@@ -76,7 +76,7 @@ public class GenerateProlog {
      * @return An initial function that calls the starting state function
      */
     private String generateStartRule(){
-        return "fsa(List) :- s" + startState + "(List)";
+        return "fsa(List) :- s" + startState + "(List)\n\n";
     }
 
     private String generateAcceptStates(){
@@ -84,7 +84,7 @@ public class GenerateProlog {
         int i = 0;
         for(State s : stateTable){
             if(s.isAcceptState()){
-                acceptStates += "accept(s" + i + ")."; //accept(si).
+                acceptStates += "accept(s" + i + ").\n\n"; //accept(si).
             }
             i++;
         }
@@ -93,7 +93,7 @@ public class GenerateProlog {
 
     private String generateStateHeader(int stateNum){
         return
-                (commentHeaderFooter + "%% s" + stateNum + "   \t\t\t\t\t%%" + commentHeaderFooter + "\n");
+                ("\n" + commentHeaderFooter + "%% s" + stateNum + "   \t\t\t\t\t%%\n" + commentHeaderFooter + "\n");
     }
 
     private String generateStateData(int stateNum){
