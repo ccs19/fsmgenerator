@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="fsmgenerator:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/fsmgenerator_jar</output-path>
+    <output-path>C:/Dropbox/S15/PL/PrologForClass/bin</output-path>
     <root id="archive" name="fsmgenerator.jar">
       <element id="module-output" name="fsmgenerator" />
     </root>

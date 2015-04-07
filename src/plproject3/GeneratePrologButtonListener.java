@@ -30,8 +30,8 @@ public class GeneratePrologButtonListener implements ActionListener {
     private static final String quickSaveName = "fsa.pl";
 
     //Manual save info
-    private static final String lispExt = ".pl",
-            lispDescription = "Prolog (*.pl)";
+    private static final String prologExt = ".pl",
+            prologDescription = "Prolog (*.pl)";
 
 
 
@@ -56,7 +56,7 @@ public class GeneratePrologButtonListener implements ActionListener {
         GenerateProlog g = new GenerateProlog(fsm);
         String prologData = g.generateProlog();
         if(!quickSave)
-            FileManager.saveFile(parent,prologData, lispExt, lispDescription);
+            FileManager.saveFile(parent,prologData, prologExt, prologDescription);
         else {
             FileManager.saveFile(parent, prologData, quickSaveName);
         }

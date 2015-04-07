@@ -76,7 +76,7 @@ public class GenerateProlog {
      * @return An initial function that calls the starting state function
      */
     private String generateStartRule(){
-        return "fsa(List) :- s" + startState + "(List)\n\n";
+        return "fsa(List) :- s" + startState + "(List).\n\n";
     }
 
     private String generateAcceptStates(){
