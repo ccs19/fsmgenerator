@@ -30,7 +30,7 @@ public class GenerateLispButtonListener implements ActionListener {
     private static final String quickSaveName = "fsm.lsp";
 
     //Manual save info
-    private static final String lispExt = ".lsp",
+    private static final String lispExt = "lsp",
             lispDescription = "Lisp (*.lsp)";
 
 

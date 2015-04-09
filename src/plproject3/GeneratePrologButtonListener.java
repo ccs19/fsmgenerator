@@ -30,7 +30,7 @@ public class GeneratePrologButtonListener implements ActionListener {
     private static final String quickSaveName = "fsa.pl";
 
     //Manual save info
-    private static final String prologExt = ".pl",
+    private static final String prologExt = "pl",
             prologDescription = "Prolog (*.pl)";
 
 

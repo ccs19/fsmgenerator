@@ -15,7 +15,6 @@ public class GenerateProlog {
 
 
     //Necessary strings to generate FSM that will be used repeatedly
-
     private static final String commentHeaderFooter = "%%**************************%%\n",
     acceptStatesHeader = commentHeaderFooter + "%% Accept States\t\t\t%%\n" + commentHeaderFooter + "\n",
     rulesHeader = commentHeaderFooter + "%% RULES \t\t\t\t\t%%\n" + commentHeaderFooter;
@@ -109,7 +108,7 @@ public class GenerateProlog {
 
     /**
      * Generates state transition data common to all states
-     * @param stateNum
+     * @param stateNum state number
      * @return String of state transitions.
      */
     private String generateStateData(int stateNum){
