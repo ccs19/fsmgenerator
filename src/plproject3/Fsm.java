@@ -12,14 +12,17 @@ import java.util.ArrayList;
 
 
 
+///aosdfuadfsifddfodsfasfosfd
 
-//aosifdadfsusdidfssdfp\0ppp
+
 
 
 /**
  * A class representing a finite state machine
  */
 public class Fsm implements Runnable{
+
+    private int duudududududuududdu;
 
     private int currentState;
     private int numStates;
