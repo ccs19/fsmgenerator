@@ -23,7 +23,9 @@ public class FsmSolverPanel extends JPanel {
     private static final String generatePrologQuickString = "Generate Prolog Quick";
 
     //Menu data
-    private static final String menuLabelFile = "Load FSA";
+    private static final String loadFsaMenuLabel = "Load FSA";
+    private static final String prologQueriesMenuLabel = "Prolog Queries";
+    private static final String setQueriesMenuLabel = "Set Queries";
 
     //GridBagConstraints padding
     private static final Insets labelInset = new Insets(10,10,0,10);
@@ -44,7 +46,6 @@ public class FsmSolverPanel extends JPanel {
     private final JButton quickGenerateLispButton;
 
     //Prolog items
-    //private GeneratePrologButtonListener generatePrologButtonListener = null;
     private final JButton generatePrologButton;
     private final JButton quickGeneratePrologButton;
 
@@ -142,6 +143,11 @@ public class FsmSolverPanel extends JPanel {
         this.add(quickGeneratePrologButton, gbc);
 
         this.setVisible(true);
+
+
+        PrologQueriesWindow pWindow = new PrologQueriesWindow(this);
+        pWindow.setEnabled(true);
+        pWindow.setVisible(true);
     }
 
 
@@ -210,8 +216,8 @@ public class FsmSolverPanel extends JPanel {
         JMenuBar menuBar = new JMenuBar();
 
         /**Add file**/
-        JMenu menu = new JMenu(menuLabelFile);
-        menu.getAccessibleContext().setAccessibleDescription(menuLabelFile);
+        JMenu menu = new JMenu(loadFsaMenuLabel);
+        menu.getAccessibleContext().setAccessibleDescription(loadFsaMenuLabel);
         menuBar.add(menu);
 
         /**Load FSA item**/
@@ -228,6 +234,16 @@ public class FsmSolverPanel extends JPanel {
                 System.exit(0);
             }
         });
+        menu.add(menuItem);
+
+        /**Add query menu option for Prolog**/
+        menu = new JMenu(prologQueriesMenuLabel);
+        menu.getAccessibleContext().setAccessibleDescription(prologQueriesMenuLabel);
+        menuBar.add(menu);
+
+        /**Generate queries item**/
+        menuItem = new JMenuItem(setQueriesMenuLabel);
+        //menuItem.addMouseListener(new setQueriesListener(this));
         menu.add(menuItem);
 
         return menuBar;
