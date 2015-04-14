@@ -7,10 +7,9 @@ import java.util.ArrayList;
  */
 public class GenerateLisp {
 
-    private ArrayList<State> stateTable;
-    private ArrayList<String> parsedAlphabet;
-    private int startState;
-    private String lispProgram = "";
+    private final ArrayList<State> stateTable;
+    private final ArrayList<String> parsedAlphabet;
+    private final int startState;
 
 
     //Necessary strings to generate FSM that will be used repeatedly
@@ -55,7 +54,7 @@ public class GenerateLisp {
      */
     public String generateLisp(){
         int numStates = stateTable.size();
-        lispProgram = generateStartFunction();
+        String lispProgram = generateStartFunction();
         lispProgram += "\n\n";
 
         for(int i = 0; i < numStates; i++){

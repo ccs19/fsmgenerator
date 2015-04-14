@@ -1,7 +1,7 @@
 package plproject3;
 
 /**
- * Created by chris_000 on 4/5/2015.
+ * Exception to be thrown if invalid format is found.
  */
 public class InvalidFsmFormatException extends Exception {
 

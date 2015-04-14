@@ -14,27 +14,28 @@ public class FsmCreatorPanel extends JPanel
 {
 
     //Text field lengths
-    final private int JTF_NUMSTATES  = 5;
-    final private int JTF_ALPHABET = 10;
-    final private int JTF_TRANSITIONS = 20;
-    final private int JTF_STARTSTATE = 5;
-    final private int JTF_ACCEPTSTATES = 10;
+
+    private static final int JTF_NUMSTATES  = 5;
+    private static final int JTF_ALPHABET = 10;
+    private static final int JTF_TRANSITIONS = 20;
+    private static final int JTF_STARTSTATE = 5;
+    private static final int JTF_ACCEPTSTATES = 10;
 
 
     //Text field label strings
-    final private String numStatesString = "Number of states\n (0 - n-1)";
-    final private String startStateString = "Start State";
-    final private String acceptStatesString = "Accept States (Seperated by commas)";
-    final private String alphabetString = "Alphabet (Seperated by commas)";
-    final private String[] transitionsString = {"State Transistions (Seperate by commas)" , "Format: (current:dest:input)"};
-    final private String saveString = "Save";
-    final private String exitString = "Exit";
-    final private String exitConfirmMessage = "Are you sure you want to exit?\nUnsaved automaton will be lost.";
+    private static final String numStatesString = "Number of states\n (0 - n-1)";
+    private static final String startStateString = "Start State";
+    private static final String acceptStatesString = "Accept States (Seperated by commas)";
+    private static final String alphabetString = "Alphabet (Seperated by commas)";
+    private static final String[] transitionsString = {"State Transistions (Seperate by commas)" , "Format: (current:dest:input)"};
+    private static final String saveString = "Save";
+    private static final String exitString = "Exit";
+    private static final String exitConfirmMessage = "Are you sure you want to exit?\nUnsaved automaton will be lost.";
 
 
     //GridBagConstraints padding
-    Insets labelInset = new Insets(10,10,0,10);
-    Insets textFieldInset = new Insets(0,10,10,10);
+    private static final Insets labelInset = new Insets(10,10,0,10);
+    private static final Insets textFieldInset = new Insets(0,10,10,10);
 
 
     //User input fields

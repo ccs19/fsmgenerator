@@ -103,7 +103,7 @@ public class Fsm implements Runnable{
     }
 
     //Indices for state transitions
-    private final int CUR_STATE = 0,
+    private static final int CUR_STATE = 0,
             TRANS_STATE = 1,
             CHAR = 2;
 

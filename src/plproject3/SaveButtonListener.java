@@ -13,11 +13,9 @@ import java.util.ArrayList;
  */
 public class SaveButtonListener implements ActionListener {
 
-    private FsmCreatorPanel listenPanel;
+    private final FsmCreatorPanel listenPanel;
     private String numStatesString = "";
     private int numStates = 0;
-    private int startState = 0;
-    private int alphabetLength = 0;
     private String alphabet = "";
     private String parsedAlphabet[];
     private String stateTransitions = "";
@@ -88,6 +86,7 @@ public class SaveButtonListener implements ActionListener {
 
         alphabet = listenPanel.getAlphabet();
         parsedAlphabet = FsmChecker.checkAlphabet(alphabet, unsafeSaveReasons);
+        int alphabetLength = 0;
         if(parsedAlphabet != null) {
             alphabetLength = parsedAlphabet.length;
         }
@@ -123,7 +122,7 @@ public class SaveButtonListener implements ActionListener {
     private void checkStartState()
     {
         startStateString = listenPanel.getStartState();
-        startState = FsmChecker.checkStartState(numStates, startStateString, unsafeSaveReasons);
+        int startState = FsmChecker.checkStartState(numStates, startStateString, unsafeSaveReasons);
     }
 
     /**

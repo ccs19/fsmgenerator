@@ -16,11 +16,11 @@ import java.util.concurrent.TimeUnit;
 public class LoadStringButtonListener implements ActionListener{
 
     //Generated state machine
-    Fsm fsm;
-    FsmData fsmData;
+    private Fsm fsm;
+    private FsmData fsmData;
 
     //Timeout for executor thread in seconds
-    int timeOut = 30;
+    private static final int timeOut = 30;
 
 
     //Parent JPanel and load listener with data
@@ -28,9 +28,6 @@ public class LoadStringButtonListener implements ActionListener{
 
     //word to check
     private String word = null;
-
-    //Thread to run checking
-    private ExecutorService checkWordThread;
 
 
     /**
@@ -97,7 +94,7 @@ public class LoadStringButtonListener implements ActionListener{
      * Submits data to checkWordThread
      */
     private void checkWord(){
-        checkWordThread = Executors.newSingleThreadExecutor();
+        ExecutorService checkWordThread = Executors.newSingleThreadExecutor();
         fsm = new Fsm(fsmData, word);
         fsm.setOption(Fsm.checkOption.solveEntry);
         checkWordThread.submit(fsm);

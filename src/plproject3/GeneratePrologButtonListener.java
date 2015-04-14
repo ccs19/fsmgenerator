@@ -23,8 +23,7 @@ public class GeneratePrologButtonListener implements ActionListener {
     private boolean quickSave = false;
 
     //Executor thread info
-    private int timeOut = 5;
-    private ExecutorService fsmThread;
+    private static final int timeOut = 5;
 
     //Quick save filename
     private static final String quickSaveName = "fsa.pl";
@@ -69,7 +68,7 @@ public class GeneratePrologButtonListener implements ActionListener {
     public void setFsmData(FsmData fsmData){
         fsm = new Fsm(fsmData);
         fsm.setOption(Fsm.checkOption.generateStateTable);
-        fsmThread = Executors.newSingleThreadExecutor();
+        ExecutorService fsmThread = Executors.newSingleThreadExecutor();
         fsmThread.submit(fsm);
         fsmThread.shutdown();
         try{

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class State {
 
     private boolean acceptState;
-    private ArrayList<Integer> transitions;
+    private final ArrayList<Integer> transitions;
 
 
     /**

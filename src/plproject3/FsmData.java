@@ -7,11 +7,11 @@ import java.util.ArrayList;
  */
 public class FsmData {
 
-    private ArrayList<String> stateTransitions;
-    private ArrayList<String> alphabet;
-    private int numStates;
-    private int startState;
-    private ArrayList<Integer> acceptStates;
+    private final ArrayList<String> stateTransitions;
+    private final ArrayList<String> alphabet;
+    private final int numStates;
+    private final int startState;
+    private final ArrayList<Integer> acceptStates;
 
     //Expected array index for fsm attributes
     public static final int NUM_STATES = 0, ALPHABET = 1, TRANSITIONS = 2,

@@ -21,7 +21,7 @@ public class LoadButtonListener implements MouseListener {
 
 
     //Parent of the listener
-    private FsmSolverPanel listenPanel;
+    private final FsmSolverPanel listenPanel;
 
     //Raw data
     private String stateTransitionsString = "";
@@ -111,10 +111,7 @@ public class LoadButtonListener implements MouseListener {
     private boolean openFile(){
 
         fileReader = FileManager.openFile(listenPanel);
-        if(fileReader == null)
-            return false;
-        else
-            return true;
+        return fileReader != null;
     }
 
     /**

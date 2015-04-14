@@ -23,33 +23,30 @@ public class FsmSolverPanel extends JPanel {
     private static final String generatePrologQuickString = "Generate Prolog Quick";
 
     //Menu data
-    private final String menuLabelFile = "Load FSA";
-    private JMenuBar menuBar;
-    private JMenu menu;
-    private JMenuItem menuItem;
+    private static final String menuLabelFile = "Load FSA";
 
     //GridBagConstraints padding
     private static final Insets labelInset = new Insets(10,10,0,10);
     private static final Insets buttonInset = new Insets(0,10,10,10);
 
     //Buttons
-    private JButton solveStringButton;
+    private final JButton solveStringButton;
 
     //Text field
-    private JTextField wordEntry;
+    private final JTextField wordEntry;
 
     //Load listener
     private LoadButtonListener loadButtonListener = null;
     private LoadStringButtonListener loadStringButtonListener = null;
 
     //Lisp items
-    private JButton generateLispButton;
-    private JButton quickGenerateLispButton;
+    private final JButton generateLispButton;
+    private final JButton quickGenerateLispButton;
 
     //Prolog items
     //private GeneratePrologButtonListener generatePrologButtonListener = null;
-    private JButton generatePrologButton;
-    private JButton quickGeneratePrologButton;
+    private final JButton generatePrologButton;
+    private final JButton quickGeneratePrologButton;
 
 
     //Constants
@@ -210,26 +207,26 @@ public class FsmSolverPanel extends JPanel {
      */
     public JMenuBar generateMenu(){
         /**Create menubar**/
-        menuBar = new JMenuBar();
+        JMenuBar menuBar = new JMenuBar();
 
         /**Add file**/
-        menu = new JMenu(menuLabelFile);
+        JMenu menu = new JMenu(menuLabelFile);
         menu.getAccessibleContext().setAccessibleDescription(menuLabelFile);
         menuBar.add(menu);
 
         /**Load FSA item**/
         loadButtonListener = new LoadButtonListener(this);
-        menuItem = new JMenuItem(loadString);
+        JMenuItem menuItem = new JMenuItem(loadString);
         menuItem.addMouseListener(loadButtonListener);
         menu.add(menuItem);
 
         /**Exit item**/
         menuItem = new JMenuItem(exitString);
-        menuItem.addMouseListener(new MouseAdapter(){
-           @Override
-            public void mousePressed(MouseEvent m){
-               System.exit(0);
-           }
+        menuItem.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent m) {
+                System.exit(0);
+            }
         });
         menu.add(menuItem);
 

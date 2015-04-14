@@ -178,17 +178,17 @@ public class FsmChecker {
 
             //compile regex pattern and check each transition syntax
             Pattern transitionsPattern = Pattern.compile(transitionsFormat);
-            for (int i = 0; i < parsedTransitions.length; i++) {
-                Matcher transitionMatcher = transitionsPattern.matcher(parsedTransitions[i]);
-                if (false == transitionMatcher.matches()) {
+            for (String parsedTransition : parsedTransitions) {
+                Matcher transitionMatcher = transitionsPattern.matcher(parsedTransition);
+                if (!transitionMatcher.matches()) {
                     unsafeAdd(UnsafeReasons.patternSplitFail, fieldName, errorList);
                     return null;
                 }
             }
 
             //Check each transition for validity
-            for (int i = 0; i < parsedTransitions.length; i++) {
-                String[] openParen = parsedTransitions[i].split("\\(");
+            for (String parsedTransition : parsedTransitions) {
+                String[] openParen = parsedTransition.split("\\(");
                 String[] closeParen = openParen[openParen.length - 1].split("\\)");
                 String[] result = closeParen[closeParen.length - 1].split(":");
                 int result0 = Integer.parseInt(result[0]);
@@ -201,7 +201,7 @@ public class FsmChecker {
                 }
 
                 //Then check that entry exists in alphabet
-                if (Arrays.asList(alphabet).contains(result[2]) == false) {
+                if (!Arrays.asList(alphabet).contains(result[2])) {
                     unsafeAdd(UnsafeReasons.notInAlphabet, fieldName, errorList);
                     return null;
                 }
@@ -254,6 +254,7 @@ public class FsmChecker {
      * @param fieldName Text field where error was encountered
      * @param invalidReasons List of errors encountered
      */
+    @SuppressWarnings("PointlessBooleanExpression")
     private static void unsafeAdd(UnsafeReasons reason, String fieldName, ArrayList<String> invalidReasons){
         String messageToAdd = "Invalid entry in " + fieldName +": ";
         switch (reason) {

@@ -8,9 +8,9 @@ import java.util.ArrayList;
 public class GenerateProlog {
 
 
-    private ArrayList<State> stateTable;
-    private ArrayList<String> parsedAlphabet;
-    private int startState;
+    private final ArrayList<State> stateTable;
+    private final ArrayList<String> parsedAlphabet;
+    private final int startState;
     private String prologProgram = "";
 
 
