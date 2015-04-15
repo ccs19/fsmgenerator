@@ -45,6 +45,7 @@ public class GenerateLispButtonListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        fsm.setQueryStrings(parent.getQueryStrings());
         printData();
     }
 

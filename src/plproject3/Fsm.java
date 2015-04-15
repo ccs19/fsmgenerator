@@ -189,6 +189,13 @@ public class Fsm implements Runnable{
     }
 
     public ArrayList<String> getQueryStrings(){return queryStrings;}
+
+    /**
+     * Needed in case user loads Fsm before setting Prolog query strings
+     */
+    public void setQueryStrings(ArrayList<String> queryStrings){
+        this.queryStrings = queryStrings;
+    }
 }
 
 

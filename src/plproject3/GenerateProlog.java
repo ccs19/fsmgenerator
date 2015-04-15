@@ -128,13 +128,14 @@ public class GenerateProlog {
             for(String s: queryStrings){
                 if(s.length() > 0 && s != null){
                     queries += "query" + count + " :- fsa([" + s + "]).\n";
+                    count++;
                 }
             }
         }
         if(queries.length() == 0){
-            queries += commentHeaderFooter + "\n%% No queries generated %%\n" + commentHeaderFooter;
+            queries += commentHeaderFooter + "%% No queries generated     %%\n" + commentHeaderFooter;
         } else{
-            queries = commentHeaderFooter + "\n%% Queries %%\n" + commentHeaderFooter +"\n" + queries;
+            queries = commentHeaderFooter + "%% Queries                  %%\n" + commentHeaderFooter +"\n" + queries;
         }
         return queries;
     }

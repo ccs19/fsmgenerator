@@ -99,6 +99,7 @@ public class PrologQueriesWindow extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 setParentStrings(parent);
                 enableMainWindow(true);
+                ((FsmSolverPanel) parent).unregisterWindowListener();
                 PrologQueriesWindow.this.dispose();
             }
         });
@@ -111,6 +112,7 @@ public class PrologQueriesWindow extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 ((FsmSolverPanel) parent).setQueryStrings(null);
                 enableMainWindow(true);
+                ((FsmSolverPanel) parent).unregisterWindowListener();
                 PrologQueriesWindow.this.dispose();
             }
         });
@@ -149,8 +151,7 @@ public class PrologQueriesWindow extends JDialog {
             public void windowClosing(WindowEvent e) {
                 enableMainWindow(true);
                 ((FsmSolverPanel) parent).setQueryStrings(null);
-                JFrame mainFrame = (JFrame)SwingUtilities.windowForComponent(parent);
-                mainFrame.removeWindowListener(mainFrame.getWindowListeners()[0]);
+                ((FsmSolverPanel) parent).unregisterWindowListener();
                 PrologQueriesWindow.this.setVisible(false);
                 PrologQueriesWindow.this.dispose();
             }

@@ -48,6 +48,9 @@ public class FsmSolverPanel extends JPanel {
     private final JButton generatePrologButton;
     private final JButton quickGeneratePrologButton;
 
+    //Window listener for focus
+    private WindowListener mainFrameWindowListener;
+    private boolean mainFrameWindowListenerEnabled;
 
     //Constants
     private static final int JTF_STRINGENTRYLEN = 15;
@@ -242,6 +245,7 @@ public class FsmSolverPanel extends JPanel {
                                           super.mousePressed(e);
                                           PrologQueriesWindow prologQueriesWindow = new PrologQueriesWindow(FsmSolverPanel.this);
                                           setPrologQueriesWindowFocus(prologQueriesWindow);
+                                          mainFrameWindowListenerEnabled = true;
                                       }
                                   });
                 menu.add(menuItem);
@@ -280,7 +284,8 @@ public class FsmSolverPanel extends JPanel {
 
     private void setPrologQueriesWindowFocus(final PrologQueriesWindow prologQueriesWindow){
         JFrame mainFrame = (JFrame)SwingUtilities.windowForComponent(this);
-        mainFrame.addWindowListener(new WindowListener() {
+
+        mainFrameWindowListener = new WindowListener(){
             @Override
             public void windowOpened(WindowEvent e) {
 
@@ -315,7 +320,16 @@ public class FsmSolverPanel extends JPanel {
             public void windowDeactivated(WindowEvent e) {
                 prologQueriesWindow.setAlwaysOnTop(false);
             }
-        });
+        };
 
+        mainFrame.addWindowListener(mainFrameWindowListener);
+    }
+
+    public void unregisterWindowListener(){
+        if(mainFrameWindowListenerEnabled){
+            JFrame mainFrame = (JFrame)SwingUtilities.windowForComponent(this);
+            mainFrame.removeWindowListener(mainFrameWindowListener);
+            mainFrameWindowListenerEnabled = false;
+        }
     }
 }
