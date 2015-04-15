@@ -64,7 +64,8 @@ s4(a, List) :- s1(List).
 %% queries 					%%
 %%**************************%%
 
-%%good :- fsa(
+good :- fsa([x,x,x,x,x,y,x,x,x,y,x,x,x,z,x,x,x,a]).
+bad :- fsa([x,x,x,x,x,x,x,x,x,x,x,x,x,x,y,x,x,x,y,x,x,x,y,z,x,x,z,x,a]).
 
 
 

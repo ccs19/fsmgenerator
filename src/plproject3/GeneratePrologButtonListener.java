@@ -26,7 +26,7 @@ public class GeneratePrologButtonListener implements ActionListener {
     private static final int timeOut = 5;
 
     //Quick save filename
-    private static final String quickSaveName = "fsa.pl";
+    private static final String quickSaveName = "fsm.pl";
 
     //Manual save info
     private static final String prologExt = "pl",
