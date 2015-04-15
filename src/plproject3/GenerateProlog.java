@@ -145,6 +145,11 @@ public class GenerateProlog {
         return queries;
     }
 
+    /**
+     * Seperates a string's individual characters with commas
+     * @param queryString the string
+     * @return broken string
+     */
     private String breakQuery(String queryString){
         String brokenQuery = "";
         int stringLen = queryString.length();

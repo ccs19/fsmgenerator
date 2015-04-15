@@ -49,7 +49,7 @@ public class FsmSolverPanel extends JPanel {
     private final JButton quickGeneratePrologButton;
 
     //Window listener for focus
-    private WindowListener mainFrameWindowListener;
+    private WindowAdapter mainFrameWindowListener;
     private boolean mainFrameWindowListenerEnabled;
 
     //Constants
@@ -277,35 +277,15 @@ public class FsmSolverPanel extends JPanel {
         return this.queryStrings;
     }
 
+    /**
+     * Creates a window listener for the JFrame that ensure the Prolog
+     * queries string window is always on top and in front.
+     * @param prologQueriesWindow prologQueriesWindow
+     */
     private void setPrologQueriesWindowFocus(final PrologQueriesWindow prologQueriesWindow){
         JFrame mainFrame = (JFrame)SwingUtilities.windowForComponent(this);
 
-        mainFrameWindowListener = new WindowListener(){
-            @Override
-            public void windowOpened(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowClosed(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowIconified(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-
-            }
-
+        mainFrameWindowListener = new WindowAdapter(){
             @Override
             public void windowActivated(WindowEvent e) {
                 prologQueriesWindow.setAlwaysOnTop(true);
