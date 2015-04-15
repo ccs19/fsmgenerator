@@ -10,6 +10,7 @@ public class GenerateProlog {
 
     private final ArrayList<State> stateTable;
     private final ArrayList<String> parsedAlphabet;
+    private final ArrayList<String> queryStrings;
     private final int startState;
     private String prologProgram = "";
 
@@ -28,6 +29,7 @@ public class GenerateProlog {
         this.parsedAlphabet = fsm.getParsedAlphabet();
         this.startState = fsm.getStartState();
         this.stateTable = fsm.getStateTable();
+        this.queryStrings = fsm.getQueryStrings();
     }
 
 
@@ -47,6 +49,7 @@ public class GenerateProlog {
             prologProgram += generateStateData(i);
             prologProgram += getTransitions(stateTable.get(i), i);
         }
+        prologProgram += generateQueries();
 
         System.out.println(prologProgram);
         return prologProgram;
@@ -115,5 +118,24 @@ public class GenerateProlog {
         String state = "s" + stateNum;
         return (state + "([]) :- accept(" + state + ").\n" +
                 state + "([Head | Tail]) :- " + state + "(Head, Tail).\n");
+    }
+
+    private String generateQueries(){
+        String queries = "";
+        int count = 1;
+
+        if(queryStrings != null){
+            for(String s: queryStrings){
+                if(s.length() > 0 && s != null){
+                    queries += "query" + count + " :- fsa([" + s + "]).\n";
+                }
+            }
+        }
+        if(queries.length() == 0){
+            queries += commentHeaderFooter + "\n%% No queries generated %%\n" + commentHeaderFooter;
+        } else{
+            queries = commentHeaderFooter + "\n%% Queries %%\n" + commentHeaderFooter +"\n" + queries;
+        }
+        return queries;
     }
 }

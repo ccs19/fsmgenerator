@@ -14,6 +14,7 @@ public class Fsm implements Runnable{
     private ArrayList<String> parsedAlphabet;
     private ArrayList<String> parsedStateTransitions;
     private ArrayList<Integer> parsedAcceptStates;
+    private ArrayList<String> queryStrings;
 
 
     //Options for runnable thread
@@ -57,6 +58,7 @@ public class Fsm implements Runnable{
         this.parsedAlphabet = fsmData.getAlphabet();
         this.parsedStateTransitions = fsmData.getStateTransitions();
         this.parsedAcceptStates = fsmData.getAcceptStates();
+        this.queryStrings = fsmData.getQueryStrings();
     }
 
     /**
@@ -185,6 +187,8 @@ public class Fsm implements Runnable{
     public int getStartState(){
         return startState;
     }
+
+    public ArrayList<String> getQueryStrings(){return queryStrings;}
 }
 
 

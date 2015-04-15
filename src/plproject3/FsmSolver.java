@@ -26,6 +26,7 @@ public class FsmSolver {
                 mainFrame.setJMenuBar(fsmSolverPanel.generateMenu());
                 mainFrame.pack();
                 mainFrame.setVisible(true);
+                mainFrame.setResizable(false);
             }
         });
 

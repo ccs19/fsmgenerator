@@ -2,9 +2,8 @@ package plproject3;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.util.ArrayList;
 
 /**
  * Author: Christopher Schneider
@@ -130,7 +129,6 @@ public class FsmSolverPanel extends JPanel {
         this.add(generatePrologButton, gbc);
 
         /**Quick generate Prolog**/
-        //Unused until next project
         quickGeneratePrologButton = new JButton(generatePrologQuickString);
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -143,11 +141,6 @@ public class FsmSolverPanel extends JPanel {
         this.add(quickGeneratePrologButton, gbc);
 
         this.setVisible(true);
-
-
-        PrologQueriesWindow pWindow = new PrologQueriesWindow(this);
-        pWindow.setEnabled(true);
-        pWindow.setVisible(true);
     }
 
 
@@ -243,9 +236,86 @@ public class FsmSolverPanel extends JPanel {
 
         /**Generate queries item**/
         menuItem = new JMenuItem(setQueriesMenuLabel);
-        //menuItem.addMouseListener(new setQueriesListener(this));
-        menu.add(menuItem);
+        menuItem.addMouseListener(new MouseAdapter() {
+                                      @Override
+                                      public void mousePressed(MouseEvent e) {
+                                          super.mousePressed(e);
+                                          PrologQueriesWindow prologQueriesWindow = new PrologQueriesWindow(FsmSolverPanel.this);
+                                          setPrologQueriesWindowFocus(prologQueriesWindow);
+                                      }
+                                  });
+                menu.add(menuItem);
 
         return menuBar;
+    }
+
+
+
+
+    //Prolog query strings
+    private ArrayList<String> queryStrings = null;
+
+    /**
+     * Set the prolog strings to be used
+     * @param queryStrings Array of strings. If no entry was made, entries may be null, or
+     *                     the entire object could be null.
+     */
+    public void setQueryStrings(ArrayList<String> queryStrings){
+        if(this.queryStrings != null && queryStrings == null){
+            //don't overwrite if data already added
+        }
+        else{
+            this.queryStrings = queryStrings;
+        }
+    }
+
+
+    /**
+     * Get the prolog query strings
+     * @return Array of strings or null if nothing entered.
+     */
+    public ArrayList<String> getQueryStrings(){
+        return this.queryStrings;
+    }
+
+    private void setPrologQueriesWindowFocus(final PrologQueriesWindow prologQueriesWindow){
+        JFrame mainFrame = (JFrame)SwingUtilities.windowForComponent(this);
+        mainFrame.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                prologQueriesWindow.setAlwaysOnTop(true);
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                prologQueriesWindow.setAlwaysOnTop(false);
+            }
+        });
+
     }
 }

@@ -12,6 +12,7 @@ public class FsmData {
     private final int numStates;
     private final int startState;
     private final ArrayList<Integer> acceptStates;
+    private final ArrayList<String> queryStrings;
 
     //Expected array index for fsm attributes
     public static final int NUM_STATES = 0, ALPHABET = 1, TRANSITIONS = 2,
@@ -27,12 +28,13 @@ public class FsmData {
      * @param startState Starting stae
      */
     public FsmData(ArrayList<Integer> acceptStates, ArrayList<String> stateTransitions,
-                   ArrayList<String> alphabet, int numStates, int startState){
+                   ArrayList<String> alphabet, int numStates, int startState, ArrayList<String> queryStrings){
         this.acceptStates = acceptStates;
         this.stateTransitions = stateTransitions;
         this.alphabet = alphabet;
         this.numStates = numStates;
         this.startState = startState;
+        this.queryStrings = queryStrings;
     }
 
 
@@ -78,6 +80,10 @@ public class FsmData {
         return startState;
     }
 
-
+    /**
+     *
+     * @return Query strings
+     */
+    public ArrayList<String> getQueryStrings(){return queryStrings;}
 
 }
