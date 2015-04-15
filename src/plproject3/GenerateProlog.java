@@ -131,8 +131,8 @@ public class GenerateProlog {
 
         if(queryStrings != null){
             for(String s: queryStrings){
-                if(s.length() > 0 && s != null){
-                    queries += "query" + count + " :- fsa([" + s + "]).\n";
+                if(s != null && s.length() > 0){
+                    queries += "query" + count + " :- fsa([" + breakQuery(s) + "]).\n";
                     count++;
                 }
             }
@@ -143,5 +143,15 @@ public class GenerateProlog {
             queries = commentHeaderFooter + "%% Queries                  %%\n" + commentHeaderFooter +"\n" + queries;
         }
         return queries;
+    }
+
+    private String breakQuery(String queryString){
+        String brokenQuery = "";
+        int stringLen = queryString.length();
+        for(int i = 0; i < stringLen; i++){
+            brokenQuery += queryString.charAt(i);
+            if(i != stringLen-1) brokenQuery+= ","; //Don't add comma to last item
+        }
+        return brokenQuery;
     }
 }
