@@ -30,7 +30,6 @@ public class FsmCreatorPanel extends JPanel
     private static final String[] transitionsString = {"State Transistions (Seperate by commas)" , "Format: (current:dest:input)"};
     private static final String saveString = "Save";
     private static final String exitString = "Exit";
-    private static final String exitConfirmMessage = "Are you sure you want to exit?\nUnsaved automaton will be lost.";
 
 
     //GridBagConstraints padding
@@ -195,14 +194,10 @@ public class FsmCreatorPanel extends JPanel
         /**********************************/
 
         /**Exit Button**/
-        final Component thisPanel = this;
         JButton exitButton = new JButton(exitString);
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /**int reply = JOptionPane.showConfirmDialog(thisPanel, exitConfirmMessage, exitString, JOptionPane.YES_NO_OPTION);
-                if(reply == JOptionPane.YES_OPTION)
-                {**/
                     System.exit(0);
              //   }
             }

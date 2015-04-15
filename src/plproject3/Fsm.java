@@ -51,7 +51,7 @@ public class Fsm implements Runnable{
      * Sets fsmData
      * @param fsmData Initialized FsmData object
      */
-    public void setFsmData(FsmData fsmData){
+    private void setFsmData(FsmData fsmData){
         currentState = fsmData.getStartState();
         this.startState = fsmData.getStartState();
         this.numStates = fsmData.getNumStates();
@@ -112,7 +112,7 @@ public class Fsm implements Runnable{
     /**
      * Generates the state transition table
      */
-    public void generateStateTable(){
+    private void generateStateTable(){
         stateTable = new ArrayList<State>();
         for(int i = 0; i < numStates; i++){ //Create states
             stateTable.add(new State());

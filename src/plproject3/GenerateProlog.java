@@ -120,6 +120,11 @@ public class GenerateProlog {
                 state + "([Head | Tail]) :- " + state + "(Head, Tail).\n");
     }
 
+
+    /**
+     * Generates queries based on the content in queryStrings
+     * @return queries generated, or a comment saying no queries were generated
+     */
     private String generateQueries(){
         String queries = "";
         int count = 1;

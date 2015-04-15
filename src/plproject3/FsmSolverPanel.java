@@ -197,11 +197,6 @@ public class FsmSolverPanel extends JPanel {
      */
     public String getWordEntryString(){ return wordEntry.getText();}
 
-    /**
-     * Sets the static text box
-     * @param entry The string to put in the text box
-     */
-    public void setWordEntryString(String entry){wordEntry.setText(entry);}
 
     /**
      * Creates Menu
@@ -325,6 +320,9 @@ public class FsmSolverPanel extends JPanel {
         mainFrame.addWindowListener(mainFrameWindowListener);
     }
 
+    /**
+     * Unregisters the window listener that ensures the Prolog Queries window is on top.
+     */
     public void unregisterWindowListener(){
         if(mainFrameWindowListenerEnabled){
             JFrame mainFrame = (JFrame)SwingUtilities.windowForComponent(this);

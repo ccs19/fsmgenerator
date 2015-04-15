@@ -20,7 +20,7 @@ public class FsmSolver {
                 JFrame mainFrame = new JFrame(title);
                 FsmSolverPanel fsmSolverPanel = new FsmSolverPanel();
                 mainFrame.getContentPane().add(fsmSolverPanel);
-                mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
                 mainFrame.setLocation(dim.width/2-mainFrame.getSize().width/2, dim.height/2-mainFrame.getSize().height/2);
                 mainFrame.setJMenuBar(fsmSolverPanel.generateMenu());

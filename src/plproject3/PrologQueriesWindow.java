@@ -9,7 +9,8 @@ import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 /**
- * Created by chris_000 on 4/13/2015.
+ * A window to input up to three strings.
+ * These strings are later used and converted into Prolog queries
  */
 public class PrologQueriesWindow extends JDialog {
 
@@ -19,6 +20,7 @@ public class PrologQueriesWindow extends JDialog {
 
     private static final int TEXT_FIELD_SIZE = 15;
     private static final String windowTitle = "Prolog Queries";
+
 
     PrologQueriesWindow(JPanel parent){
         super();
@@ -35,6 +37,9 @@ public class PrologQueriesWindow extends JDialog {
         this.setEnabled(true);
     }
 
+    /**
+     * Fills the Dialog with necessary buttons and text boxes
+     */
     private void generateGui(){
         GridLayout gridLayout = new GridLayout(4,1);
         gridLayout.setHgap(10);
@@ -59,6 +64,11 @@ public class PrologQueriesWindow extends JDialog {
 
     }
 
+    /**
+     * Generates text fields in a JPanel with a label and editable field
+     * @param title Name of text field
+     * @return A JPanel with the text field.
+     */
     private JPanel generateTextField(String title){
         int size = queryStrings.size();
 
@@ -74,6 +84,10 @@ public class PrologQueriesWindow extends JDialog {
         return textPanel;
     }
 
+    /**
+     * Generates the buttons needed. Clear, okay, cancel
+     * @return A Jpanel with the buttons inside it.
+     */
     private JPanel generateButtons(){
         GridLayout gridLayout = new GridLayout(1,4);
         gridLayout.setHgap(5);
@@ -123,7 +137,7 @@ public class PrologQueriesWindow extends JDialog {
 
     /**
      * Extracts strings from text boxes and sends them to the main JPanel
-     * If no data is
+     * If no data is present, null is sent.
      * @param parent parent
      **/
     private void setParentStrings(JPanel parent) {
@@ -139,6 +153,12 @@ public class PrologQueriesWindow extends JDialog {
         ((FsmSolverPanel) parent).setQueryStrings(enteredStrings);
     }
 
+    /**
+     * Generates a window listener that ensures data in text boxes that were present
+     * from previous user entry are not lost if the user closes the window with the default
+     * 'close X'
+     * @return A window listener
+     */
     private WindowListener generateWindowListener(){
 
         return (new WindowListener() {
@@ -181,6 +201,10 @@ public class PrologQueriesWindow extends JDialog {
         });
     }
 
+    /**
+     * Enables or disables the main JFrame
+     * @param isEnabled true or false
+     */
     private void enableMainWindow(boolean isEnabled){
         JFrame mainFrame = (JFrame)SwingUtilities.windowForComponent(parent);
         mainFrame.setEnabled(isEnabled);
