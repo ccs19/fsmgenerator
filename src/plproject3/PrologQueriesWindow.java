@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by chris_000 on 4/13/2015.
+ * A basic window where the user can input Strings for Prolog queries
  */
 public class PrologQueriesWindow extends JDialog {
 

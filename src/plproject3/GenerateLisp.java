@@ -54,14 +54,15 @@ public class GenerateLisp {
      */
     public String generateLisp(){
         int numStates = stateTable.size();
-        String lispProgram = generateStartFunction();
-        lispProgram += "\n\n";
+        StringBuffer lispProgram = new StringBuffer();
+        lispProgram.append(generateStartFunction());
+        lispProgram.append("\n\n");
 
         for(int i = 0; i < numStates; i++){
-            lispProgram += generateStateFunction(i);
-            lispProgram += "\n\n";
+            lispProgram.append(generateStateFunction(i));
+            lispProgram.append("\n\n");
         }
-        return lispProgram;
+        return lispProgram.toString();
     }
 
 
