@@ -17,7 +17,7 @@ public class FsmCreator {
             public void run(){
                 JFrame mainFrame = new JFrame(title);
                 mainFrame.getContentPane().add(new FsmCreatorPanel());
-                mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 mainFrame.pack();
                 Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
                 mainFrame.setLocation(dim.width/2-mainFrame.getSize().width/2, dim.height/2-mainFrame.getSize().height/2);

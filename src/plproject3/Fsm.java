@@ -14,6 +14,7 @@ public class Fsm implements Runnable{
     private ArrayList<String> parsedAlphabet;
     private ArrayList<String> parsedStateTransitions;
     private ArrayList<Integer> parsedAcceptStates;
+    private ArrayList<String> queryStrings;
 
 
     //Options for runnable thread
@@ -50,13 +51,14 @@ public class Fsm implements Runnable{
      * Sets fsmData
      * @param fsmData Initialized FsmData object
      */
-    public void setFsmData(FsmData fsmData){
+    private void setFsmData(FsmData fsmData){
         currentState = fsmData.getStartState();
         this.startState = fsmData.getStartState();
         this.numStates = fsmData.getNumStates();
         this.parsedAlphabet = fsmData.getAlphabet();
         this.parsedStateTransitions = fsmData.getStateTransitions();
         this.parsedAcceptStates = fsmData.getAcceptStates();
+        this.queryStrings = fsmData.getQueryStrings();
     }
 
     /**
@@ -110,7 +112,7 @@ public class Fsm implements Runnable{
     /**
      * Generates the state transition table
      */
-    public void generateStateTable(){
+    private void generateStateTable(){
         stateTable = new ArrayList<State>();
         for(int i = 0; i < numStates; i++){ //Create states
             stateTable.add(new State());
@@ -184,6 +186,15 @@ public class Fsm implements Runnable{
      */
     public int getStartState(){
         return startState;
+    }
+
+    public ArrayList<String> getQueryStrings(){return queryStrings;}
+
+    /**
+     * Needed in case user loads Fsm before setting Prolog query strings
+     */
+    public void setQueryStrings(ArrayList<String> queryStrings){
+        this.queryStrings = queryStrings;
     }
 }
 

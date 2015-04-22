@@ -2,9 +2,8 @@ package plproject3;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.util.ArrayList;
 
 /**
  * Author: Christopher Schneider
@@ -49,6 +48,9 @@ public class FsmSolverPanel extends JPanel {
     private final JButton generatePrologButton;
     private final JButton quickGeneratePrologButton;
 
+    //Window listener for focus
+    private WindowAdapter mainFrameWindowListener;
+    private boolean mainFrameWindowListenerEnabled;
 
     //Constants
     private static final int JTF_STRINGENTRYLEN = 15;
@@ -130,7 +132,6 @@ public class FsmSolverPanel extends JPanel {
         this.add(generatePrologButton, gbc);
 
         /**Quick generate Prolog**/
-        //Unused until next project
         quickGeneratePrologButton = new JButton(generatePrologQuickString);
         gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -143,11 +144,6 @@ public class FsmSolverPanel extends JPanel {
         this.add(quickGeneratePrologButton, gbc);
 
         this.setVisible(true);
-
-
-        PrologQueriesWindow pWindow = new PrologQueriesWindow(this);
-        pWindow.setEnabled(true);
-        pWindow.setVisible(true);
     }
 
 
@@ -201,11 +197,6 @@ public class FsmSolverPanel extends JPanel {
      */
     public String getWordEntryString(){ return wordEntry.getText();}
 
-    /**
-     * Sets the static text box
-     * @param entry The string to put in the text box
-     */
-    public void setWordEntryString(String entry){wordEntry.setText(entry);}
 
     /**
      * Creates Menu
@@ -243,9 +234,80 @@ public class FsmSolverPanel extends JPanel {
 
         /**Generate queries item**/
         menuItem = new JMenuItem(setQueriesMenuLabel);
-        //menuItem.addMouseListener(new setQueriesListener(this));
-        menu.add(menuItem);
+        menuItem.addMouseListener(new MouseAdapter() {
+                                      @Override
+                                      public void mousePressed(MouseEvent e) {
+                                          super.mousePressed(e);
+                                          PrologQueriesWindow prologQueriesWindow = new PrologQueriesWindow(FsmSolverPanel.this);
+                                          setPrologQueriesWindowFocus(prologQueriesWindow);
+                                          mainFrameWindowListenerEnabled = true;
+                                      }
+                                  });
+                menu.add(menuItem);
 
         return menuBar;
+    }
+
+
+
+
+    //Prolog query strings
+    private ArrayList<String> queryStrings = null;
+
+    /**
+     * Set the prolog strings to be used
+     * @param queryStrings Array of strings. If no entry was made, entries may be null, or
+     *                     the entire object could be null.
+     */
+    public void setQueryStrings(ArrayList<String> queryStrings){
+        if(this.queryStrings != null && queryStrings == null){
+            //don't overwrite if data already added
+        }
+        else{
+            this.queryStrings = queryStrings;
+        }
+    }
+
+
+    /**
+     * Get the prolog query strings
+     * @return Array of strings or null if nothing entered.
+     */
+    public ArrayList<String> getQueryStrings(){
+        return this.queryStrings;
+    }
+
+    /**
+     * Creates a window listener for the JFrame that ensure the Prolog
+     * queries string window is always on top and in front.
+     * @param prologQueriesWindow prologQueriesWindow
+     */
+    private void setPrologQueriesWindowFocus(final PrologQueriesWindow prologQueriesWindow){
+        JFrame mainFrame = (JFrame)SwingUtilities.windowForComponent(this);
+
+        mainFrameWindowListener = new WindowAdapter(){
+            @Override
+            public void windowActivated(WindowEvent e) {
+                prologQueriesWindow.setAlwaysOnTop(true);
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                prologQueriesWindow.setAlwaysOnTop(false);
+            }
+        };
+
+        mainFrame.addWindowListener(mainFrameWindowListener);
+    }
+
+    /**
+     * Unregisters the window listener that ensures the Prolog Queries window is on top.
+     */
+    public void unregisterWindowListener(){
+        if(mainFrameWindowListenerEnabled){
+            JFrame mainFrame = (JFrame)SwingUtilities.windowForComponent(this);
+            mainFrame.removeWindowListener(mainFrameWindowListener);
+            mainFrameWindowListenerEnabled = false;
+        }
     }
 }

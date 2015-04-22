@@ -71,7 +71,7 @@ public class GenerateLisp {
      * @param stateNum State number
      * @return A function representing a state
      */
-    public String generateStateFunction(int stateNum){
+    private String generateStateFunction(int stateNum){
         State state = stateTable.get(stateNum);
         String s = startfunction; // (DEFUN
         s += "S" + stateNum;      // (S(NUM))

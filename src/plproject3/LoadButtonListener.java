@@ -167,7 +167,8 @@ public class LoadButtonListener implements MouseListener {
                 parsedStateTransitions,
                 parsedAlphabet,
                 numStates,
-                startState);
+                startState,
+                listenPanel.getQueryStrings());
     }
 
 

@@ -3,10 +3,7 @@
 %%**************************%%
 
 accept(s1).
-
 accept(s3).
-
-
 
 %%**************************%%
 %% RULES 					%%
@@ -62,4 +59,17 @@ s4([]) :- accept(s4).
 s4([Head | Tail]) :- s4(Head, Tail).
 s4(x, List) :- s4(List).
 s4(a, List) :- s1(List).
+
+%%**************************%%
+%% queries 					%%
+%%**************************%%
+
+good :- fsa([x,x,x,x,x,y,x,x,x,y,x,x,x,z,x,x,x,a]).
+bad :- fsa([x,x,x,x,x,x,x,x,x,x,x,x,x,x,y,x,x,x,y,x,x,x,y,z,x,x,z,x,a]).
+
+
+
+
+
+
 

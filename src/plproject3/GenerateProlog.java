@@ -10,6 +10,7 @@ public class GenerateProlog {
 
     private final ArrayList<State> stateTable;
     private final ArrayList<String> parsedAlphabet;
+    private final ArrayList<String> queryStrings;
     private final int startState;
     private String prologProgram = "";
 
@@ -28,6 +29,7 @@ public class GenerateProlog {
         this.parsedAlphabet = fsm.getParsedAlphabet();
         this.startState = fsm.getStartState();
         this.stateTable = fsm.getStateTable();
+        this.queryStrings = fsm.getQueryStrings();
     }
 
 
@@ -47,6 +49,7 @@ public class GenerateProlog {
             prologProgram += generateStateData(i);
             prologProgram += getTransitions(stateTable.get(i), i);
         }
+        prologProgram += generateQueries();
 
         System.out.println(prologProgram);
         return prologProgram;
@@ -115,5 +118,45 @@ public class GenerateProlog {
         String state = "s" + stateNum;
         return (state + "([]) :- accept(" + state + ").\n" +
                 state + "([Head | Tail]) :- " + state + "(Head, Tail).\n");
+    }
+
+
+    /**
+     * Generates queries based on the content in queryStrings
+     * @return queries generated, or a comment saying no queries were generated
+     */
+    private String generateQueries(){
+        String queries = "";
+        int count = 1;
+
+        if(queryStrings != null){
+            for(String s: queryStrings){
+                if(s != null && s.length() > 0){
+                    queries += "query" + count + " :- fsa([" + breakQuery(s) + "]).\n";
+                    count++;
+                }
+            }
+        }
+        if(queries.length() == 0){
+            queries += commentHeaderFooter + "%% No queries generated     %%\n" + commentHeaderFooter;
+        } else{
+            queries = commentHeaderFooter + "%% Queries                  %%\n" + commentHeaderFooter +"\n" + queries;
+        }
+        return queries;
+    }
+
+    /**
+     * Seperates a string's individual characters with commas
+     * @param queryString the string
+     * @return broken string
+     */
+    private String breakQuery(String queryString){
+        String brokenQuery = "";
+        int stringLen = queryString.length();
+        for(int i = 0; i < stringLen; i++){
+            brokenQuery += queryString.charAt(i);
+            if(i != stringLen-1) brokenQuery+= ","; //Don't add comma to last item
+        }
+        return brokenQuery;
     }
 }
